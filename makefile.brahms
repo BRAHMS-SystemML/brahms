@@ -116,7 +116,7 @@ else
 VERSION_BRAHMS_REV=${shell svnversion -n . | sed s/.*:// | sed s/M//}
 endif
 ifeq ($(VERSION_BRAHMS_REV),exported)
-	VERSION_BRAHMS_REV=-1
+	VERSION_BRAHMS_REV=2695
 endif
 
 # SystemML version
