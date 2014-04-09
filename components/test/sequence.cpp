@@ -39,6 +39,8 @@ ________________________________________________________________
 #define COMPONENT_CLASS_CPP client_brahms_test_sequence_0
 #define COMPONENT_FLAGS (0)
 
+#include <unistd.h>
+
 //	include common header
 #include "../process.h"
 

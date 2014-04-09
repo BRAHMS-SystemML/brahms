@@ -169,7 +169,7 @@ using namespace brahms::channel;
 		
 		CommsInitData init(brahms::base::Core& p_core)
 		{
-			CommsInitData ret = {VOICE_UNDEFINED, 0};
+			CommsInitData ret = {static_cast<INT32>(VOICE_UNDEFINED), 0};
 
 			if (!core)
 			{

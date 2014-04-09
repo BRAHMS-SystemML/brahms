@@ -39,6 +39,8 @@ ________________________________________________________________
 #define COMPONENT_CLASS_CPP client_brahms_test_hang_0
 #define COMPONENT_FLAGS F_NOT_RATE_CHANGER
 
+#include <unistd.h>
+
 //	include common header
 #include "../process.h"
 

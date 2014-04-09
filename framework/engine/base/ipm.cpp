@@ -87,7 +87,7 @@ namespace brahms
 			//	no internal data
 			m_data = NULL;
 			m_block = NULL;
-			m_reserved = NULL;
+			m_reserved = 0;
 			m_size = 0;
 
 			//	has a callback

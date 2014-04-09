@@ -458,7 +458,7 @@ COMPONENT_CLASS_CPP::COMPONENT_CLASS_CPP(EventModuleCreateBindings* emc)
 	engineLocal = NULL;
 	mxOutput = NULL;
 	mxCount = 0;
-	ComponentVersion v = {-1, -1};
+	ComponentVersion v = {static_cast<UINT16>(-1), static_cast<UINT16>(-1)};
 	versionComponent = v;
 
 	//	lay in path information

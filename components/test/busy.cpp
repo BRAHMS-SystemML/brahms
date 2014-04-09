@@ -47,6 +47,7 @@ ________________________________________________________________
 #endif
 
 #ifdef __NIX__
+#include <unistd.h>
 #define msleep(msec) usleep(msec*1000)
 #endif
 

@@ -138,9 +138,7 @@ namespace brahms
 				}
 
 				//	init channel module
-				brahms::channel::CommsInitFunc* commsInitFunc = NULL;
 				brahms::channel::CreateChannelFunc* createChannelFunc = NULL;
-				brahms::channel::CommsInitData commsInitData = initChannelModule(engineData, voice.protocol, commsInitFunc, createChannelFunc);
 
 				//	have comms module create the channel
 				brahms::channel::ChannelInitData initData;

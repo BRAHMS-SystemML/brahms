@@ -68,7 +68,7 @@ ________________________________________________________________
 #ifdef __NIX__
 
 	#include <X11/Intrinsic.h>
-
+	#include <unistd.h>
 #endif
 
 

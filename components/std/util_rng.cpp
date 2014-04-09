@@ -71,6 +71,7 @@ class RNG
 
 public:
 
+	virtual ~RNG() {};
 	virtual void select(const char* distribution) = 0;
 	virtual void seed(const UINT32* seed, UINT32 count) = 0;
 	virtual void fill(DOUBLE* dst, UINT32 cnt, DOUBLE gain = 1.0, DOUBLE offset = 0.0) = 0;

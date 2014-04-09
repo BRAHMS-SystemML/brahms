@@ -54,6 +54,9 @@ TODO: CHANNEL MUTEX
 #include "base/base.h"
 #include "channel.h"
 #include <queue>
+#ifdef __NIX__
+#include <unistd.h>
+#endif
 
 //	import namespaces
 using namespace brahms::channel;
@@ -249,7 +252,7 @@ namespace brahms
 		UINT32					push(IPM* msg, brahms::output::Source* tout, bool ignoreIfNotOpen = false);
 		Symbol					pull(IPM*& ipm, UINT8 tag, brahms::output::Source& tout, UINT32 timeout);
 		Symbol					pullPrivate(IPM*& ipm, UINT8 tag, brahms::output::Source& tout, UINT32 timeout);
-		
+
 		//	flush
 		void					flush(brahms::output::Source& tout);
 
@@ -348,7 +351,7 @@ namespace brahms
 		//	delegate
 		protocolChannel.flush(tout);
 	}
-	
+
 	
 
 ////////////////	PUSH FUNCTION

@@ -35,6 +35,7 @@ ________________________________________________________________
 
 #include <sys/time.h>
 #include <errno.h>
+#include <unistd.h>
 
 #endif
                             

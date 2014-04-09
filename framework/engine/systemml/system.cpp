@@ -1784,7 +1784,6 @@ namespace brahms
 				//	initially, assume default log mode
 				INT32 precision = engineData.execution.defaultLogMode.precision;
 				bool encapsulated = engineData.execution.defaultLogMode.encapsulated;
-				bool recurse = engineData.execution.defaultLogMode.recurse;
 				vector<LogOriginSeconds> origins = engineData.execution.defaultLogMode.origins;
 
 				//	find best match amongst specific log modes
@@ -1825,7 +1824,6 @@ namespace brahms
 					logRule.logged.push_back(processName + " (Process)"); // mark that this rule caused this item to log, for audit
 					precision = logRule.mode.precision;
 					encapsulated = logRule.mode.encapsulated;
-					recurse = logRule.mode.recurse;
 					origins = logRule.mode.origins;
 				}
 				else unloggedItems.push_back(processName + " (Process)");
@@ -1890,7 +1888,6 @@ namespace brahms
 					INT32 precision = engineData.execution.defaultLogMode.precision;
 					bool encapsulated = engineData.execution.defaultLogMode.encapsulated;
 					vector<LogOriginSeconds> origins = engineData.execution.defaultLogMode.origins;
-					bool recurse = engineData.execution.defaultLogMode.recurse;
 
 					//	find best match amongst specific log modes
 					INT32 bestMatch = -1;
@@ -1932,7 +1929,6 @@ namespace brahms
 						precision = logRule.mode.precision;
 						encapsulated = logRule.mode.encapsulated;
 						origins = logRule.mode.origins;
-						recurse = logRule.mode.recurse;
 					}
 					else unloggedItems.push_back(dataName);
 

@@ -38,9 +38,9 @@ ________________________________________________________________
 
 
 #ifdef __NIX__
-
 #include <stdlib.h>
-
+#include <unistd.h>
+#include <sys/types.h>
 #endif
 
 
