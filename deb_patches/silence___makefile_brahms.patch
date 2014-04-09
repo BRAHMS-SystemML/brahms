@@ -1,0 +1,21 @@
+Description: Allow SYSTEMML_INSTALL_PATH to be empty
+ Debian-build specific change this.
+Author: Seb James <seb.james@sheffield.ac.uk>
+Forwarded: No need to forward
+Last-Update: 2014-02-21
+--- a/makefile.brahms
++++ b/makefile.brahms
+@@ -134,9 +134,10 @@
+ SPACE=$(EMPTY) $(EMPTY)
+ 
+ # install path
+-ifeq ($(SYSTEMML_INSTALL_PATH),)
+-${error set SYSTEMML_INSTALL_PATH}
+-endif
++# Debian build process requires this to be empty
++#ifeq ($(SYSTEMML_INSTALL_PATH),)
++#${error set SYSTEMML_INSTALL_PATH}
++#endif
+ 
+ # The "build install path" is a location into which the build will be
+ # installed, prior to being installed on the system at
