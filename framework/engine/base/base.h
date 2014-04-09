@@ -35,7 +35,7 @@ ________________________________________________________________
 #ifndef INCLUDED_BRAHMS_BASE
 #define INCLUDED_BRAHMS_BASE
 
-
+#include "config.h"
 
 ////////////////	HEADERS
 
@@ -84,20 +84,18 @@ using namespace brahms;
 ////////////////	BASE
 
 //	includes
-#include "base/constants.h"
-#include "base/types.h"
-#include "base/os.h"
-#include "base/error.h"
-#include "base/time.h"
-#include "base/output.h"
-#include "base/thread.h"
-#include "base/core.h"
-#include "base/ipm.h"
-#include "base/text.h"
-#include "base/math.h"
+#include "constants.h"
+#include "types.h"
+#include "os.h"
+#include "brahms_error.h"
+#include "brahms_time.h"
+#include "output.h"
+#include "thread.h"
+#include "core.h"
+#include "ipm.h"
+#include "text.h"
+#include "brahms_math.h"
 
 
 
 #endif
-
-
