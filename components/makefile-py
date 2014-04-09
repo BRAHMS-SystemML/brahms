@@ -1,0 +1,42 @@
+
+# include
+include ../../makefile.brahms
+
+# standard dependencies for 1199
+DEPS=makefile ../makefile-py ../../makefile.brahms $(XDEPS)
+
+# node file
+LOCAL_NODEFILE=${wildcard node*.xml}
+ifeq ($(LOCAL_NODEFILE), )
+NODEFILE=../../shared/node.$(COMPTYPE).xml
+else
+NODEFILE=$(LOCAL_NODEFILE)
+endif
+
+# release file
+RELEASEFILE=../../shared/release.1262.xml
+
+# get version data
+REL=0
+REV=$(VERSION_BRAHMS_REV)
+
+# get node paths
+NODEPATH=$(PATH_SML_NSP)/$(SUBPATH)
+BINPATH=$(NODEPATH)/brahms/0
+
+# check
+ifeq ($(NAME),)
+${error must set NAME}
+endif
+ifeq ($(SUBPATH),)
+${error must set SUBPATH}
+endif
+
+# default is to build process
+$(BINPATH)/component.py : $(NAME).py $(DEPS)
+	$(call MKDIR, $(BINPATH))
+	$(SHOW_MAKING) $<
+	cat $< | sed s/__REL__/$(REL)/ | sed s/__REV__/$(REV)/ > ${call ONEARG,$@}
+	cp $(NODEFILE) ${call ONEARG,$(NODEPATH)/node.xml}
+	cp $(RELEASEFILE) $(BINPATH)/release.xml
+

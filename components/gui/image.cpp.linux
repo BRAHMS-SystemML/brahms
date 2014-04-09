@@ -1,0 +1,154 @@
+
+////////////////	COMPONENT INFO
+
+//	component information
+#define COMPONENT_CLASS_STRING "dev/std/gui/numeric/image"
+#define COMPONENT_CLASS_CPP dev_std_gui_numeric_image_0 
+#define COMPONENT_RELEASE __REL__
+#define COMPONENT_REVISION __REV__
+#define COMPONENT_ADDITIONAL "Author=Ben Mitch (original idea Alex Cope)\n" "URL=http://brahms.sourceforge.net\n"
+#define COMPONENT_FLAGS F_NOT_RATE_CHANGER
+
+//	include the core overlay, quick process mode
+//	(you must have defined the above to use this)
+#define OVERLAY_QUICKSTART_PROCESS
+#include "brahms-1199.h"
+
+//	wx widgets
+//#define WXUSINGDLL // define this if linking to a shared library (DLL) build of wx widgets
+//	but we build static because it avoids DLL hell :)
+#include "wx/wx.h"
+//#include "wx/dcbuffer.h"
+//#include "wx/display.h"
+
+
+
+////////////////	wxWidgets APP CLASS
+
+class MyApp : public wxApp
+{
+
+public:
+
+	bool OnInit()
+	{
+		//	ok
+		return TRUE;
+	}
+
+};
+
+//	app instance
+MyApp* app = NULL;
+IMPLEMENT_APP_NO_MAIN(MyApp)
+
+
+
+////////////////	wxWidgets THREAD CLASS
+
+class MyThread : public wxThread
+{
+public:
+	ExitCode Entry()
+	{
+		//	create application instance
+		app = new MyApp();
+		app->SetInstance(app);
+
+		//	enter message loop
+		int argc = 0;
+		wxEntry(argc, (char**)NULL);
+
+		//	ok
+		return 0;
+	}
+};
+
+MyThread* thread = NULL;
+
+
+
+////////////////	COMPONENT CLASS (DERIVES FROM Process)
+
+class COMPONENT_CLASS_CPP : public Process
+{
+
+public:
+
+	COMPONENT_CLASS_CPP();
+	~COMPONENT_CLASS_CPP();
+
+	//	framework event function
+	Symbol event(Event* event);
+
+};
+
+
+
+////////////////	'STRUCTORS
+
+UINT32 componentCount = 0;
+
+COMPONENT_CLASS_CPP::COMPONENT_CLASS_CPP()
+{
+
+	//	on creation of first component, init wxWidgets library
+	if (!(componentCount++))
+	{
+		wxInitializer initializer;
+		thread = new MyThread();
+		thread->Create();
+		thread->Run();
+	}
+
+}
+
+COMPONENT_CLASS_CPP::~COMPONENT_CLASS_CPP()
+{
+
+	//	on destruction of last component, term wxWidgets library
+	if (!(--componentCount))
+	{
+		wxEntryCleanup();
+	}
+	
+}
+
+
+
+////////////////	EVENTS
+
+Symbol COMPONENT_CLASS_CPP::event(Event* event)
+{
+	switch(event->type)
+	{
+		case EVENT_STATE_SET:
+		{
+			//	ok
+			return C_OK;
+		}
+
+		case EVENT_INIT_CONNECT:
+		{
+			//	ok
+			return C_OK;
+		}
+
+		case EVENT_RUN_SERVICE:
+		{
+			//	ok
+			return C_OK;
+		}
+	}
+
+	//	not serviced
+	return S_NULL;
+}
+
+
+
+//	include overlay (a second time)
+#include "brahms-1199.h"
+
+
+

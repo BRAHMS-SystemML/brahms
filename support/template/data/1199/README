@@ -1,0 +1,6 @@
+
+This is a newly created BRAHMS Data. It is a native
+component, and needs to be built before BRAHMS can use it.
+In Matlab, run "brahms_manager", select this component,
+and click on "Build". After doing this, you can build it
+in future using "brahms_utils".

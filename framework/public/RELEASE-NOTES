@@ -1,0 +1,174 @@
+
+____________________________________________________________
+
+RELEASE NOTES
+BRAHMS Version 0.7.3
+____________________________________________________________
+
+Contents:
+
+RELEASE SUMMARY
+UPGRADE ADVICE
+SUMMARY CHANGE LOG
+FULL CHANGE LOG
+
+If you are in a rush, please read at least as far as the end
+of "UPGRADE ADVICE" to avoid the most obvious problems.
+
+
+
+____________________________________________________________
+
+RELEASE SUMMARY:
+
+In response to user requests:
+
+* Ported Matlab Invocation Bindings to Octave (Alpha, requires Octave 3.2.0 or greater).
+* Greatly improved parallel-ready Structured Log (and general improvements to error-reporting).
+* Moved to read-on-demand access to Report File, improving usability when logs are large (use struct(out) to convert structured log object to old format, a struct).
+* Namespace paths and component filenames have been made shorter (see UPGRADE ADVICE).
+* Ported to Mac OSX (Alpha).
+
+Also:
+
+* Various bug fixes, performance improvements, etc.
+* Significant stability and performance improvements to Concerto.
+
+
+
+____________________________________________________________
+
+UPGRADE ADVICE:
+
+(definitely)
+
+(If you do not make this change, things may still work, with warnings, but will break in a future release.)
+
+1) Namespace paths have been made shallower ("imp/1199/", "imp/1258/", "imp/1262/" removed from path) and filenames have been made shorter and standardised across languages. The following fixes will be required.
+
+(Native Components, #include statements)
+	#include "... /brahms/imp/1199/0/ ..."
+		==>
+	#include "... /brahms/0/ ..."
+
+(Native Components, installation location)
+	<class>/brahms/imp/1199/0/libbrahms-<class>.0.dll (WINDOWS)
+	<class>/brahms/imp/1199/0/libbrahms-<class>.so.0 (LINUX)
+		==>
+	<class>/brahms/0/component.dll (WINDOWS)
+	<class>/brahms/0/component.so (LINUX)
+
+(Non-native Components, 1258 & 1262, installation location)
+	<class>/brahms/imp/<lang>/0/brahms_process.<ext> (WINDOWS)
+		==>
+	<class>/brahms/0/component.<ext> (WINDOWS)
+
+	NB: you can now specify any name for your component in the "release.xml" file (see documentation), as requested
+
+(All Components, install release.xml file)
+	copy "<SYSTEMML_INSTALL_PATH>/BRAHMS/support/template/process/<lang>/release.xml
+		==>
+	<class>/brahms/0/release.xml
+
+(This change adds support for wrapping BRAHMS in other frameworks, since the need for this support has been highlighted by users)
+
+2) Native Components (1199, 1065, 1266): change compile lines in build scripts and makefiles as below, and recompile.
+
+(Windows)
+	libbrahms-core.0.lib ==> libbrahms-engine.lib
+
+(Linux, OSX)
+	-lbrahms-core ==> -lbrahms-engine
+
+3) Matlab Bindings - only one folder needs to be on path now (SystemMLToolbox is merged into 995).
+
+
+
+(likely)
+
+1) Native Components: numeric::Input::getContent() calls now return "const void*" rather than "void*". Your compiler may insist you assign the return value to a const variable.
+
+
+
+(unlikely but possible)
+
+1) Native Components: E_API_MISUSE ==> E_INTERFACE_MISUSE
+
+2) Native Components: Members of Accessor are now private in data/numeric and data/spikes - if you were using Accessor::hPort, use Accessor::getPort() instead.
+
+3) Launch Line syntax has changed to avoid conflicts with shell (see docs for new syntax) so if you use the Launch Line for deployment you will have to update (use defaults as template for new line).
+
+
+
+____________________________________________________________
+
+SUMMARY CHANGE LOG:
+
+* various unlisted improvements
+	- bug fixes
+	- performance improvements (particularly SystemML matlab bindings)
+	- significant refactoring of framework to support other improvements
+
+* ported invocation bindings (995) to Octave (Alpha)
+	- note that component bindings for matlab won't magically start using octave! that's a job for the next release.
+
+* ported BRAHMS to OSX (Alpha)
+
+* improved engine API that was rushed out for 0.7.2 (less calls, cleaner interface)
+
+* added XML/XSLT support to Structured Log
+	- removed D_1, ... D_5 in favour of D_INFO, D_VERB (for components) and D_LOQU, D_FULL (framework) and completely overhauled the logging system (see output of "brahms")
+
+* major improvements to concerto
+	- eliminated concerto lone ranger (MPI & sockets)
+	- more efficient and cleaner use of buffers (various types reduced to single IPM type, eliminated spurious PUSHDATA copy)
+	- no buffer resize anymore on PUSHDATA (separate pool per deliverer)
+	- much better up/down behaviour, explicit thread control, vastly improved behaviour on failure
+
+* some improvements to user experience
+	- XML logs
+	- hyperlink to errors in Matlab command window
+
+* MPI --> beta
+
+* demonstrated x-platform @ runtime
+
+* removed MultiThread (use MaxThreadCount = 1)
+
+* renamed a few things
+	- "core" to "Component Interface"
+	- "brahms-core.lib" to "brahms-engine.lib"
+	- "supervisor" to "client" (brahms-execute)
+
+* improved error reporting in 1258 & 1262
+
+* added support for "brahms_process.m/.py" files that are called something different; add an entry <Filename> in "release.xml" file with base name
+
+* collapsed general/sml core interfaces into an Engine Event interface, allowing transparent legacy support without performance loss following future changes
+	- xml face will remain where it is, because it is W3C compliant and therefore not subject to change
+
+* made members of Accessor private in data/numeric and data/spikes - if you were using Accessor::hPort, use Accessor::getPort() instead
+
+* reduced symbol visibility (nix) improves load-time
+
+* added support for binary input file to source/numeric (also reinstated start & stop, see docs)
+
+* dev/std/image/numeric now included in gln32 build (Alpha)
+
+* changed sml_reportml to return an sml_log (read-on-demand interface to Report File logs)
+
+* improved matlab binding so that Matlab Engine will stay open if started with /Automation switch
+
+* shortened and simplified namespace paths (user request)
+
+* implemented support for complex-interleaved, and automatic conversion between formats, in data/numeric, 995 DataML reader, 1199 DataML interface
+
+
+
+____________________________________________________________
+
+FULL CHANGE LOG:
+
+see these files:
+<brahms svn repository>/tags/0.7.3/change.log
+

@@ -1,0 +1,334 @@
+____________________________________________________________________
+
+Subversion Repository Information
+
+$Id:: change.log 2447 2010-01-13 01:10:52Z benjmitch       $
+$Rev:: 2447                                                $
+$Author:: benjmitch                                        $
+$Date:: 2010-01-13 01:10:52 +0000 (Wed, 13 Jan 2010)       $
+____________________________________________________________________
+
+For notes on usage, see "extras/change.log.notes"
+____________________________________________________________________
+
+
+
+04/07/2009
+v 0.7.2 RELEASE
+NEW CHANGE LOG STARTED
+
+
+
+21/08/09 (mitch)
+(ansgar raised a problem with the matlab bindings - this is me debugging/fixing it...)
+	- changed fire() to fireCheck() and fireNoCheck() in matlab/python bindings, to catch errors that weren't being caught
+	- found bug (ports were stored in a "static"-style vector, and were copied when the vector was resized. this caused a copy of their associated HandledEvent, which meant that it was no longer the same HandledEvent. therefore, it was no longer registered to receive changes when the due data on the port changes - these changes were instead directed to a handled event that no longer exists. luckily, this didn't cause seg faulting, but that was only luck.)
+	- fixed by changing vector<Port> to vector<Port*> and adding required new/delete's. thus, the handled event exists on the heap, and does not get copied on resize().
+
+27/08/09 (mitch)
+(ran valgrind on brahms to check for problems - nothing major, but a few fixes)
+	- util_rng.cpp did not call delete on the internal RNG object on destruct (not a leak, since object lifetime matches 
+	program lifetime, more or less)
+	- 1199/1065 DataMLNode becomeStruct() was creating a temporary object and not destroying it. very small, and probably matching lifetimes usually, but a leak.
+	- pthread_create() not matched by pthread_detach() was causing a small leak, though the web seems to indicate that this is often the way things are done, and is nothing to worry about. corrected, anyway.
+
+10/09/09 (mitch)
+(whilst testing concerto operation with martin in BRL)
+	- added --show-comms to show major communications operations for debugging
+
+12/09/09 (mitch)
+(trying to clarify the architecture of the engine so that we have support functionality and a layered onion. if this doesn't work out, i may abandon these changes...)
+	- removed D_1, ... D_5 in favour of D_DEBG, since five levels of debug for a component is pretty meaningless (rather, we can provide a mechanism for turning on debug for that particular component). old D_N constants are defined in bindings to resolve to D_DEBG on recompile. old compiled D_N constants fall in 0x21 to 0x25, so we count >=D_DEBG (0x20) as debug-level, for now.
+	- changed error system so that errors are only stored in the "error register" whilst they are propagating within components. when they are in the framework, they are propagated as "brahms::error::Error" objects, which have msg/trace information included in them. thus, we can throw errors from "support" functions without them having to be linked in to the error register, allowing us to put much more functionality in the stateless "support" layer.
+	- moved a bunch of stuff into the support layer (including the global object register). see notes in layers.txt.
+	- more of the same (including the global error register). working nicely, as far as i can tell.
+
+28/09/09 (mitch)
+
+	- temp fix, commented out onion in engine, its init() and term() in engine-api, and FOUT_FUNCTION instance, so that spurious output are not printed. this is because i may try and do the mac build sometime soonish and would rather not have that spurious output.
+
+28/09/09 (mitch)
+(begin OSX port)
+
+	- fixed up makefiles some, then tested i could commit ok
+	- ongoing changes
+	- mostly builds now for OSX (some work still needed on groups)
+
+29/09/09 (mitch)
+(debugging some problems noticed when using mat's code with the follicle model)
+	- fixed a display bug in the GUI (base sample rate/period displayed inaccurately).
+
+29/09/09 (mitch)
+	- this R finishes the essentials of the OSX port
+	- TODO: run-time GUI is not displayed at all (X windows integration, and Xaw, and Gauge)
+	- TODO: 1258 and 1262 both don't work (1258 has path-to-lib problems, 1262 needs numpy which isn't available on apt-get)
+	- BUGFIX: if getnumprocessors() returns 0 (unknown) and MaxThreadCount is xN, MaxThreads was set to zero (causing a floating point exception)
+
+29/09/09 (mitch)
+	- fixed for Linux (some minor failings had crept in during the refactoring of 12/09/09)
+
+29/09/09 (mitch)
+	- fixed run-time GUI on OSX (all that's missing now is 1258/1262)
+
+29/09/09 (mitch)
+	- BUGFIX: exception/abort when MaxThreadCount == 0
+
+29/09/09 (mitch)
+	- minor improvement (perhaps) to network file handling in brahms.m
+
+29/09/09 (mitch)
+	- repaired MPI implementation after refactoring
+	
+29/09/09 (mitch)
+	- repaired error propagation model after refactoring
+
+29/09/09 (mitch)
+(ONGOING: rationalisation of up()/down() model)
+	- semi-finalised engine API that was previously rushed out (less calls, much cleaner interface)
+	- added XML/XSLT support to log output sink
+	- put in place much more comprehensive control over log output (and improved performance slightly)
+
+13/10/09 (mitch)
+	- major improvements to stability and error reporting, particularly concerto: sender/receiver/deliverer threads all terminate gracefully, now
+	- particularly, concerto lone rangers no longer cause end-of-execution thread termination timeout (30 second bug from BRL)
+
+13/10/09 (mitch)
+	- put in place infrastructure to support the holding back of concerto lone rangers
+
+13/10/09 (mitch)
+	- have used that infrastructure to develop a first draft of lone ranger control; this needs more work, but illustrates the principle (IPMTAG_CONGESTION is sent back along the channel, and indicates approximately the parameters of the congestion, allowing the sender to sleep() once to allow the backlog to reduce - a fuller solution will have the sender learning the parameters of the congestion and sleep()ing predictively, with IPMTAG_CONGESTION messages being used to send back feedback on how well the strategy is working; these messages may also be used to indicate starvation)
+
+14/10/09 (mitch)
+	- various fixes to the above
+	- removed VERSION_SUPERVISOR since command-line supervisor is just a thin layer over the engine, and since it is part of the same build at the moment
+
+22/10/09 (mitch)
+	- changed behaviour of launching using matlab function (see new documentation for correct new behaviour). specifically, launch function should now store console logs to the files specified in invocation, rather than collecting and returning them.
+	- changed behaviour of all brahms launch conditions to be equivalent; that is, we log to a file, then read that file back if necessary to find out what the errors are (whether there were errors at all is indicated by the executable return code or exit file)
+	- logs are now collected manually by the user, via a link in the command window of matlab
+	- added hyperlink to error codes in command window, links to docs page
+
+23/10/09 (mitch)
+	- changed token syntax from $(TOKEN) to ((TOKEN)), throughout, to avoid possible conflicts with shell
+	- generally, Launch Line syntax has changed considerably - if using custom Launch Line, use the current ones as templates
+
+25/10/09 (mitch)
+	- fixed up MPI implementation for recent changes (MPI now has beta status)
+	- removed all instances of "cout" in code (replace with ____INFO and ____WARN); use these in future since cout's go to stdout, and will make the XML log unreadable
+
+25/10/09 (mitch)
+	- fixed 4GB overflow on S/R counters, and generally improved their appearance
+	- fixed a couple of script bugs in the bindings, and generated cross-platform execution demo
+
+25/10/09 (mitch)
+	- improved logs considerably
+
+25/10/09 (mitch)
+	- removed MultiThread (it's handled now by MaxThreadCount)
+	- finished log implementation --loglvl-L-T-S
+	- removed D_1 through D_5 in favour of D_CRIT, D_WARN, D_INFO, D_VERB, D_FULL (1-5 become synonyms, so --debug-5 still means max debug level)
+
+25/10/09 (mitch)
+	- fixed deadlock implementation following changes to logging
+	- added scratchbot.avi so brahms_test video works properly
+	- implemented decent fix against loneranger.s (IPMTAG_USEDDATA & IPMTAG_QUERYBUFFER)
+	- fixed concerto auditing in MPI build
+
+26/10/09 (mitch)
+	- recompiled for OSX
+	- fixed browser launching properly on all three platforms, adding LaunchURL in case of difficulty
+	- fixed log.xslt problem by having bindings copy it over explicitly :)
+
+27/10/09 (mitch)
+	- improved implementation of sockets layer (MPI yet to do) to make more efficient use of buffers
+
+27/10/09 (mitch)
+	- fixed a couple of bugs in the above, and confirmed that reallocation is now being kept to a minimum
+
+27/10/09 (mitch)
+	- think this brings MPI up to date
+
+27/10/09 (mitch)
+	- brought MPI receiver thread in line with the sockets one; i expect we'll merge these together at some point.
+
+27/10/09 (mitch)
+	- some fixes for MPI (brought it more closely in line with sockets, with a view to moving towards adding PUSHDATA/USEDDATA support)
+
+27/10/09 (mitch)
+	- changed comms architecture slightly so that IPM is the object used throughout (ByteBuffer is gone). this will support a reduction in buffer copies, and a simplification of the class hierarchy.
+
+28/10/09 (mitch)
+	- removed CallbackMessage, and ByteBuffer, merged both into IPM. IPM is now the sole currency of message passing, and things are much neater :)
+
+28/10/09 (mitch)
+	- bit of debugging of comms behaviour.
+
+29/10/09 (mitch)
+	- renamed "core" to "Component API"
+	- renamed "brahms-core.lib" to "brahms-engine.lib"
+	- renamed "supervisor" to "engine"
+	- renamed "brahms-supervisor" to "brahms-execute"
+
+31/10/09 (mitch)
+	- (this R) changed signals to have timeout/cancel set at creation, rather than at call to waitfor() - this may improve performance in MT executions
+
+31/10/09 (mitch)
+	- changed Environment to be readonly to components
+	- incidentally, implemented readonly control for all XML nodes
+	- fixed bug where got stuck in infinite loop sending QUERYBUFFER if concerto cancelled
+	- greatly reduced number of USEDDATA messages sent when no loneranger condition
+	- fixed/improved error reporting in python components
+	- improved error reporting in matlab components
+
+01/11/09 (mitch)
+	- added brahms_test "buffers", and fixed up more bugs in comms along the way
+	- added additional error checking to matlab:OPERATION_SET_CONTENT to avoid mashed-up data
+
+01/11/09 (mitch)
+	- reorganised repository (yes, again!).
+	- made compress a separate module, so things will still work if it doesn't load
+
+02/11/09 (mitch)
+	- reorganised repository (yes, again!).
+	- sorted out the stdout/stderr problems
+	- fixed getnumprocessors() for mac (supposedly)
+	- fixed bad exception propagation for linux
+	- done some TODOs
+	- done some more TODOs
+
+02/11/09 (mitch)
+	- fixed up linux build after rearrangements
+
+02/11/09 (mitch)
+	- fixed up deprecation warning in python bindings
+	- fixed up brahms_manager build script creation for osx
+
+02/11/09 (mitch)
+	- added use-deliverer-pool-on-PUSHDATA to MPI build, using MPI tag to carry msgStreamID information
+	- added congestion prevention (no-loneranger) to MPI build
+
+03/11/09 (mitch)
+	- some minor changes to support change in systemml to sml_log
+
+03/11/09 (mitch)
+	- added support for different contentHeaderBytes for each data object, and set only in a late event (EVENT_INIT_COMPLETE)
+	- renamed EVENT_ACCESS_* to EVENT_GENERIC_*, to suit their scope
+	- fixed congestion-prevention system properly, now, on sockets and MPI (we're back to the identical PUSHDATA paradigm, and have separated QUERYBUFFER as an always-distinct message)
+
+05/11/09 (mitch)
+	- some updates for Octave compatibility
+	- brahms_manager strips copyright messages from template files on installation
+	- added support for "brahms_process.m/.py" files that are called something different; create a file called "brahms_process" (no extension) with their base name in
+	- implemented link to local docs, if present
+	- some fixes for -Wall on linux
+	- added initial octave back-end bindings (2309)
+
+07/11/09 (mitch)
+	- some name/value changes in brahms-component.h will require a recompile, though it is already required due to the changed name of the core library
+
+07/11/09 (mitch)
+	- collapsed general component interface into engineEvent(), which i've been meaning to do for some time
+	- collapsed systemml interface into engineEvent(), also
+	- xml face will remain where it is, because it is W3C compliant
+	- added archBits to ModuleInfo, so the loader can establish 32/64 of a module at load time
+	- made Symbol into UINTA, so it's 64-bit on 64-bit platforms
+	- put default detail level to D_INFO, and changed all engine D_INFO messages to D_VERB (may add a D_XTRM level later, if necessary)
+	- fixed up for linux 64-bit (may still be some bugs, have to see)
+	- final fixes on windows
+	- became more strict about insisting that hCaller is passed to most API events
+	- released strictness on errors (errors must be able to be thrown when the object isn't found) and string conversions
+
+08/11/09 (mitch)
+	- renamed brahms-engine.h to brahms-client.h
+
+09/11/09 (mitch)
+	- added "brahms_test listened" to illustrate use of listening
+	- made members of Accessor private in data/numeric and data/spikes - if you were using Accessor::hPort, use Accessor::getPort() instead
+
+09/11/09 (mitch)
+	- moved "create new build script" functionality out of manager and into utils, so Octave users can access it
+	- added full management support to brahms_utils so that Octave users can do everything Matlab users can
+	- fixed precision bug in array/numeric and sml_xml (encap storage of <1000 elements when unencap requested was done at default precision, rather than maximum)
+	- fixed various bugs in python, whilst developing std/eval/python
+
+10/11/09 (mitch)
+	- fixed various bugs in the engine, introduced during the recent refactoring
+	- moved to the symbol visibility model described at http://gcc.gnu.org/wiki/Visibility on linux, to try and solve the exception propagation bug. didn't work, but reduced our exported symbols tables substantially.
+
+12/11/09 (mitch)
+	- placed S_ERROR (etc.) in component interface, because they're as fixed as the bit maps, so why not
+	- confirmed (with changes) that data.h/util.h headers do not need 1199 binding, or brahms namespace
+
+12/11/09 (mitch)
+	- fixed a nasty bug whereby the system was deleted before all PUSHDATA msgs were necessarily sent, causing a seg fault when the callback was made (fixed by forcing a send queue flush before system deletion)
+
+15/11/09 (mitch)
+	- fixed up makefiles to run without sh on windows (i.e. native, but still GNU make)
+
+15/11/09 (mitch)
+	- added support for binary input file to source/numeric (also reinstated start & stop)
+
+15/11/09 (mitch)
+	- fixed exception catching on gln (see module.cpp notes)
+
+15/11/09 (mitch)
+	- dev/std/image/numeric now included in gln32 build
+
+---- RC1 R2377 ----
+
+17/11/09 (mitch)
+	- improved matlab binding so that Matlab Engine will stay open if started with /Automation switch and if MultiExecution is 0
+	- added brahms_test matflict, to illustrate Engine conflicts
+	- removed a few spurious execution pars (MultiProcessor, MultiExecution, MultiVoice) which were all only there to provide support to Matlab Engine sharing, which now works transparently
+
+18/11/09 (mitch)
+	- some fix-ups of makefiles to build correctly on Snow Leopard
+
+18/11/09 (mitch)
+	- imported SystemML Matlab Bindings
+
+19/11/09 (mitch)
+	- added EVENT_MODULE_QUERY to support entirely separate interfaces being supported by the same framework manager
+	- changed EVENT constants as a result (requires recompile)
+
+19/11/09 (mitch)
+	- shortened and simplified namespace paths (user request)
+	- removed execution parameters from SystemInfo, replaced with limited and more controlled parameters
+
+---- RC3 R2411 ----
+
+(some bug fixes on linux/mac)
+
+---- RC4 ----
+
+10/12/09 (mitch)
+	- changed data/numeric interface getContent() to return const pointer from an Input, since these pointers should not be used for writing
+
+11/12/09 (mitch)
+	- removed shape/value constants from TYPE; they were pretty spurious and legacy, and i wanted to leave plenty of room for expansion since it was getting full.
+	- implemented support for complex-interleaved, and automatic conversion between formats, in data/numeric, 995 DataML reader, 1199 DataML interface. in future, we can let python generate its outputs in interleaved form, as it prefers, and JIT conversion will take place when the data is read.
+	- implemented future-proofing for column-major/row-major in data/numeric.
+
+11/12/09 (mitch)
+	- some fixes for the above
+	- matlab/python are not yet linked in to complex-adjacent/complex-interleaved, to follow...
+
+12/12/09 (mitch)
+	- changed all events to accept a structure rather than return one. this makes those events extensible in future, as they were not
+	- added support for array format conversion to generic interface
+
+13/12/09 (mitch)
+	- fixed now in 1262/1258
+	- checked over utility Argument interface for correct handling of these array order constants
+	- checked that 1262 correctly handles contigous arrays to CONTENT_SET (by making sure it gives a sensible error message to say that it can't handle them)
+
+---- RC5 ----
+
+24/12/09 (mitch)
+	- fixed up Gauge.c to compile correctly on more restrictive linux boxes
+
+13/01/10 (mitch)
+	- updated toggle system to window system, to support repeated windows
+
+
+

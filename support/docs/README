@@ -1,0 +1,22 @@
+
+
+ONLINE
+---------------------------
+
+The BRAHMS documenation is available online at
+
+http://brahms.sourceforge.net/docs
+
+
+
+
+
+OFFLINE
+---------------------------
+
+This folder is a placeholder for the offline documentation.
+It is not included with the release, but if you want, you
+can visit the online docs above, where you will find a link
+to download the latest documentation. Unzip the file you
+download to this folder, and then BRAHMS will be able to
+find and open the local documentation when required.

@@ -1,0 +1,65 @@
+BASICALLY...
+
+things go wrong when Refresh() is called before the wxEVT_IDLE event has come through.
+i don't know why this causes problems! but i can trawl through the wxWidgets src and find out?
+
+OPTION: under GTK, delay return from window::Unlock() until IDLE has been fired.
+this is unlikely to work well, but might be worth a go.
+
+OPTION: disable entirely multi-threading operation on Linux, and work out some
+draconian protection so only one thing can be going on at once. unlikely to be
+high performance and also might not work.
+
+OPTION: work out what GTK is doing so that things go awry if the EVTs arrive in
+the wrong order:
+
+GtkSendPaintEvents() IN
+FilterEvent(279a)
+FilterEvent(279a)
+FilterEvent(279b)
+FilterEvent(279b)
+FilterEvent(wxEVT_PAINT)
+FilterEvent(wxEVT_IDLE) 0x127f3d0
+Refresh() IN
+Refresh() INVALIDATE IN
+Refresh() INVALIDATE OUT
+Refresh() OUT
+GtkSendPaintEvents() IN
+FilterEvent(279a)
+FilterEvent(279a)
+FilterEvent(279b)
+FilterEvent(279b)
+FilterEvent(wxEVT_PAINT)
+Refresh() INFilterEvent(wxEVT_IDLE)
+Refresh() INVALIDATE IN
+0x127f3d0
+Refresh() INVALIDATE OUT
+Refresh() OUT
+GtkSendPaintEvents() IN
+FilterEvent(279a)
+FilterEvent(279a)
+FilterEvent(279b)
+FilterEvent(279b)
+FilterEvent(wxEVT_PAINT)
+FilterEvent(wxEVT_IDLE) 0x127f3d0
+Refresh() IN
+Refresh() INVALIDATE IN
+Refresh() INVALIDATE OUT
+Refresh() OUT
+
+WARNING:
+ 0:W0   11.322335 wxCOND_TIMEOUT waiting for window update (image1)
+
+Refresh() IN
+Refresh() INVALIDATE IN
+Refresh() INVALIDATE OUT
+Refresh() OUT
+
+WARNING:
+ 0:W0   11.422295 wxCOND_TIMEOUT waiting for window update (image2)
+
+Refresh() IN
+
+
+to be continued....
+

@@ -1,0 +1,20 @@
+
+# include
+include ../../makefile.brahms
+
+# libs
+ifeq ($(ARCH_OS),win)
+XCOPT=-I"D:\Temp\wxWidgets-2.8.10-win32-lib"
+XLOPT=user32.lib shell32.lib advapi32.lib ole32.lib gdi32.lib comdlg32.lib rpcrt4.lib comctl32.lib oleaut32.lib wxmsw28.lib -LIBPATH:"D:\Temp\wxWidgets-2.8.10-win32-lib"
+else
+WXCONFIG=wx-config
+XCOPT=${shell $(WXCONFIG) --cppflags}
+XLOPT=${shell $(WXCONFIG) --libs core,base}
+endif
+
+# include
+include ../makefile-cpp
+
+
+
+

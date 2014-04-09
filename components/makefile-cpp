@@ -1,0 +1,76 @@
+
+# include
+include ../../makefile.brahms
+
+# C/CPP
+ifeq ($(LANGC), 1)
+LANG=1266
+SRCEXT=c
+COMPILER=$(CC)
+ifeq ($(ARCH_OS), osx)
+F_NO_COMMON=-fno-common # osx needs -fno-common because systemInfo is defined, i think
+else
+F_NO_COMMON=
+endif
+else
+LANG=1199
+SRCEXT=cpp
+COMPILER=$(CXX)
+F_NO_COMMON=
+endif
+
+# standard dependencies for 1199
+DEPS=makefile ../makefile-cpp ../../makefile.brahms ../$(COMPTYPE).h ../std.h/*.h $(IF_1199) $(IF_CMP) $(XDEPS)
+
+# node file
+LOCAL_NODEFILE=${wildcard node*.xml}
+ifeq ($(LOCAL_NODEFILE), )
+NODEFILE=../../shared/node.$(COMPTYPE).xml
+else
+NODEFILE=$(LOCAL_NODEFILE)
+endif
+
+# release file
+RELEASEFILE=../../shared/release.$(LANG).xml
+
+# get version data
+REL=0
+REV=$(VERSION_BRAHMS_REV)
+
+# get node paths
+NODEPATH=$(PATH_SML_NSP)/$(SUBPATH)
+BINPATH=$(NODEPATH)/brahms/0
+
+# check
+ifeq ($(NAME),)
+${error must set NAME}
+endif
+ifeq ($(SUBPATH),)
+${error must set SUBPATH}
+endif
+
+# underscore path
+USPATH=${subst /,_,$(SUBPATH)}
+
+# compiler flags
+COPTS=$(COPT_BASE) $(COPT_COMPONENT) $(XCOPT) -D__REL__=$(REL) -D__REV__=$(REV) $(F_NO_COMMON) -DBRAHMS_NO_LEGACY_SUPPORT
+LOPTS=$(LOPT_BASE) $(LOPT_COMPONENT) $(XLOPT)
+
+# rule to build component
+$(BINPATH)/component.$(EXTSHLIB) : $(NAME).$(SRCEXT) $(DEPS)
+	$(call MKDIR, $(BINPATH))
+ifeq ($(ARCH_NIX),1)
+	echo ${notdir $@}
+endif
+	$(COMPILER) $(COPTS) $< $(NAMEEXE)${call ONEARG,$@} $(LOPTS)
+ifeq ($(ARCH_OS), gln)
+	strip --strip-all ${call ONEARG,$@}
+endif
+ifeq ($(ARCH_OS),win)
+	del *.obj
+	del ${call ONEARG,$(BINPATH)}\*.exp
+	del ${call ONEARG,$(BINPATH)}\*.lib
+	del ${call ONEARG,$(BINPATH)}\*.manifest
+endif
+	cp $(NODEFILE) $(NODEPATH)/node.xml
+	cp $(RELEASEFILE) $(BINPATH)/release.xml

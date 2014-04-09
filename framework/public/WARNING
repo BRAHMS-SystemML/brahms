@@ -1,0 +1,4 @@
+
+This folder may move in future releases, and is not intended for User Components. On some systems, it may not be writeable.
+
+Please run brahms_manager, create a User Namespace Root, and create User Components there.

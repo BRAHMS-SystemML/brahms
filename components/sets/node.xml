@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This is a standard process node descriptor file -->
+<Node>
+	<Type>Process</Type>
+	<Specification>
+		<Connectivity>
+			<InputSets>
+				<Set>double</Set>
+				<Set>round</Set>
+				<Set>invert</Set>
+			</InputSets>
+			<OutputSets>
+				<Set>double</Set>
+				<Set>round</Set>
+				<Set>invert</Set>
+			</OutputSets>
+		</Connectivity>
+	</Specification>
+</Node>

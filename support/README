@@ -1,0 +1,19 @@
+This folder contains support files.
+
+
+
+MAKEFILE.RELEASE
+------------------------------------------------------------
+
+Many examples and templates are given that include a
+makefile to compile a source file to a brahms binary
+component. All of these include the file "makefile.release"
+at the top (this makefile is used when building BRAHMS to
+keep as many settings as possible in one place). For
+example, the makefile in this folder includes it at the top.
+
+This makefile may change in future releases, so it is
+STRONGLY RECOMMENDED that you make a copy of it when you
+copy templates or examples to form the beginnings of your
+own components. That way, if this file does change in a
+future release, your own builds will not be affected.

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+
+	You should NOT edit this file, unless you are administering
+	a shared installation of BRAHMS. Edit your machine-level or
+	user-level config files instead.
+
+	If you do edit this file, make sure you keep a copy, because
+	it will be overwritten if you install a new release of
+	BRAHMS.
+
+	For more information, see the documentation node "BRAHMS
+	Manager".
+
+-->
+
+
+<Brahms Version="1.0">
+	
+	<!-- 
+	
+		ExecutionParameters can be set at five levels, each of
+		which overrides settings at the levels above:
+
+			* the installation level (this file)
+			* the local machine level (Win, All Users\Application Data\BRAHMS\brahms.xml; Gln, /etc/BRAHMS/brahms.xml)
+			* the user level (Win, <User>\Application Data\BRAHMS\brahms.xml, Gln, ~/.BRAHMS/brahms.xml)
+			* the execution level (in the Execution File)
+			* the BRAHMS executable command-line
+
+	-->
+
+	<ExecutionParameters>
+		
+		<!-- paths and stuff -->
+		<NamespaceRoots/><!-- additional Namespace Root Paths, over the installation Namespace root -->
+		<WorkingDirectory/><!-- this is where the Invocation Bindings will put files (you can also use it in your processes as a temp folder) -->
+
+		<!-- execution environment -->
+		<MaxThreadCount>x8</MaxThreadCount><!-- ""/"0": no limit; "N": explicit limit; "xN": N threads per processor (or no limit if it can't work out how many there are) -->
+
+		<!-- timeouts -->
+		<TimeoutThreadHang>30000</TimeoutThreadHang><!-- after this period (milliseconds) of inactivity a thread will be assumed to have hung -->
+		<TimeoutThreadTerm>30000</TimeoutThreadTerm><!-- a thread is given this long at each stage of termination to terminate gracefully -->
+
+		<!-- polling and feedback -->
+		<ThreadPollInterval>100,1,250</ThreadPollInterval> <!-- interval on which the threads will be polled for hanging or completion -->
+		<GUIUpdateInterval>100,1,250</GUIUpdateInterval> <!-- interval on which the progress bar will be updated -->
+		<TimeRunPhase>0</TimeRunPhase> <!-- if true, run-phase calls are timed - this can slow down fine-grained executions -->
+		<ShowGUI>1</ShowGUI> <!-- if true, show GUI -->
+
+		<!-- inter-voice comms -->
+		<IntervoiceCompression>0</IntervoiceCompression> <!-- integer between 1 and 9, passed to zlib (equivalent to -1 to -9 passed to gzip), or 0 to not use compression -->
+		<PushDataMaxBytes>33554432</PushDataMaxBytes> <!-- maximum (dst) buffer memory (bytes) that may be used by each inter-voice link (33554432 is 32MB) -->
+		<PushDataMaxItems>1000</PushDataMaxItems> <!-- maximum number of items that may be stored in (dst) buffer per inter-voice link -->
+		<PushDataWaitStep>25</PushDataWaitStep> <!-- time (msec) to wait at src before trying again if dst buffer is deemed backed-up (interval between IPMTAG_QUERYBUFFER msgs) -->
+
+		<!-- sockets-layer parameters -->
+		<SocketsBasePort>57344</SocketsBasePort> <!-- start of the port range that the sockets layer will use, if in use -->
+		<SocketsUseNagle>0</SocketsUseNagle> <!-- if false, Nagle algorithm is disabled in concerto sockets implementation - this should cause much faster execution when not running a babble -->
+		<SocketsTimeout>10000</SocketsTimeout><!-- inter-voice comms over sockets layer is given this long to complete -->
+
+		<!-- execution niceties -->
+		<Priority>0</Priority> <!-- integer from [-3, -2, -1, 0, 1, 2, 3]: 0 is normal, -3 is very low, +3 is very high -->
+		<BufferingPolicy>Balanced</BufferingPolicy> <!-- a buffering policy can minimise disk or memory usage -->
+
+		<!-- parameters that affect results -->
+		<MinUniqueSeedsPerProcess>1024</MinUniqueSeedsPerProcess>
+
+		<!-- bindings specific -->
+		<LaunchLineSolo>brahms ((EXECFILE)) --logfmt-xml --voice-1 --outfile-((OUTFILE)) ((ARGS))</LaunchLineSolo>
+		<LaunchLineSockets>each brahms ((EXECFILE)) --logfmt-xml --voice-((VOICE)) --outfile-((OUTFILE)) ((ARGS)) ((REDIRECT))</LaunchLineSockets>
+		<LaunchLineMPI>mpiexec -n ((VOICES)) brahms ((EXECFILE)) --logfmt-xml --voice-mpi --outfile-((OUTFILE)) ((ARGS))</LaunchLineMPI>
+		<OpenURL></OpenURL> <!-- set this to a command that opens a specified URL, using the syntax e.g. 'open_this_url.exe "((URL))"' -->
+		<OpenFolder></OpenFolder> <!-- set this to a command that opens (explores) a specified folder, using the syntax e.g. 'open_this_folder.exe "((PATH))"' -->
+
+		<!-- developer/debug (undocumented) -->
+		<ShowServicePhaseTiming>0</ShowServicePhaseTiming>
+		<TidyXML>0</TidyXML>
+
+	</ExecutionParameters>
+
+</Brahms>
