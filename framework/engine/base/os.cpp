@@ -31,6 +31,8 @@ ________________________________________________________________
 */
 
 
+#include "base.h"
+
 #ifdef __NIX__
 
 #include <sys/time.h>
@@ -38,9 +40,8 @@ ________________________________________________________________
 #include <unistd.h>
 
 #endif
-                            
-                            
-                            
+
+
 namespace brahms
 {
 	namespace os
@@ -524,7 +525,7 @@ namespace brahms
 
 		void msleep(UINT32 msec)
 		{
-	
+
 		#ifdef __WIN__
 			Sleep(msec);
 		#endif

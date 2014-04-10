@@ -31,7 +31,7 @@ ________________________________________________________________
 */
 
 
-
+#include "base.h"
 
 #ifdef __NIX__
 
@@ -76,7 +76,7 @@ namespace brahms
 	namespace thread
 	{
 
-		
+
 
 ////////////////	THREAD BASE
 
@@ -485,7 +485,7 @@ namespace brahms
 					//	no action, and no spurious messages - that way, we can call
 					//	this function as many times as we want :)
 					return;
-					
+
 				case TS_ACTIVE:
 					//	no action
 					break;
@@ -555,7 +555,7 @@ namespace brahms
 	#ifdef __NIX__
 
 			//	SEE DEVELOPER DOCUMENTATION NOTE "pthread_cancel"
-			
+
 			//	we don't ask pthread to cancel here because it interferes with C++'s exception
 			//	handling; search for Dave Butenhof's posts on comp.programming.threads,
 			//	particularly the one with message ID <449093e2$1@usenet01.boi.hp.com>:
@@ -649,7 +649,7 @@ namespace brahms
 			my_info_size = sizeof(info)/sizeof(int);
 			kr = thread_info(my_thread_self, THREAD_BASIC_INFO, (thread_info_t)&info, &my_info_size);
 			mach_port_deallocate(mach_task_self(), my_thread_self);
-			
+
 			//	http://felinemenace.org/~nemo/mach/manpages/thread_basic_info.html
 			//	http://www.gnu.org/software/hurd/gnumach-doc/Host-Time.html
 			DOUBLE u = info.user_time.seconds * 1e6 + info.user_time.microseconds;

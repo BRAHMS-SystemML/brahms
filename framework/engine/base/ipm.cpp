@@ -30,14 +30,12 @@ ________________________________________________________________
 
 */
 
-
+#include "ipm.h"
 
 namespace brahms
 {
 	namespace base
 	{
-
-
 
 ////////////////	TRANSLATE IPM TAG
 
@@ -127,7 +125,7 @@ namespace brahms
 			//	default size
 			resize(sizeof(IPM_HEADER));
 
-			//	initialise header with default values				
+			//	initialise header with default values
 			IPM_HEADER& p_header = header();
 
 			//	A
@@ -189,7 +187,7 @@ namespace brahms
 			//	TODO: remove this! noone needs these zeroed! ...zero new bytes
 			if (p_size > m_size)
 				memset(m_data + m_size, 0, p_size - m_size);
-			
+
 			//	in any case, set the new size
 			m_size = p_size;
 		}

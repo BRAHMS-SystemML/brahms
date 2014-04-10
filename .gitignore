@@ -22,3 +22,6 @@ missing
 *component.lo
 # Files created when running in "monolithic mode":
 *component.so
+*.o
+*.lo
+*.la

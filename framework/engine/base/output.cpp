@@ -30,7 +30,7 @@ ________________________________________________________________
 
 */
 
-
+#include "base.h"
 
 ////////////////	DECORATION
 
@@ -498,7 +498,7 @@ namespace brahms
 				xmlsafe(out, msg);
 				out += "</msg>";
 			}
-			
+
 			//	output to text
 			else
 			{

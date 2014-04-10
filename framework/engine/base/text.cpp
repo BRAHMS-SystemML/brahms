@@ -30,7 +30,7 @@ ________________________________________________________________
 
 */
 
-
+#include "base.h"
 
 namespace brahms
 {
@@ -256,7 +256,7 @@ namespace brahms
 			ss << sr.num << "/" << sr.den;
 			return ss.str();
 		}
-	
+
 	}
 }
 

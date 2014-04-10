@@ -30,12 +30,10 @@ ________________________________________________________________
 
 */
 
-
-
 #ifndef INCLUDED_BRAHMS_FRAMEWORK_BASE_IPM
 #define INCLUDED_BRAHMS_FRAMEWORK_BASE_IPM
 
-
+#include "base.h"
 
 ////////////////	NAMESPACE
 
@@ -46,7 +44,7 @@ namespace brahms
 
 
 
-		
+
 ////////////////	IPM CONSTANTS
 
 		const UINT32 IPM_SIGNATURE			= 0x004D5049;		// "IPM\0" (Intel)
@@ -230,7 +228,7 @@ namespace brahms
 			Since we're using the pool for this, we also use it for storing
 			messages in the receive queue, ready to be pull()ed out. That is,
 			messages other than PUSHDATA.
-			
+
 			Follow this documentation tag to find the points where messages are
 			get() from pools and put() back in.
 
@@ -283,7 +281,7 @@ namespace brahms
 					IPM* ipm = pool.top();
 					pool.pop();
 					delete ipm;
-				}	
+				}
 			}
 
 			IPM* get(UINT8 tag, UINT32 to)
@@ -389,7 +387,7 @@ namespace brahms
 
 			//	number of IPMs that exist somewhere,
 			//	whether checked out or held in the stack
-			UINT32 total;		
+			UINT32 total;
 
 			//	mutex to protect pool
 			brahms::os::Mutex mutex;
@@ -406,7 +404,7 @@ namespace brahms
 
 
 ////////////////	NAMESPACE
-		
+
 	}
 }
 

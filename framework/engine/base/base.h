@@ -35,7 +35,7 @@ ________________________________________________________________
 #ifndef INCLUDED_BRAHMS_BASE
 #define INCLUDED_BRAHMS_BASE
 
-#include "config.h"
+#include "brahms_config.h"
 
 ////////////////	HEADERS
 

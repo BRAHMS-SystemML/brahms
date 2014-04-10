@@ -54,11 +54,11 @@ ________________________________________________________________
 
 ////////////////    PRE-AMBLE
 
-	//	engine version
-	__UINT16 VERSION_ENGINE_MAJ __TOK_ __MAJ__ _TOK__
-	__UINT16 VERSION_ENGINE_MIN __TOK_ __MIN__ _TOK__
-	__UINT16 VERSION_ENGINE_REL __TOK_ __REL__ _TOK__
-	__UINT16 VERSION_ENGINE_REV __TOK_ __REV__ _TOK__
+	//	engine version (INT16 flags) Without subversion numbers, there's no reason not to hard code these.
+        #define VERSION_ENGINE_MAJ ( 0 )
+	#define VERSION_ENGINE_MIN ( 7 )
+	#define VERSION_ENGINE_REL ( 3 )
+	#define VERSION_ENGINE_REV ( 2696 )
 
 	//	GCC section
 	#ifdef __GNUC__
@@ -93,7 +93,7 @@ ________________________________________________________________
 		#if _MSC_VER < 1300
 		#error Compiler version too old (_MSC_VER < 1300)
 		#endif
-		
+
 		//	bit-width (pre-define in makefile if this does not work for your platform)
 		#ifndef ARCH_BITS
 		#ifdef _M_IX86
@@ -136,7 +136,7 @@ ________________________________________________________________
 	#ifndef BRAHMS_BUILD_TARGET
 	#error Cannot include the Component Interface directly (include an overlay/binding, instead)
 	#endif
-	
+
 	//  BRAHMS_ENGINE_VIS is import, unless otherwise specified
 	#ifdef __cplusplus
 	#ifdef BRAHMS_BUILDING_ENGINE
@@ -160,14 +160,14 @@ ________________________________________________________________
 
 	//	GNU C does not (the __int* here are taken from "GNU C, ISO C99: 7.18 Integer types <stdint.h>")
 	#ifdef __GNUC__
-	#define __int8 char
-	#define __int16 short int
-	#define __int32 int
-	#if ARCH_BITS == 64
-	#define __int64 long int
-	#else
-	#define __int64 long long int
-	#endif
+	  #define __int8 char
+	  #define __int16 short int
+	  #define __int32 int
+	  #if ARCH_BITS == 64
+	    #define __int64 long int
+	  #else
+	    #define __int64 long long int
+	  #endif
 	#endif
 
 
@@ -213,94 +213,94 @@ namespace brahms { extern "C" {
 
 	typedef UINT32 TYPE;
 
-	__TYPE TYPE_UNSPECIFIED         __TOK_ 0x00000000 _TOK__
+	#define TYPE_UNSPECIFIED         ( 0x00000000 )
 
 	//  container width
-	__TYPE TYPE_WIDTH_UNSPECIFIED   __TOK_ 0x00000000 _TOK__
-	__TYPE TYPE_WIDTH_8BIT          __TOK_ 0x00000001 _TOK__
-	__TYPE TYPE_WIDTH_16BIT         __TOK_ 0x00000002 _TOK__
-	__TYPE TYPE_WIDTH_32BIT         __TOK_ 0x00000003 _TOK__
-	__TYPE TYPE_WIDTH_64BIT         __TOK_ 0x00000004 _TOK__
-	__TYPE TYPE_WIDTH_MASK          __TOK_ 0x0000000F _TOK__
+	#define TYPE_WIDTH_UNSPECIFIED   ( 0x00000000 )
+	#define TYPE_WIDTH_8BIT          ( 0x00000001 )
+	#define TYPE_WIDTH_16BIT         ( 0x00000002 )
+	#define TYPE_WIDTH_32BIT         ( 0x00000003 )
+	#define TYPE_WIDTH_64BIT         ( 0x00000004 )
+	#define TYPE_WIDTH_MASK          ( 0x0000000F )
 
 	//  storage format
-	__TYPE TYPE_FORMAT_UNSPECIFIED  __TOK_ 0x00000000 _TOK__
-	__TYPE TYPE_FORMAT_FLOAT        __TOK_ 0x00000010 _TOK__
-	__TYPE TYPE_FORMAT_FIXED        __TOK_ 0x00000020 _TOK__
-	__TYPE TYPE_FORMAT_INT          __TOK_ 0x00000030 _TOK__
-	__TYPE TYPE_FORMAT_UINT         __TOK_ 0x00000040 _TOK__
-	__TYPE TYPE_FORMAT_BOOL         __TOK_ 0x00000050 _TOK__
-	__TYPE TYPE_FORMAT_CHAR         __TOK_ 0x00000060 _TOK__
-	__TYPE TYPE_FORMAT_STRUCT       __TOK_ 0x000000A0 _TOK__
-	__TYPE TYPE_FORMAT_CELL         __TOK_ 0x000000B0 _TOK__
-	__TYPE TYPE_FORMAT_MASK         __TOK_ 0x000000F0 _TOK__
+	#define TYPE_FORMAT_UNSPECIFIED  ( 0x00000000 )
+	#define TYPE_FORMAT_FLOAT        ( 0x00000010 )
+	#define TYPE_FORMAT_FIXED        ( 0x00000020 )
+	#define TYPE_FORMAT_INT          ( 0x00000030 )
+	#define TYPE_FORMAT_UINT         ( 0x00000040 )
+	#define TYPE_FORMAT_BOOL         ( 0x00000050 )
+	#define TYPE_FORMAT_CHAR         ( 0x00000060 )
+	#define TYPE_FORMAT_STRUCT       ( 0x000000A0 )
+	#define TYPE_FORMAT_CELL         ( 0x000000B0 )
+	#define TYPE_FORMAT_MASK         ( 0x000000F0 )
 
 	//  these bits describe the "element"
-	__TYPE TYPE_ELEMENT_MASK        __TOK_ TYPE_WIDTH_MASK | TYPE_FORMAT_MASK _TOK__
+	#define TYPE_ELEMENT_MASK        ( TYPE_WIDTH_MASK | TYPE_FORMAT_MASK )
 
 	//  complexity flags
-	__TYPE TYPE_COMPLEX_UNSPECIFIED __TOK_ 0x00000000 _TOK__
-	__TYPE TYPE_REAL                __TOK_ 0x00000100 _TOK__
-	__TYPE TYPE_COMPLEX             __TOK_ 0x00000200 _TOK__
-	__TYPE TYPE_COMPLEX_MASK        __TOK_ 0x00000300 _TOK__
+	#define TYPE_COMPLEX_UNSPECIFIED ( 0x00000000 )
+	#define TYPE_REAL                ( 0x00000100 )
+	#define TYPE_COMPLEX             ( 0x00000200 )
+	#define TYPE_COMPLEX_MASK        ( 0x00000300 )
 
 	//	complexity storage format
-	__TYPE TYPE_CPXFMT_UNSPECIFIED __TOK_ 0x00000000 _TOK__
-	__TYPE TYPE_CPXFMT_ADJACENT    __TOK_ 0x00000400 _TOK__
-	__TYPE TYPE_CPXFMT_INTERLEAVED __TOK_ 0x00000800 _TOK__
-	__TYPE TYPE_CPXFMT_MASK        __TOK_ 0x00000C00 _TOK__
-	
+	#define TYPE_CPXFMT_UNSPECIFIED ( 0x00000000 )
+	#define TYPE_CPXFMT_ADJACENT    ( 0x00000400 )
+	#define TYPE_CPXFMT_INTERLEAVED ( 0x00000800 )
+	#define TYPE_CPXFMT_MASK        ( 0x00000C00 )
+
 	//	ordering flags
-	__TYPE TYPE_ORDER_UNSPECIFIED  __TOK_ 0x00000000 _TOK__
-	__TYPE TYPE_ORDER_COLUMN_MAJOR __TOK_ 0x00001000 _TOK__
-	__TYPE TYPE_ORDER_ROW_MAJOR    __TOK_ 0x00002000 _TOK__
-	__TYPE TYPE_ORDER_MASK         __TOK_ 0x00003000 _TOK__
+	#define TYPE_ORDER_UNSPECIFIED  ( 0x00000000 )
+	#define TYPE_ORDER_COLUMN_MAJOR ( 0x00001000 )
+	#define TYPE_ORDER_ROW_MAJOR    ( 0x00002000 )
+	#define TYPE_ORDER_MASK         ( 0x00003000 )
 
 	//	these bits describe the "array"
-	__TYPE TYPE_ARRAY_MASK          __TOK_ TYPE_ELEMENT_MASK | TYPE_COMPLEX_MASK | TYPE_CPXFMT_MASK | TYPE_ORDER_MASK _TOK__
+	#define TYPE_ARRAY_MASK          ( TYPE_ELEMENT_MASK | TYPE_COMPLEX_MASK | TYPE_CPXFMT_MASK | TYPE_ORDER_MASK )
 
 	//  derived constants are the ones you would actually use (some do not specify bit-width, for obvious reasons)
-	__TYPE TYPE_FLOAT32             __TOK_ TYPE_FORMAT_FLOAT | TYPE_WIDTH_32BIT _TOK__
-	__TYPE TYPE_FLOAT64             __TOK_ TYPE_FORMAT_FLOAT | TYPE_WIDTH_64BIT _TOK__
-	__TYPE TYPE_INT8                __TOK_ TYPE_FORMAT_INT   | TYPE_WIDTH_8BIT _TOK__
-	__TYPE TYPE_INT16               __TOK_ TYPE_FORMAT_INT   | TYPE_WIDTH_16BIT _TOK__
-	__TYPE TYPE_INT32               __TOK_ TYPE_FORMAT_INT   | TYPE_WIDTH_32BIT _TOK__
-	__TYPE TYPE_INT64               __TOK_ TYPE_FORMAT_INT   | TYPE_WIDTH_64BIT _TOK__
-	__TYPE TYPE_UINT8               __TOK_ TYPE_FORMAT_UINT  | TYPE_WIDTH_8BIT _TOK__
-	__TYPE TYPE_UINT16              __TOK_ TYPE_FORMAT_UINT  | TYPE_WIDTH_16BIT _TOK__
-	__TYPE TYPE_UINT32              __TOK_ TYPE_FORMAT_UINT  | TYPE_WIDTH_32BIT _TOK__
-	__TYPE TYPE_UINT64              __TOK_ TYPE_FORMAT_UINT  | TYPE_WIDTH_64BIT _TOK__
-	__TYPE TYPE_BOOL8               __TOK_ TYPE_FORMAT_BOOL  | TYPE_WIDTH_8BIT _TOK__
-	__TYPE TYPE_BOOL16              __TOK_ TYPE_FORMAT_BOOL  | TYPE_WIDTH_16BIT _TOK__
-	__TYPE TYPE_BOOL32              __TOK_ TYPE_FORMAT_BOOL  | TYPE_WIDTH_32BIT _TOK__
-	__TYPE TYPE_BOOL64              __TOK_ TYPE_FORMAT_BOOL  | TYPE_WIDTH_64BIT _TOK__
-	__TYPE TYPE_CHAR8               __TOK_ TYPE_FORMAT_CHAR  | TYPE_WIDTH_8BIT _TOK__
-	__TYPE TYPE_CHAR16              __TOK_ TYPE_FORMAT_CHAR  | TYPE_WIDTH_16BIT _TOK__
-	__TYPE TYPE_CHAR32              __TOK_ TYPE_FORMAT_CHAR  | TYPE_WIDTH_32BIT _TOK__
-	__TYPE TYPE_CHAR64              __TOK_ TYPE_FORMAT_CHAR  | TYPE_WIDTH_64BIT _TOK__
-	__TYPE TYPE_STRUCT              __TOK_ TYPE_FORMAT_STRUCT _TOK__
-	__TYPE TYPE_CELL                __TOK_ TYPE_FORMAT_CELL _TOK__
+	#define TYPE_FLOAT32             ( TYPE_FORMAT_FLOAT | TYPE_WIDTH_32BIT )
+	#define TYPE_FLOAT64             ( TYPE_FORMAT_FLOAT | TYPE_WIDTH_64BIT )
+	#define TYPE_INT8                ( TYPE_FORMAT_INT   | TYPE_WIDTH_8BIT )
+	#define TYPE_INT16               ( TYPE_FORMAT_INT   | TYPE_WIDTH_16BIT )
+	#define TYPE_INT32               ( TYPE_FORMAT_INT   | TYPE_WIDTH_32BIT )
+	#define TYPE_INT64               ( TYPE_FORMAT_INT   | TYPE_WIDTH_64BIT )
+	#define TYPE_UINT8               ( TYPE_FORMAT_UINT  | TYPE_WIDTH_8BIT )
+	#define TYPE_UINT16              ( TYPE_FORMAT_UINT  | TYPE_WIDTH_16BIT )
+	#define TYPE_UINT32              ( TYPE_FORMAT_UINT  | TYPE_WIDTH_32BIT )
+	#define TYPE_UINT64              ( TYPE_FORMAT_UINT  | TYPE_WIDTH_64BIT )
+	#define TYPE_BOOL8               ( TYPE_FORMAT_BOOL  | TYPE_WIDTH_8BIT )
+	#define TYPE_BOOL16              ( TYPE_FORMAT_BOOL  | TYPE_WIDTH_16BIT )
+	#define TYPE_BOOL32              ( TYPE_FORMAT_BOOL  | TYPE_WIDTH_32BIT )
+	#define TYPE_BOOL64              ( TYPE_FORMAT_BOOL  | TYPE_WIDTH_64BIT )
+	#define TYPE_CHAR8               ( TYPE_FORMAT_CHAR  | TYPE_WIDTH_8BIT )
+	#define TYPE_CHAR16              ( TYPE_FORMAT_CHAR  | TYPE_WIDTH_16BIT )
+	#define TYPE_CHAR32              ( TYPE_FORMAT_CHAR  | TYPE_WIDTH_32BIT )
+	#define TYPE_CHAR64              ( TYPE_FORMAT_CHAR  | TYPE_WIDTH_64BIT )
+	#define TYPE_STRUCT              ( TYPE_FORMAT_STRUCT )
+	#define TYPE_CELL                ( TYPE_FORMAT_CELL )
 
 	//	synonyms
-	__TYPE TYPE_SINGLE              __TOK_ TYPE_FLOAT32 _TOK__
-	__TYPE TYPE_DOUBLE              __TOK_ TYPE_FLOAT64 _TOK__
-	__TYPE TYPE_BYTE                __TOK_ TYPE_UINT8 _TOK__
-	__TYPE TYPE_BOOL                __TOK_ TYPE_BOOL8 _TOK__
+	#define TYPE_SINGLE              ( TYPE_FLOAT32 )
+	#define TYPE_DOUBLE              ( TYPE_FLOAT64 )
+	#define TYPE_BYTE                ( TYPE_UINT8 )
+	#define TYPE_BOOL                ( TYPE_BOOL8 )
 
 
 
 ////////////////    ARCHITECTURE DEPENDENT
 
 	#if ARCH_BITS == 64
-	__UINT32 ARCH_BYTES             __TOK_ 8 _TOK__
-	__TYPE TYPE_INTA                __TOK_ TYPE_INT64 _TOK__
-	__TYPE TYPE_UINTA               __TOK_ TYPE_UINT64 _TOK__
+	#define ARCH_BYTES             ( 8 )
+	#define TYPE_INTA                ( TYPE_INT64 )
+	#define TYPE_UINTA               ( TYPE_UINT64 )
 	typedef INT64                  INTA;
 	typedef UINT64                 UINTA;
 	#else
-	__UINT32 ARCH_BYTES             __TOK_ 4 _TOK__
-	__TYPE TYPE_INTA                __TOK_ TYPE_INT32 _TOK__
-	__TYPE TYPE_UINTA               __TOK_ TYPE_UINT32 _TOK__
+	#define ARCH_BYTES             ( 4 )
+	#define TYPE_INTA                ( TYPE_INT32 )
+	#define TYPE_UINTA               ( TYPE_UINT32 )
 	typedef INT32                  INTA;
 	typedef UINT32                 UINTA;
 	#endif
@@ -334,10 +334,11 @@ namespace brahms { extern "C" {
 		UINT32 count;
 	};
 
-	__INT64 DIM_ANY        __TOK_ -1 _TOK__
-	__INT64 DIM_NONZERO    __TOK_ -2 _TOK__
-	__INT64 DIM_ELLIPSIS   __TOK_ -3 _TOK__
-	__INT64 DIM_ABSENT     __TOK_ -4 _TOK__
+        // INT64 flags.
+	#define DIM_ANY        ( -1 )
+	#define DIM_NONZERO    ( -2 )
+	#define DIM_ELLIPSIS   ( -3 )
+	#define DIM_ABSENT     ( -4 )
 
 
 
@@ -363,10 +364,10 @@ namespace brahms { extern "C" {
 
 	typedef UINT32 DetailLevel;
 
-	__UINT32 D_NONE __TOK_ 0x00 _TOK__ //  normal levels
-	__UINT32 D_WARN __TOK_ 0x20 _TOK__
-	__UINT32 D_INFO __TOK_ 0x40 _TOK__
-	__UINT32 D_VERB __TOK_ 0x60 _TOK__
+	#define D_NONE ( 0x00 ) //  normal levels
+	#define D_WARN ( 0x20 )
+	#define D_INFO ( 0x40 )
+	#define D_VERB ( 0x60 )
 
 
 
@@ -375,10 +376,10 @@ namespace brahms { extern "C" {
 	typedef UINT32 ComponentType;
 
 	//	these must be OR-able for component register, so distinct bits for each
-	__UINT32 CT_NULL      __TOK_ 0 _TOK__
-	__UINT32 CT_DATA      __TOK_ 1 _TOK__
-	__UINT32 CT_PROCESS   __TOK_ 2 _TOK__
-	__UINT32 CT_UTILITY   __TOK_ 4 _TOK__
+	#define CT_NULL      ( 0 )
+	#define CT_DATA      ( 1 )
+	#define CT_PROCESS   ( 2 )
+	#define CT_UTILITY   ( 4 )
 
 	struct ComponentTime
 	{
@@ -399,11 +400,11 @@ namespace brahms { extern "C" {
 		const char* libraries;                                //  external libraries linked, in the form "name=version\nname=version\n..."
 	};
 
-	__UINT32 F_NEEDS_ALL_INPUTS          __TOK_ 0x00000001 _TOK__	//	component must only receive EVENT_INIT_CONNECT when all its inputs are present
-	__UINT32 F_INPUTS_SAME_RATE          __TOK_ 0x00000002 _TOK__	//	component must only receive inputs that share its sample rate
-	__UINT32 F_OUTPUTS_SAME_RATE         __TOK_ 0x00000004 _TOK__	//	component must only create outputs that share its sample rate
-	__UINT32 F_NOT_RATE_CHANGER          __TOK_ F_INPUTS_SAME_RATE | F_OUTPUTS_SAME_RATE _TOK__
-	__UINT32 M_COMPONENT_FLAGS           __TOK_ 0x00000007 _TOK__
+	#define F_NEEDS_ALL_INPUTS          ( 0x00000001 )	//	component must only receive EVENT_INIT_CONNECT when all its inputs are present
+	#define F_INPUTS_SAME_RATE          ( 0x00000002 )	//	component must only receive inputs that share its sample rate
+	#define F_OUTPUTS_SAME_RATE         ( 0x00000004 )	//	component must only create outputs that share its sample rate
+	#define F_NOT_RATE_CHANGER          ( F_INPUTS_SAME_RATE | F_OUTPUTS_SAME_RATE )
+	#define M_COMPONENT_FLAGS           ( 0x00000007 )
 
 	struct ComponentData
 	{
@@ -474,97 +475,97 @@ namespace brahms { extern "C" {
 	//	special NULL code means "nothing", and can be tested with "if (!...)" idiom.
 	//	note that it is *equal to* the representation of the NUMBER zero, therefore
 	//	interface functions returning numbers cannot also return S_NULL.
-	__Symbol S_NULL                     __TOK_ 0 _TOK__
+	#define S_NULL                     ( 0 )
 
-	//	32-bit
+	//	32-bit symbols
 	#if ARCH_BITS == 32
-	__Symbol S_TYPE_MASK                __TOK_ 0xF0000000 _TOK__
-	__Symbol S_TYPE_NUMBER              __TOK_ 0x00000000 _TOK__
-	__Symbol S_TYPE_NEG_NUMBER          __TOK_ 0xF0000000 _TOK__
-	__Symbol S_TYPE_CONSTANT            __TOK_ 0x10000000 _TOK__
-	__Symbol S_TYPE_ERROR               __TOK_ 0xE0000000 _TOK__
-	__Symbol S_TYPE_RESERVED_MIN        __TOK_ 0x20000000 _TOK__
-	__Symbol S_TYPE_RESERVED_MAX        __TOK_ 0xDFFFFFFF _TOK__
-	__Symbol S_ERROR_CODE_MASK          __TOK_ 0x0000FFFF _TOK__
+	#define S_TYPE_MASK                ( 0xF0000000 )
+	#define S_TYPE_NUMBER              ( 0x00000000 )
+	#define S_TYPE_NEG_NUMBER          ( 0xF0000000 )
+	#define S_TYPE_CONSTANT            ( 0x10000000 )
+	#define S_TYPE_ERROR               ( 0xE0000000 )
+	#define S_TYPE_RESERVED_MIN        ( 0x20000000 )
+	#define S_TYPE_RESERVED_MAX        ( 0xDFFFFFFF )
+	#define S_ERROR_CODE_MASK          ( 0x0000FFFF )
 	#endif
 
-	//	64-bit
+	//	64-bit symbols
 	#if ARCH_BITS == 64
-	__Symbol S_TYPE_MASK                __TOK_ 0xF000000000000000 _TOK__
-	__Symbol S_TYPE_NUMBER              __TOK_ 0x0000000000000000 _TOK__
-	__Symbol S_TYPE_NEG_NUMBER          __TOK_ 0xF000000000000000 _TOK__
-	__Symbol S_TYPE_CONSTANT            __TOK_ 0x1000000000000000 _TOK__
-	__Symbol S_TYPE_ERROR               __TOK_ 0xE000000000000000 _TOK__
-	__Symbol S_TYPE_RESERVED_MIN        __TOK_ 0x2000000000000000 _TOK__
-	__Symbol S_TYPE_RESERVED_MAX        __TOK_ 0xDFFFFFFFFFFFFFFF _TOK__
-	__Symbol S_ERROR_CODE_MASK          __TOK_ 0x000000000000FFFF _TOK__
+	#define S_TYPE_MASK                ( 0xF000000000000000 )
+	#define S_TYPE_NUMBER              ( 0x0000000000000000 )
+	#define S_TYPE_NEG_NUMBER          ( 0xF000000000000000 )
+	#define S_TYPE_CONSTANT            ( 0x1000000000000000 )
+	#define S_TYPE_ERROR               ( 0xE000000000000000 )
+	#define S_TYPE_RESERVED_MIN        ( 0x2000000000000000 )
+	#define S_TYPE_RESERVED_MAX        ( 0xDFFFFFFFFFFFFFFF )
+	#define S_ERROR_CODE_MASK          ( 0x000000000000FFFF )
 	#endif
 
-	//	brahms interface code
-	__Symbol N_BRAHMS_INTERFACE			__TOK_ 0x00010001 _TOK__
+	//	brahms interface code symbol
+	#define N_BRAHMS_INTERFACE			( 0x00010001 )
 
-	//  constant ranges
-	__Symbol C_BASE_COMPONENT           __TOK_ S_TYPE_CONSTANT + 0x00000000 _TOK__
-	__Symbol C_BASE_COMPONENT_EVENT     __TOK_ S_TYPE_CONSTANT + 0x00010000 _TOK__
-	__Symbol C_BASE_ENGINE              __TOK_ S_TYPE_CONSTANT + 0x00020000 _TOK__
-	__Symbol C_BASE_ENGINE_EVENT        __TOK_ S_TYPE_CONSTANT + 0x00030000 _TOK__
-	__Symbol C_BASE_USER                __TOK_ S_TYPE_CONSTANT + 0x00040000 _TOK__
-	__Symbol C_BASE_USER_EVENT          __TOK_ S_TYPE_CONSTANT + 0x00050000 _TOK__
-	
+	//  constant range symbols
+	#define C_BASE_COMPONENT           ( S_TYPE_CONSTANT + 0x00000000 )
+	#define C_BASE_COMPONENT_EVENT     ( S_TYPE_CONSTANT + 0x00010000 )
+	#define C_BASE_ENGINE              ( S_TYPE_CONSTANT + 0x00020000 )
+	#define C_BASE_ENGINE_EVENT        ( S_TYPE_CONSTANT + 0x00030000 )
+	#define C_BASE_USER                ( S_TYPE_CONSTANT + 0x00040000 )
+	#define C_BASE_USER_EVENT          ( S_TYPE_CONSTANT + 0x00050000 )
+
 	//	use this range for private legacy constants that must not conflict with future interface constants
-	__Symbol C_BASE_LEGACY              __TOK_ S_TYPE_CONSTANT + 0x000F0000 _TOK__
+	#define C_BASE_LEGACY              ( S_TYPE_CONSTANT + 0x000F0000 )
 
-	//  component interface constants
-	__Symbol C_OK                       __TOK_ C_BASE_COMPONENT + 0x0000 _TOK__
-	__Symbol C_YES                      __TOK_ C_BASE_COMPONENT + 0x0001 _TOK__
-	__Symbol C_NO                       __TOK_ C_BASE_COMPONENT + 0x0002 _TOK__
-	__Symbol C_CANCEL                   __TOK_ C_BASE_COMPONENT + 0x0003 _TOK__
-	__Symbol C_STOP_USER                __TOK_ C_BASE_COMPONENT + 0x0011 _TOK__
-	__Symbol C_STOP_EXTERNAL            __TOK_ C_BASE_COMPONENT + 0x0012 _TOK__
-	__Symbol C_STOP_CONDITION           __TOK_ C_BASE_COMPONENT + 0x0013 _TOK__
-	__Symbol C_STOP_THEREFOREIAM        __TOK_ C_BASE_COMPONENT + 0x0014 _TOK__
-	__Symbol C_FORM_FIXED               __TOK_ C_BASE_COMPONENT + 0x0021 _TOK__
-	__Symbol C_FORM_BOUNDED             __TOK_ C_BASE_COMPONENT + 0x0022 _TOK__
-	__Symbol C_FORM_UNBOUNDED           __TOK_ C_BASE_COMPONENT + 0x0023 _TOK__
-	__Symbol C_FORM_FIXED_BUT_LAST      __TOK_ C_BASE_COMPONENT + 0x0024 _TOK__
-	__Symbol C_TRANSPORT_PERIODIC       __TOK_ C_BASE_COMPONENT + 0x0031 _TOK__
-	__Symbol C_BUFFERING_ONLY_DISK      __TOK_ C_BASE_COMPONENT + 0x0041 _TOK__
-	__Symbol C_BUFFERING_FAVOUR_DISK    __TOK_ C_BASE_COMPONENT + 0x0042 _TOK__
-	__Symbol C_BUFFERING_BALANCED       __TOK_ C_BASE_COMPONENT + 0x0043 _TOK__
-	__Symbol C_BUFFERING_FAVOUR_MEMORY  __TOK_ C_BASE_COMPONENT + 0x0044 _TOK__
-	__Symbol C_BUFFERING_ONLY_MEMORY    __TOK_ C_BASE_COMPONENT + 0x0045 _TOK__
+	//  component interface constant symbols
+	#define C_OK                       ( C_BASE_COMPONENT + 0x0000 )
+	#define C_YES                      ( C_BASE_COMPONENT + 0x0001 )
+	#define C_NO                       ( C_BASE_COMPONENT + 0x0002 )
+	#define C_CANCEL                   ( C_BASE_COMPONENT + 0x0003 )
+	#define C_STOP_USER                ( C_BASE_COMPONENT + 0x0011 )
+	#define C_STOP_EXTERNAL            ( C_BASE_COMPONENT + 0x0012 )
+	#define C_STOP_CONDITION           ( C_BASE_COMPONENT + 0x0013 )
+	#define C_STOP_THEREFOREIAM        ( C_BASE_COMPONENT + 0x0014 )
+	#define C_FORM_FIXED               ( C_BASE_COMPONENT + 0x0021 )
+	#define C_FORM_BOUNDED             ( C_BASE_COMPONENT + 0x0022 )
+	#define C_FORM_UNBOUNDED           ( C_BASE_COMPONENT + 0x0023 )
+	#define C_FORM_FIXED_BUT_LAST      ( C_BASE_COMPONENT + 0x0024 )
+	#define C_TRANSPORT_PERIODIC       ( C_BASE_COMPONENT + 0x0031 )
+	#define C_BUFFERING_ONLY_DISK      ( C_BASE_COMPONENT + 0x0041 )
+	#define C_BUFFERING_FAVOUR_DISK    ( C_BASE_COMPONENT + 0x0042 )
+	#define C_BUFFERING_BALANCED       ( C_BASE_COMPONENT + 0x0043 )
+	#define C_BUFFERING_FAVOUR_MEMORY  ( C_BASE_COMPONENT + 0x0044 )
+	#define C_BUFFERING_ONLY_MEMORY    ( C_BASE_COMPONENT + 0x0045 )
 
-	//	error ranges
-	__Symbol E_BASE_COMPONENT           __TOK_ S_TYPE_ERROR + 0x0000 _TOK__
-	__Symbol E_BASE_ENGINE              __TOK_ S_TYPE_ERROR + 0x8000 _TOK__
+	//	error range symbols
+	#define E_BASE_COMPONENT           ( S_TYPE_ERROR + 0x0000 )
+	#define E_BASE_ENGINE              ( S_TYPE_ERROR + 0x8000 )
 
-	//	errors
-	__Symbol E_ERROR                    __TOK_ E_BASE_COMPONENT + 0x0000 _TOK__
-	__Symbol E_USER                     __TOK_ E_BASE_COMPONENT + 0x0001 _TOK__
-	__Symbol E_INTERNAL                 __TOK_ E_BASE_COMPONENT + 0x0002 _TOK__
-	__Symbol E_MEMORY                   __TOK_ E_BASE_COMPONENT + 0x0003 _TOK__
-	__Symbol E_NOT_FOUND                __TOK_ E_BASE_COMPONENT + 0x0004 _TOK__
-	__Symbol E_NOT_IMPLEMENTED          __TOK_ E_BASE_COMPONENT + 0x0005 _TOK__
-	__Symbol E_UNRECOGNISED_EXCEPTION   __TOK_ E_BASE_COMPONENT + 0x0006 _TOK__
-	__Symbol E_STD                      __TOK_ E_BASE_COMPONENT + 0x0007 _TOK__
-	__Symbol E_REALITY_INVERSION        __TOK_ E_BASE_COMPONENT + 0x0008 _TOK__
-	__Symbol E_DATAML                   __TOK_ E_BASE_COMPONENT + 0x0009 _TOK__
-	__Symbol E_NULL_ARG                 __TOK_ E_BASE_COMPONENT + 0x000A _TOK__
-	__Symbol E_INVALID_ARG              __TOK_ E_BASE_COMPONENT + 0x000B _TOK__
-	__Symbol E_INVALID_HANDLE           __TOK_ E_BASE_COMPONENT + 0x000C _TOK__
-	__Symbol E_WRONG_HANDLE_TYPE        __TOK_ E_BASE_COMPONENT + 0x000D _TOK__
-	__Symbol E_WRONG_NEW_HANDLE_TYPE    __TOK_ E_BASE_COMPONENT + 0x000E _TOK__
-	__Symbol E_NOT_AVAILABLE            __TOK_ E_BASE_COMPONENT + 0x000F _TOK__
-	__Symbol E_OVERFLOW                 __TOK_ E_BASE_COMPONENT + 0x0010 _TOK__
-	__Symbol E_INTERFACE_MISUSE         __TOK_ E_BASE_COMPONENT + 0x0011 _TOK__
-	__Symbol E_NO_INSTANCE              __TOK_ E_BASE_COMPONENT + 0x0012 _TOK__
-	__Symbol E_NOT_SERVICED             __TOK_ E_BASE_COMPONENT + 0x0013 _TOK__
-	__Symbol E_PORT_EMPTY               __TOK_ E_BASE_COMPONENT + 0x0014 _TOK__
-	__Symbol E_INVALID_INPUT            __TOK_ E_BASE_COMPONENT + 0x0015 _TOK__
-	__Symbol E_FUNC_NOT_FOUND           __TOK_ E_BASE_COMPONENT + 0x0016 _TOK__
-	__Symbol E_BAD_ARG_COUNT            __TOK_ E_BASE_COMPONENT + 0x0017 _TOK__
-	__Symbol E_BAD_ARG_TYPE             __TOK_ E_BASE_COMPONENT + 0x0018 _TOK__
-	__Symbol E_BAD_ARG_SIZE             __TOK_ E_BASE_COMPONENT + 0x0019 _TOK__
+	//	error symbols
+	#define E_ERROR                    ( E_BASE_COMPONENT + 0x0000 )
+	#define E_USER                     ( E_BASE_COMPONENT + 0x0001 )
+	#define E_INTERNAL                 ( E_BASE_COMPONENT + 0x0002 )
+	#define E_MEMORY                   ( E_BASE_COMPONENT + 0x0003 )
+	#define E_NOT_FOUND                ( E_BASE_COMPONENT + 0x0004 )
+	#define E_NOT_IMPLEMENTED          ( E_BASE_COMPONENT + 0x0005 )
+	#define E_UNRECOGNISED_EXCEPTION   ( E_BASE_COMPONENT + 0x0006 )
+	#define E_STD                      ( E_BASE_COMPONENT + 0x0007 )
+	#define E_REALITY_INVERSION        ( E_BASE_COMPONENT + 0x0008 )
+	#define E_DATAML                   ( E_BASE_COMPONENT + 0x0009 )
+	#define E_NULL_ARG                 ( E_BASE_COMPONENT + 0x000A )
+	#define E_INVALID_ARG              ( E_BASE_COMPONENT + 0x000B )
+	#define E_INVALID_HANDLE           ( E_BASE_COMPONENT + 0x000C )
+	#define E_WRONG_HANDLE_TYPE        ( E_BASE_COMPONENT + 0x000D )
+	#define E_WRONG_NEW_HANDLE_TYPE    ( E_BASE_COMPONENT + 0x000E )
+	#define E_NOT_AVAILABLE            ( E_BASE_COMPONENT + 0x000F )
+	#define E_OVERFLOW                 ( E_BASE_COMPONENT + 0x0010 )
+	#define E_INTERFACE_MISUSE         ( E_BASE_COMPONENT + 0x0011 )
+	#define E_NO_INSTANCE              ( E_BASE_COMPONENT + 0x0012 )
+	#define E_NOT_SERVICED             ( E_BASE_COMPONENT + 0x0013 )
+	#define E_PORT_EMPTY               ( E_BASE_COMPONENT + 0x0014 )
+	#define E_INVALID_INPUT            ( E_BASE_COMPONENT + 0x0015 )
+	#define E_FUNC_NOT_FOUND           ( E_BASE_COMPONENT + 0x0016 )
+	#define E_BAD_ARG_COUNT            ( E_BASE_COMPONENT + 0x0017 )
+	#define E_BAD_ARG_TYPE             ( E_BASE_COMPONENT + 0x0018 )
+	#define E_BAD_ARG_SIZE             ( E_BASE_COMPONENT + 0x0019 )
 
 
 
@@ -578,58 +579,58 @@ namespace brahms { extern "C" {
 
 ////////////////    EVENT TYPES
 
-	//	null event
-	__Symbol EVENT_NULL                  __TOK_ C_BASE_COMPONENT_EVENT + 0x0000 _TOK__
+	//	null event symbol
+	#define EVENT_NULL                  ( C_BASE_COMPONENT_EVENT + 0x0000 )
 
-	//	module level events
-	__Symbol EVENT_MODULE_QUERY          __TOK_ C_BASE_COMPONENT_EVENT + 0x0001 _TOK__
-	__Symbol EVENT_MODULE_INIT           __TOK_ C_BASE_COMPONENT_EVENT + 0x0011 _TOK__
-	__Symbol EVENT_MODULE_TERM           __TOK_ C_BASE_COMPONENT_EVENT + 0x0012 _TOK__
-	__Symbol EVENT_MODULE_CREATE         __TOK_ C_BASE_COMPONENT_EVENT + 0x0013 _TOK__
-	__Symbol EVENT_MODULE_DUPLICATE      __TOK_ C_BASE_COMPONENT_EVENT + 0x0014 _TOK__
-	__Symbol EVENT_MODULE_DESTROY        __TOK_ C_BASE_COMPONENT_EVENT + 0x0015 _TOK__
-	__Symbol EVENT_MODULE_MAX            __TOK_ C_BASE_COMPONENT_EVENT + 0x00FF _TOK__  //  this helps an existing binding to decide whether to pass an unrecognised (new) event to the object, or just ignore it
+	//	module level event symbols
+	#define EVENT_MODULE_QUERY          ( C_BASE_COMPONENT_EVENT + 0x0001 )
+	#define EVENT_MODULE_INIT           ( C_BASE_COMPONENT_EVENT + 0x0011 )
+	#define EVENT_MODULE_TERM           ( C_BASE_COMPONENT_EVENT + 0x0012 )
+	#define EVENT_MODULE_CREATE         ( C_BASE_COMPONENT_EVENT + 0x0013 )
+	#define EVENT_MODULE_DUPLICATE      ( C_BASE_COMPONENT_EVENT + 0x0014 )
+	#define EVENT_MODULE_DESTROY        ( C_BASE_COMPONENT_EVENT + 0x0015 )
+	#define EVENT_MODULE_MAX            ( C_BASE_COMPONENT_EVENT + 0x00FF )  //  this helps an existing binding to decide whether to pass an unrecognised (new) event to the object, or just ignore it
 
-	//	component events
-	__Symbol EVENT_INIT_COMPLETE         __TOK_ C_BASE_COMPONENT_EVENT + 0x0101 _TOK__  //  final configuration information for component
-	__Symbol EVENT_STATE_SET             __TOK_ C_BASE_COMPONENT_EVENT + 0x0102 _TOK__  //  here's your state as an XML node
-	__Symbol EVENT_STATE_GET             __TOK_ C_BASE_COMPONENT_EVENT + 0x0103 _TOK__  //  please supply your state as an XML node
+	//	component event symbols
+	#define EVENT_INIT_COMPLETE         ( C_BASE_COMPONENT_EVENT + 0x0101 )  //  final configuration information for component
+	#define EVENT_STATE_SET             ( C_BASE_COMPONENT_EVENT + 0x0102 )  //  here's your state as an XML node
+	#define EVENT_STATE_GET             ( C_BASE_COMPONENT_EVENT + 0x0103 )  //  please supply your state as an XML node
 
-	//  process events
-	__Symbol EVENT_INIT_PRECONNECT       __TOK_ C_BASE_COMPONENT_EVENT + 0x0111 _TOK__  //  the number of inputs in each set is now set
-	__Symbol EVENT_INIT_CONNECT          __TOK_ C_BASE_COMPONENT_EVENT + 0x0112 _TOK__  //  here are your inputs so far - create outputs if you can
-	__Symbol EVENT_INIT_POSTCONNECT      __TOK_ C_BASE_COMPONENT_EVENT + 0x0113 _TOK__  //  all links are now made (you can now safely take pointers to interface data* objects)
-	__Symbol EVENT_RUN_PLAY              __TOK_ C_BASE_COMPONENT_EVENT + 0x0121 _TOK__  //  STOP --> PAUSE
-	__Symbol EVENT_RUN_RESUME            __TOK_ C_BASE_COMPONENT_EVENT + 0x0122 _TOK__  //  PAUSE --> PLAY
-	__Symbol EVENT_RUN_SERVICE           __TOK_ C_BASE_COMPONENT_EVENT + 0x0123 _TOK__  //  service input/output interfaces
-	__Symbol EVENT_RUN_PAUSE             __TOK_ C_BASE_COMPONENT_EVENT + 0x0124 _TOK__  //  PLAY --> PAUSE
-	__Symbol EVENT_RUN_STOP              __TOK_ C_BASE_COMPONENT_EVENT + 0x0125 _TOK__  //  PAUSE --> STOP
+	//  process event symbols
+	#define EVENT_INIT_PRECONNECT       ( C_BASE_COMPONENT_EVENT + 0x0111 )  //  the number of inputs in each set is now set
+	#define EVENT_INIT_CONNECT          ( C_BASE_COMPONENT_EVENT + 0x0112 )  //  here are your inputs so far - create outputs if you can
+	#define EVENT_INIT_POSTCONNECT      ( C_BASE_COMPONENT_EVENT + 0x0113 )  //  all links are now made (you can now safely take pointers to interface data* objects)
+	#define EVENT_RUN_PLAY              ( C_BASE_COMPONENT_EVENT + 0x0121 )  //  STOP --> PAUSE
+	#define EVENT_RUN_RESUME            ( C_BASE_COMPONENT_EVENT + 0x0122 )  //  PAUSE --> PLAY
+	#define EVENT_RUN_SERVICE           ( C_BASE_COMPONENT_EVENT + 0x0123 )  //  service input/output interfaces
+	#define EVENT_RUN_PAUSE             ( C_BASE_COMPONENT_EVENT + 0x0124 )  //  PLAY --> PAUSE
+	#define EVENT_RUN_STOP              ( C_BASE_COMPONENT_EVENT + 0x0125 )  //  PAUSE --> STOP
 
-	//  data events
-	__Symbol EVENT_CONTENT_SET           __TOK_ C_BASE_COMPONENT_EVENT + 0x0131 _TOK__  //  here's your content as a binary stream
-	__Symbol EVENT_CONTENT_GET           __TOK_ C_BASE_COMPONENT_EVENT + 0x0132 _TOK__  //  please supply your content as a binary stream
-	__Symbol EVENT_LOG_INIT              __TOK_ C_BASE_COMPONENT_EVENT + 0x0141 _TOK__  //  initialise storage
-	__Symbol EVENT_LOG_SERVICE           __TOK_ C_BASE_COMPONENT_EVENT + 0x0142 _TOK__  //  service (increment) storage
-	__Symbol EVENT_LOG_TERM              __TOK_ C_BASE_COMPONENT_EVENT + 0x0143 _TOK__  //  terminate storage (and return it)
+	//  data event symbols
+	#define EVENT_CONTENT_SET           ( C_BASE_COMPONENT_EVENT + 0x0131 )  //  here's your content as a binary stream
+	#define EVENT_CONTENT_GET           ( C_BASE_COMPONENT_EVENT + 0x0132 )  //  please supply your content as a binary stream
+	#define EVENT_LOG_INIT              ( C_BASE_COMPONENT_EVENT + 0x0141 )  //  initialise storage
+	#define EVENT_LOG_SERVICE           ( C_BASE_COMPONENT_EVENT + 0x0142 )  //  service (increment) storage
+	#define EVENT_LOG_TERM              ( C_BASE_COMPONENT_EVENT + 0x0143 )  //  terminate storage (and return it)
 
-	//  generic events
-	__Symbol EVENT_FUNCTION_GET          __TOK_ C_BASE_COMPONENT_EVENT + 0x0151 _TOK__  //  get handle to utility function (generic interface)
-	__Symbol EVENT_FUNCTION_CALL         __TOK_ C_BASE_COMPONENT_EVENT + 0x0152 _TOK__  //  call utility function (generic interface)
-	__Symbol EVENT_GENERIC_STRUCTURE_SET __TOK_ C_BASE_COMPONENT_EVENT + 0x0161 _TOK__
-	__Symbol EVENT_GENERIC_STRUCTURE_GET __TOK_ C_BASE_COMPONENT_EVENT + 0x0162 _TOK__
-	__Symbol EVENT_GENERIC_FORM_ADVANCE  __TOK_ C_BASE_COMPONENT_EVENT + 0x0163 _TOK__
-	__Symbol EVENT_GENERIC_FORM_CURRENT  __TOK_ C_BASE_COMPONENT_EVENT + 0x0164 _TOK__
-	__Symbol EVENT_GENERIC_CONTENT_SET   __TOK_ C_BASE_COMPONENT_EVENT + 0x0165 _TOK__
-	__Symbol EVENT_GENERIC_CONTENT_GET   __TOK_ C_BASE_COMPONENT_EVENT + 0x0166 _TOK__
+	//  generic event symbols
+	#define EVENT_FUNCTION_GET          ( C_BASE_COMPONENT_EVENT + 0x0151 )  //  get handle to utility function (generic interface)
+	#define EVENT_FUNCTION_CALL         ( C_BASE_COMPONENT_EVENT + 0x0152 )  //  call utility function (generic interface)
+	#define EVENT_GENERIC_STRUCTURE_SET ( C_BASE_COMPONENT_EVENT + 0x0161 )
+	#define EVENT_GENERIC_STRUCTURE_GET ( C_BASE_COMPONENT_EVENT + 0x0162 )
+	#define EVENT_GENERIC_FORM_ADVANCE  ( C_BASE_COMPONENT_EVENT + 0x0163 )
+	#define EVENT_GENERIC_FORM_CURRENT  ( C_BASE_COMPONENT_EVENT + 0x0164 )
+	#define EVENT_GENERIC_CONTENT_SET   ( C_BASE_COMPONENT_EVENT + 0x0165 )
+	#define EVENT_GENERIC_CONTENT_GET   ( C_BASE_COMPONENT_EVENT + 0x0166 )
 
 
 
 ////////////////    EVENTS
 
-	__UINT32 F_FIRST_CALL                __TOK_ 0x00000001 _TOK__    //  first call of this event type
-	__UINT32 F_LAST_CALL                 __TOK_ 0x00000002 _TOK__    //  last call of this event type
-	__UINT32 F_GLOBAL_ERROR              __TOK_ 0x00000004 _TOK__    //  an error condition has arisen
-	__UINT32 F_LOCAL_ERROR               __TOK_ 0x00000008 _TOK__    //  the receiving process has previously thrown
+	#define F_FIRST_CALL                ( 0x00000001 )    //  first call of this event type
+	#define F_LAST_CALL                 ( 0x00000002 )    //  last call of this event type
+	#define F_GLOBAL_ERROR              ( 0x00000004 )    //  an error condition has arisen
+	#define F_LOCAL_ERROR               ( 0x00000008 )    //  the receiving process has previously thrown
 
 	struct Event
 	{
@@ -657,9 +658,9 @@ namespace brahms { extern "C" {
 		Symbol BufferingPolicy;
 	};
 
-	__UINT32 F_NO_CONCURRENCY            __TOK_ 0x00000001 _TOK__	//	multiple instances of the component must not be executed concurrently
-	__UINT32 F_NO_CHANGE_THREAD          __TOK_ 0x00000002 _TOK__	//	component must remain in the thread it starts in
-	__UINT32 F_NO_CHANGE_VOICE           __TOK_ 0x00000004 _TOK__	//	component must remain in the voice it starts in
+	#define F_NO_CONCURRENCY            ( 0x00000001 )	//	multiple instances of the component must not be executed concurrently
+	#define F_NO_CHANGE_THREAD          ( 0x00000002 )	//	component must remain in the thread it starts in
+	#define F_NO_CHANGE_VOICE           ( 0x00000004 )	//	component must remain in the voice it starts in
 
 	struct ModuleInfo
 	{
@@ -703,8 +704,8 @@ namespace brahms { extern "C" {
 		UINT32 contentHeaderBytes;		//	bytes to reserve at top of buffer for EVENT_CONTENT_GET, or zero if EVENT_CONTENT_GET will not be sent
 	};
 
-	__UINT32 F_UNDEFINED					__TOK_ 0x00000001 _TOK__   //  set state to "undefined", whatever that means to you
-	__UINT32 F_ZERO						__TOK_ 0x00000002 _TOK__   //  set state to "zero", whatever that means to you
+	#define F_UNDEFINED					( 0x00000001 )   //  set state to "undefined", whatever that means to you
+	#define F_ZERO						( 0x00000002 )   //  set state to "zero", whatever that means to you
 
 	struct EventStateSet
 	{
@@ -738,8 +739,9 @@ namespace brahms { extern "C" {
 
 ////////////////    DATA EVENTS
 
-	__UINT32 F_ENCAPSULATED				__TOK_ 0x00000001 _TOK__
-	__INT32 PRECISION_NOT_SET			__TOK_ 0x40000000 _TOK__
+	#define F_ENCAPSULATED				( 0x00000001 )
+        // INT32 flag
+        #define PRECISION_NOT_SET			( 0x40000000 )
 
 	struct EventContent
 	{
@@ -761,7 +763,7 @@ namespace brahms { extern "C" {
 
 ////////////////    GENERIC EVENTS
 
-	__UINT32 F_MODIFIED __TOK_ 0x00000001 _TOK__
+	#define F_MODIFIED ( 0x00000001 )
 
 	struct Argument
 	{
@@ -823,15 +825,15 @@ namespace brahms { extern "C" {
 
 
 
-////////////////    LEGACY ENGINE EVENTS
+////////////////    LEGACY ENGINE EVENT SYMBOLS
 
-	__Symbol ENGINE_EVENT_SET_PORT_NAME				__TOK_ C_BASE_ENGINE_EVENT + 0x8001 _TOK__
-	__Symbol ENGINE_EVENT_SET_PORT_SAMPLE_RATE		__TOK_ C_BASE_ENGINE_EVENT + 0x8002 _TOK__
-	__Symbol ENGINE_EVENT_DATA_FROM_PORT			__TOK_ C_BASE_ENGINE_EVENT + 0x8003 _TOK__
-	__Symbol ENGINE_EVENT_ASSERT_COMPONENT_SPEC		__TOK_ C_BASE_ENGINE_EVENT + 0x8004 _TOK__
-	__Symbol ENGINE_EVENT_FIRE_EVENT_ON_DATA		__TOK_ C_BASE_ENGINE_EVENT + 0x8005 _TOK__
-	__Symbol ENGINE_EVENT_GET_PORT_ON_SET			__TOK_ C_BASE_ENGINE_EVENT + 0x8006 _TOK__
-	__Symbol ENGINE_EVENT_HANDLE_UTILITY_EVENT		__TOK_ C_BASE_ENGINE_EVENT + 0x8007 _TOK__
+	#define ENGINE_EVENT_SET_PORT_NAME		( C_BASE_ENGINE_EVENT + 0x8001 )
+	#define ENGINE_EVENT_SET_PORT_SAMPLE_RATE	( C_BASE_ENGINE_EVENT + 0x8002 )
+	#define ENGINE_EVENT_DATA_FROM_PORT		( C_BASE_ENGINE_EVENT + 0x8003 )
+	#define ENGINE_EVENT_ASSERT_COMPONENT_SPEC	( C_BASE_ENGINE_EVENT + 0x8004 )
+	#define ENGINE_EVENT_FIRE_EVENT_ON_DATA		( C_BASE_ENGINE_EVENT + 0x8005 )
+	#define ENGINE_EVENT_GET_PORT_ON_SET		( C_BASE_ENGINE_EVENT + 0x8006 )
+	#define ENGINE_EVENT_HANDLE_UTILITY_EVENT	( C_BASE_ENGINE_EVENT + 0x8007 )
 
 
 
@@ -858,14 +860,15 @@ namespace brahms { extern "C" {
 
 ////////////////    GENERAL INTERFACE
 
-	__Symbol ENGINE_EVENT_STILL_ACTIVE				__TOK_ C_BASE_ENGINE_EVENT + 0x0001 _TOK__
-	__Symbol ENGINE_EVENT_CREATE_UTILITY			__TOK_ C_BASE_ENGINE_EVENT + 0x0002 _TOK__
-	__Symbol ENGINE_EVENT_GET_RANDOM_SEED			__TOK_ C_BASE_ENGINE_EVENT + 0x0003 _TOK__
-	__Symbol ENGINE_EVENT_ERROR_MESSAGE				__TOK_ C_BASE_ENGINE_EVENT + 0x0004 _TOK__
-	__Symbol ENGINE_EVENT_OUTPUT_MESSAGE			__TOK_ C_BASE_ENGINE_EVENT + 0x0005 _TOK__
-	__Symbol ENGINE_EVENT_GET_SYMBOL_STRING			__TOK_ C_BASE_ENGINE_EVENT + 0x0006 _TOK__
-	__Symbol ENGINE_EVENT_GET_TYPE_STRING			__TOK_ C_BASE_ENGINE_EVENT + 0x0007 _TOK__
-	
+                // symbols
+	#define ENGINE_EVENT_STILL_ACTIVE	( C_BASE_ENGINE_EVENT + 0x0001 )
+	#define ENGINE_EVENT_CREATE_UTILITY	( C_BASE_ENGINE_EVENT + 0x0002 )
+	#define ENGINE_EVENT_GET_RANDOM_SEED	( C_BASE_ENGINE_EVENT + 0x0003 )
+	#define ENGINE_EVENT_ERROR_MESSAGE	( C_BASE_ENGINE_EVENT + 0x0004 )
+	#define ENGINE_EVENT_OUTPUT_MESSAGE	( C_BASE_ENGINE_EVENT + 0x0005 )
+	#define ENGINE_EVENT_GET_SYMBOL_STRING	( C_BASE_ENGINE_EVENT + 0x0006 )
+	#define ENGINE_EVENT_GET_TYPE_STRING	( C_BASE_ENGINE_EVENT + 0x0007 )
+
 	struct EventCreateUtility
 	{
 		UINT32 flags;
@@ -889,8 +892,8 @@ namespace brahms { extern "C" {
 		const char* msg;
 	};
 
-	__UINT32 F_TRACE      __TOK_ 0x00000001 _TOK__ // add trace message rather than error message
-	__UINT32 F_DEBUGTRACE __TOK_ 0x00000002 _TOK__ // add debug-level trace message rather than error message
+	#define F_TRACE      ( 0x00000001 ) // add trace message rather than error message
+	#define F_DEBUGTRACE ( 0x00000002 ) // add debug-level trace message rather than error message
 
 	struct EventOutputMessage
 	{
@@ -917,21 +920,22 @@ namespace brahms { extern "C" {
 
 ////////////////    SYSTEMML INTERFACE
 
-	__Symbol ENGINE_EVENT_GET_SET					__TOK_ C_BASE_ENGINE_EVENT + 0x0011 _TOK__
-	__Symbol ENGINE_EVENT_ADD_PORT					__TOK_ C_BASE_ENGINE_EVENT + 0x0012 _TOK__
-	__Symbol ENGINE_EVENT_GET_PORT					__TOK_ C_BASE_ENGINE_EVENT + 0x0013 _TOK__
-	__Symbol ENGINE_EVENT_GET_SET_INFO				__TOK_ C_BASE_ENGINE_EVENT + 0x0014 _TOK__
-	__Symbol ENGINE_EVENT_GET_PORT_INFO				__TOK_ C_BASE_ENGINE_EVENT + 0x0015 _TOK__
+                // symbols
+	#define ENGINE_EVENT_GET_SET		( C_BASE_ENGINE_EVENT + 0x0011 )
+	#define ENGINE_EVENT_ADD_PORT		( C_BASE_ENGINE_EVENT + 0x0012 )
+	#define ENGINE_EVENT_GET_PORT		( C_BASE_ENGINE_EVENT + 0x0013 )
+	#define ENGINE_EVENT_GET_SET_INFO	( C_BASE_ENGINE_EVENT + 0x0014 )
+	#define ENGINE_EVENT_GET_PORT_INFO	( C_BASE_ENGINE_EVENT + 0x0015 )
 
 	//	index undefined
-	__UINT32 INDEX_UNDEFINED __TOK_ 0xFFFFFFFF _TOK__
+	#define INDEX_UNDEFINED ( 0xFFFFFFFF )
 
 	//	interface flags
-	__UINT32 F_IIF __TOK_ 0x00000001 _TOK__
-	__UINT32 F_OIF __TOK_ 0x00000002 _TOK__
+	#define F_IIF ( 0x00000001 )
+	#define F_OIF ( 0x00000002 )
 
 	//	port flags
-	__UINT32 F_NO_STORE __TOK_ 0x00000001 _TOK__
+	#define F_NO_STORE ( 0x00000001 )
 
 	struct EventGetSet
 	{
@@ -971,8 +975,8 @@ namespace brahms { extern "C" {
 	};
 
 	//	port info flags
-	__UINT32 F_LISTENED								__TOK_ 0x00000001 _TOK__ // o/p only
-	__UINT32 F_IMPLICIT_NAME						__TOK_ 0x00000001 _TOK__ // i/p only (so can have the same value as F_LISTENED)
+	#define F_LISTENED	( 0x00000001 ) // o/p only
+	#define F_IMPLICIT_NAME	( 0x00000001 ) // i/p only (so can have the same value as F_LISTENED)
 
 	struct EventGetPortInfo
 	{

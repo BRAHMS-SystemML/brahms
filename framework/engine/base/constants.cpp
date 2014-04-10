@@ -31,8 +31,7 @@ ________________________________________________________________
 */
 
 
-
-
+#include "base.h"
 
 
 ////////////////	NAMESPACE
@@ -42,7 +41,7 @@ namespace brahms
 	namespace base
 	{
 
-		
+
 
 ////////////////	SYMBOL 2 STRING
 
