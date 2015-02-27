@@ -101,7 +101,7 @@ ifeq ($(ARCH_OS), osx)
 
 	# link to gui stuff (later, the gui module will do this)
 	ifeq ($(with-x),)
-		with-x=/usr/lib/x86_64-linux-gnu/
+		with-x=/usr/X11R6
 	endif
 	ifeq ($(ARCH_BITS),64)
 		LOPTGUI=-L$(with-x)/lib64 -lX11 -lXt -lXaw
