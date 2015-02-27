@@ -110,14 +110,16 @@ VERSION_BRAHMS_MIN=7
 VERSION_BRAHMS_REL=3
 
 # get revision number of latest commit in this folder
-ifeq ($(ARCH_NIX), 1)
-VERSION_BRAHMS_REV=${shell svnversion -n . | sed s/.\*:// | sed s/M//}
-else
-VERSION_BRAHMS_REV=${shell svnversion -n . | sed s/.*:// | sed s/M//}
-endif
-ifeq ($(VERSION_BRAHMS_REV),exported)
-	VERSION_BRAHMS_REV=2695
-endif
+#ifeq ($(ARCH_NIX), 1)
+#VERSION_BRAHMS_REV=${shell svnversion -n . | sed s/.\*:// | sed s/M//}
+#else
+#VERSION_BRAHMS_REV=${shell svnversion -n . | sed s/.*:// | sed s/M//}
+#endif
+#ifeq ($(VERSION_BRAHMS_REV),exported)
+#	VERSION_BRAHMS_REV=2695
+#endif
+
+VERSION_BRAHMS_REV=9999
 
 # SystemML version
 VERSION_SYSTEMML_MAJ=$(VERSION_BRAHMS_MAJ)

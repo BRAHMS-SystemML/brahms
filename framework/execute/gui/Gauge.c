@@ -10,7 +10,7 @@ static const char rcsid[] =
  *
  * Author: Edward A. Falk
  *         falk@falconer.vip.best.com
- *  
+ *
  * Date:   July 9, 1997
  *
  * Note: for fun and demonstration purposes, I have added selection
@@ -156,7 +156,7 @@ static	XtActionsRec	actionsList[] =
 
 GaugeClassRec gaugeClassRec = {
   {
-/* core_class fields */	
+/* core_class fields */
     /* superclass	  	*/	(WidgetClass) &labelClassRec,
     /* class_name	  	*/	"Gauge",
     /* widget_size	  	*/	sizeof(GaugeRec),
@@ -326,7 +326,7 @@ GaugeResize(w)
 	  }
 	  else
 	  {
-	    gw->gauge.margin0 = 
+	    gw->gauge.margin0 =
 	    gw->gauge.margin1 = lh / 2 ;
 	    size += lwm + vmargin ;
 	  }
@@ -562,7 +562,7 @@ GaugeQueryGeometry(w, intended, preferred)
     int	iw = intended->width ;
     int	ih = intended->height ;
     int pw, ph ;
-    
+
     /* Reject if intended too small.  Reject if already that size.
      * Accept if intended >= preferred.
      */
@@ -656,7 +656,7 @@ GaugeConvert(w, selection, target, type, value, length, format)
 	  XmuConvertStandardSelection(w, req->time, selection, target,
 	  	type, (XPointer*)&stdTargets, &stdLength, format) ;
 
-	  *type = XA_ATOM ;		
+	  *type = XA_ATOM ;
 	  *length = stdLength + 3 ;
 	  rval = (Atom *) XtMalloc(sizeof(Atom)*(stdLength+3)) ;
 	  *value = (XtPointer) rval ;
@@ -678,7 +678,7 @@ GaugeConvert(w, selection, target, type, value, length, format)
 	  return True ;
 	}
 
-	else if( *target == XA_STRING || 
+	else if( *target == XA_STRING ||
 		 *target == XA_TEXT(XtDisplay(w)) )
 	{
 	  *type = *target ;
@@ -1084,8 +1084,9 @@ EnableUpdate(gw)
 {
 	gw->gauge.intervalId =
 	  XtAppAddTimeOut(XtWidgetToApplicationContext((Widget)gw),
-	  	gw->gauge.update * MS_PER_SEC, GaugeGetValue,
-		(XtPointer)gw) ;
+                          gw->gauge.update * MS_PER_SEC,
+                          (XtTimerCallbackProc)GaugeGetValue,
+                          (XtPointer)gw) ;
 }
 
 static	void

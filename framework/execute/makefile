@@ -71,7 +71,7 @@ ifeq ($(ARCH_OS), gln)
 
 	# local (compiler switches)
 	COPT="-DBUILD_PLATFORM=\"$(BUILD_PLATFORM)\""
-	
+
 	#-ldl -lXmu -lSM -lICE -lXext -lX11
 
 	# link to gui stuff (later, the gui module will do this)
@@ -83,10 +83,10 @@ ifeq ($(ARCH_OS), gln)
 	else
 		LOPTGUI=-L$(with-x)/lib -lXt -lXaw -lrt
 	endif
-	
+
 	# link to other stuff
 	LOPT=$(LOPTGUI) ${call ONEARG,$(PATH_TMP)/Gauge.$(EXTOBJ)} -lbrahms-engine
-	
+
 	# compiler
 	MCXX=mpic++
 
@@ -96,22 +96,22 @@ ifeq ($(ARCH_OS), osx)
 
 	# local (compiler switches)
 	COPT="-DBUILD_PLATFORM=\"$(BUILD_PLATFORM)\""
-	
+
 	#-ldl -lXmu -lSM -lICE -lXext -lX11
 
 	# link to gui stuff (later, the gui module will do this)
 	ifeq ($(with-x),)
-		with-x=/usr/X11R6
+		with-x=/usr/lib/x86_64-linux-gnu/
 	endif
 	ifeq ($(ARCH_BITS),64)
 		LOPTGUI=-L$(with-x)/lib64 -lX11 -lXt -lXaw
 	else
 		LOPTGUI=-L$(with-x)/lib -lXmu -lX11 -lXt -lXaw
 	endif
-	
+
 	# link to other stuff
 	LOPT=$(LOPTGUI) ${call ONEARG,$(PATH_TMP)/Gauge.$(EXTOBJ)} -lbrahms-engine -bind_at_load
-	
+
 	# compiler
 	MCXX=mpic++
 
@@ -123,7 +123,7 @@ ifeq ($(ARCH_OS), win)
 	COPT="-DBUILD_PLATFORM=\"$(BUILD_PLATFORM)\""
 	LOPT=shell32.lib user32.lib gdi32.lib comctl32.lib \
 		${call ONEARG,$(PATH_BIN)/libbrahms-engine.lib}
-		
+
 		#\
 		#$(PATH_BIN)/libbrahms-base.0.lib \
 		#$(PATH_BIN)/libbrahms-gui.0.lib
@@ -149,11 +149,8 @@ header :
 	make -C gui -s
 
 $(PATH_BIN)/brahms-execute$(EXTEXE) : main.cpp *.cpp *.h $(IF_BOTH) makefile ../../makefile.brahms $(PATH_TMP)/gui.$(EXTOBJ)
-	@$(CXX) $(COPTS) $< $(NAMEEXE)${call ONEARG,$@} $(LOPTS) 
+	$(CXX) $(COPTS) $< $(NAMEEXE)${call ONEARG,$@} $(LOPTS) 
 ifeq ($(ARCH_OS), win)
 	@rm main.obj
 endif
 	$(SHOW_MAKING) $(notdir $(subst $(SPACE),\$(SPACE),$@))
-
-
-
