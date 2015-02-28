@@ -30,8 +30,8 @@ ________________________________________________________________
 
 */
 
-#include "engine/main/enginedata.h"
-#include "channel/channel.h"
+#include "main/enginedata.h"
+#include "channel.h"
 
 #define fout (engineData.core.caller.tout)
 

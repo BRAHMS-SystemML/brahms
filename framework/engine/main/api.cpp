@@ -51,7 +51,7 @@ ________________________________________________________________
 */
 
 #include <iostream>
-#include "systemml.h"
+#include "systemml/systemml.h"
 
 
 using namespace brahms::xml;

@@ -35,8 +35,8 @@ ________________________________________________________________
 #ifndef INCLUDED_ENGINE_EXECUTION
 #define INCLUDED_ENGINE_EXECUTION
 
-#include "channel/channel.h"
-#include "engine/support/xml.h"
+#include "channel.h"
+#include "support/xml.h"
 #include <vector>
 #include <string>
 

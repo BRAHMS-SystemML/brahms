@@ -44,7 +44,7 @@ ________________________________________________________________
 
 //	include base
 #include "base/base.h"
-#include "channel/channel.h"
+#include "channel.h"
 
 //	include engine
 #include "brahms-client.h"

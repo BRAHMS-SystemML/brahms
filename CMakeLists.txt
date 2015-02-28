@@ -40,11 +40,13 @@ configure_file (
   "${PROJECT_BINARY_DIR}/BrahmsConfig.h"
 )
 
+# Framework include directories
 include_directories ("${PROJECT_SOURCE_DIR}/framework/engine")
-include_directories ("${PROJECT_SOURCE_DIR}/framework/engine/base")
-include_directories ("${PROJECT_SOURCE_DIR}/framework/engine/systemml")
 include_directories ("${PROJECT_SOURCE_DIR}/framework/public")
-include_directories ("${PROJECT_SOURCE_DIR}/framework")
+include_directories ("${PROJECT_SOURCE_DIR}/framework/channel")
+include_directories ("${PROJECT_SOURCE_DIR}/framework/compress")
+include_directories ("${PROJECT_SOURCE_DIR}/framework/public")
+
 include_directories ("${CMAKE_BINARY_DIR}") # for BrahmsConfig.h
 
 add_subdirectory(framework)

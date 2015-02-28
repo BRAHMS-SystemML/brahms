@@ -38,9 +38,9 @@ ________________________________________________________________
 #ifndef INCLUDED_BRAHMS_CHANNEL
 #define INCLUDED_BRAHMS_CHANNEL
 
-#include "compress/compress.h"
-#include "engine/base/ipm.h"
-#include "engine/base/core.h"
+#include "compress.h"
+#include "base/ipm.h"
+#include "base/core.h"
 #include <string>
 
 using std::string;
