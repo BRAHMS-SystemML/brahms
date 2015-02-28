@@ -25,3 +25,5 @@ missing
 *.o
 *.lo
 *.la
+build
+compile
