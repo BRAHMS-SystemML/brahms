@@ -30,13 +30,8 @@ ________________________________________________________________
 
 */
 
-
-
-
-
 #ifndef INCLUDED_ENGINE_EVENT
 #define INCLUDED_ENGINE_EVENT
-
 
 namespace brahms
 {
@@ -113,4 +108,3 @@ namespace brahms {
 ////////////////////////////////////////////////////////////////
 
 #endif
-

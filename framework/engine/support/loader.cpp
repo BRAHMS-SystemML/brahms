@@ -35,7 +35,8 @@ ________________________________________________________________
 #include "support.h"
 
 using namespace brahms::module;
-
+using namespace brahms::text;   // grep
+using namespace brahms::output; // D_WARN
 
 
 
@@ -89,7 +90,7 @@ namespace brahms
 		//	get release folder form
 		string releaseFolderForm = brahms::os::COMPONENT_RELEASE_FOLDER_FORM;
 		grep(releaseFolderForm, "((RELEASE))", "0");
-		
+
 		//	for each namespace root path
 		for (UINT32 n=0; n<namespaceRoots.size(); n++)
 		{
@@ -213,7 +214,7 @@ namespace brahms
 						if (!seeking_legacy) filename += string(".") + brahms::os::COMPONENT_DLL_EXT;
 
 						componentCreateS.isBinding = false; // don't send extra info to EVENT_MODULE_CREATE
-						
+
 						return loadModule(filename, fout, systemInfo, &modulePaths,
 							(seeking_legacy ? F_NO_QUERY_VALIDATE : 0));
 					}
@@ -226,7 +227,7 @@ namespace brahms
 						string bindingFilename = systemMLInstallPath + brahms::os::M_BINDING_MODULE_FORM;
 
 						componentCreateS.isBinding = true; // do send extra info to EVENT_MODULE_CREATE
-						
+
 						return loadModule(bindingFilename, fout, systemInfo, &modulePaths,
 							(seeking_legacy ? F_NO_QUERY_VALIDATE : 0));
 					}
@@ -235,11 +236,11 @@ namespace brahms
 					{
 						if (releaseFile.hasChild("Filename"))
 							componentCreateS.moduleFilename = releaseFile.getChild("Filename")->nodeText();
-						
+
 						string bindingFilename = systemMLInstallPath + brahms::os::PY_BINDING_MODULE_FORM;
 
 						componentCreateS.isBinding = true; // do send extra info to EVENT_MODULE_CREATE
-						
+
 						return loadModule(bindingFilename, fout, systemInfo, &modulePaths,
 							F_USE_RTLD_GLOBAL | (seeking_legacy ? F_NO_QUERY_VALIDATE : 0)); // need this, or python module aborts at run-time - don't know why
 					}
@@ -337,5 +338,3 @@ namespace brahms
 ////////////////	NAMESPACE
 
 }
-
-

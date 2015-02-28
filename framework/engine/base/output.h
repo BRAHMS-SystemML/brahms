@@ -35,7 +35,16 @@ ________________________________________________________________
 #ifndef INCLUDED_BRAHMS_FRAMEWORK_BASE_OUTPUT
 #define INCLUDED_BRAHMS_FRAMEWORK_BASE_OUTPUT
 
-
+#include <stack>
+using std::stack;
+#include <string>
+using std::string;
+#include <sstream>
+using std::ostringstream;
+#include <vector>
+using std::vector;
+#include <fstream>
+using std::ofstream;
 
 ////////////////	NAMESPACE
 
@@ -65,7 +74,7 @@ namespace brahms
 			D_VERB_ERROR =		0x5E,		//	D_VERB with HILITE ERROR
 			D_LOQU =			0x80,
 			D_FULL =			0xA0,
-			
+
 			D_INFO_UNHIDEABLE = 0xF0 // D_INFO, semantically, but cannot be hidden (e.g. additional information required to debug an E_DEADLOCK)
 		};
 
@@ -152,7 +161,7 @@ namespace brahms
 			INT32 voiceIndex;
 			UINT32 workerCount;
 		};
-	
+
 		class Sink
 		{
 
@@ -197,7 +206,7 @@ namespace brahms
 			brahms::os::Mutex mutex;
 			brahms::os::Timer sinkTimer;
 			ofstream logfile;
-			
+
 			//	audit
 			UINT32 messageCount;
 
@@ -218,5 +227,3 @@ namespace brahms
 ////////////////	INCLUSION GUARD
 
 #endif
-
-

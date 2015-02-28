@@ -36,8 +36,10 @@ ________________________________________________________________
 #ifndef INCLUDED_BRAHMS_SUPPORT_OS
 #define INCLUDED_BRAHMS_SUPPORT_OS
 
+#include <string>
+using std::string;
 
-
+#include "brahms-client.h" // for UINT32
 
 ////////////////	NAMESPACE
 
@@ -45,8 +47,6 @@ namespace brahms
 {
 	namespace os
 	{
-
-
 
 	////////////////	CONSTANTS
 

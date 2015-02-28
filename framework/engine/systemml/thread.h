@@ -30,26 +30,20 @@ ________________________________________________________________
 
 */
 
-
-
-
 #ifndef INCLUDED_ENGINE_SYSTEMML_THREAD
 #define INCLUDED_ENGINE_SYSTEMML_THREAD
 
-
-
+#include "base/os.h"
+#include "systemml/event.h"
 
 ////////////////	NAMESPACE
 
 namespace brahms
 {
-
 	namespace thread
 	{
 
-
-
-	////////////////	RUN PHASE TIMER
+            ////////////////	RUN PHASE TIMER
 
 		struct RunPhaseTimer
 		{

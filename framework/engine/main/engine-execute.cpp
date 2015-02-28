@@ -30,7 +30,10 @@ ________________________________________________________________
 
 */
 
-
+#include "main/engine.h"
+using brahms::Engine;
+#include "base/output.h"
+using namespace brahms::output;
 
 void Engine::execute()
 {
@@ -218,9 +221,3 @@ void Engine::execute()
 	}
 
 }
-
-
-
-
-
-

@@ -30,16 +30,30 @@ ________________________________________________________________
 
 */
 
+#ifndef _SYSTEMML_SYSTEM_H_
+#define _SYSTEMML_SYSTEM_H_ 1
 
+#include <vector>
+using std::vector;
+#include <string>
+using std::string;
+#include "main/enginedata.h"
+using brahms::EngineData;
+#include "systemml/thread.h"
+#include "systemml/identifier.h"
+using brahms::systemml::Identifier;
+#include "systemml/link.h"
+using brahms::systemml::Link;
+#include "systemml/systemml.h"
+using brahms::systemml::Expose;
+#include "support/execution.h"
+#include "base/output.h"
 
 
 namespace brahms
 {
 	namespace systemml
 	{
-
-
-
 
 	////////////////	SYSTEM
 
@@ -132,7 +146,7 @@ namespace brahms
 		////	I/Ps and O/Ps
 
 			/*
-			
+
 				Local inputs and outputs are owned by a Set, by an Interface, by a
 				Process, by this System object. Remote inputs and outputs are objects
 				created in abstraction, that look identical to the partner port they
@@ -162,4 +176,4 @@ namespace brahms
 	}
 }
 
-
+#endif // _SYSTEMML_SYSTEM_H_

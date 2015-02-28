@@ -30,15 +30,21 @@ ________________________________________________________________
 
 */
 
+#include <string>
+#include <vector>
+using std::string;
+using std::vector;
 
-/*
-struct WalkedModule
-{
-	UINT32 language;
-	UINT16 release;
-	string path;
-};
-*/
+#include "support/xml.h"
+#include "support/os.h"
+#include "base/brahms_error.h"
+#include "base/constants.h"
+#include "base/output.h"
+using namespace brahms::output;
+#include "main/engine.h"
+using brahms::Engine;
+#include "base/text.h"
+using brahms::text::n2s;
 
 struct KeyValue
 {
@@ -69,52 +75,6 @@ vector<KeyValue> breakUpAdditionalInfo(const char* c_info)
 	}
 	return kvs;
 }
-
-/*
-vector<WalkedModule> getModules(const string& path)
-{
-	//	return all loadable modules for a given class
-	vector<WalkedModule> modules;
-
-	//	for each language
-	for (UINT32 l=0; l<KNOWN_LANGUAGES_COUNT; l++)
-	{
-		//	get directory
-		string langpath = "/brahms/imp/" + brahms::text::n2s(KNOWN_LANGUAGES[l]);
-
-		//	start looping
-		brahms::os::Directory dir(path + langpath);
-
-		//	loop for all releases
-		while(true)
-		{
-			//	get next release directory
-			string filename = dir.getNextFile();
-			if (!filename.length()) break;
-			if(!dir.wasDirectory()) continue;
-
-			//	parse release folder name
-			UINT16 release = (UINT16)atof(filename.c_str());
-			stringstream ss;
-			ss << release;
-			if (ss.str() != filename) continue; // not a release folder
-
-			//	add module
-			WalkedModule module;
-			module.language = KNOWN_LANGUAGES[l];
-			module.release = release;
-			module.path = langpath + "/" + brahms::text::n2s(release);
-			modules.push_back(module);
-		}
-
-		//	done for this folder
-		dir.close();
-	}
-
-	//	ok
-	return modules;
-}
-*/
 
 #define WALK_OUT cout
 
@@ -223,13 +183,13 @@ void Engine::walksub(WalkLevel level, const string& namespaceRootPath, string su
 						{
 							//	create
 							component = new brahms::systemml::Process(
-								name.c_str(), 
-								engineData, 
-								&fout, 
-								className, 
-								sampleRate, 
-								NULL, 
-								seed, 
+								name.c_str(),
+								engineData,
+								&fout,
+								className,
+								sampleRate,
+								NULL,
+								seed,
 								0
 							);
 
@@ -241,10 +201,10 @@ void Engine::walksub(WalkLevel level, const string& namespaceRootPath, string su
 						{
 							//	create
 							component = new brahms::systemml::Data(
-								name.c_str(), 
-								engineData, 
-								&fout, 
-								className, 
+								name.c_str(),
+								engineData,
+								&fout,
+								className,
 								0,
 								sampleRate
 							);
@@ -257,10 +217,10 @@ void Engine::walksub(WalkLevel level, const string& namespaceRootPath, string su
 						{
 							//	create
 							component = new brahms::systemml::Utility(
-								name.c_str(), 
-								engineData, 
-								&fout, 
-								className, 
+								name.c_str(),
+								engineData,
+								&fout,
+								className,
 								NULL
 							);
 
@@ -363,9 +323,3 @@ void Engine::walk(WalkLevel level)
 	for (UINT32 n=0; n<namespaceRoots.size(); n++)
 		walksub(level, namespaceRoots[n], "", "");
 }
-
-
-
-
-
-

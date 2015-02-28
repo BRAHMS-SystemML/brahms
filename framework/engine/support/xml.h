@@ -35,7 +35,10 @@ ________________________________________________________________
 #ifndef INCLUDED_BRAHMS_SUPPORT_XML
 #define INCLUDED_BRAHMS_SUPPORT_XML
 
-
+#include <vector>
+#include <string>
+#include <iostream>
+#include "engine/support/register.h"
 
 ////////////////	NAMESPACE
 
@@ -201,5 +204,3 @@ namespace brahms
 ////////////////	INCLUSION GUARD
 
 #endif
-
-

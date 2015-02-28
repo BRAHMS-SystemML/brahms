@@ -1,0 +1,12 @@
+D_VERB, D_INFO etc                      framework/engine/base/output.h
+
+
+brahms::EngineData                      framework/engine/main/enginedata.h
+
+brahms::text::n2s()                     framework/engine/base/text.h
+
+brahms::systemml::Link                  framework/engine/systemml/link.h
+brahms::systemml::Identifier            framework/engine/systemml/identifier.h
+brahms::systemml::Expose                framework/engine/systemml/systemml.h
+
+brahms::xml::XMLNode                    framework/engine/support/xml.h

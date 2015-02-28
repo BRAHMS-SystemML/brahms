@@ -30,11 +30,11 @@ ________________________________________________________________
 
 */
 
+#include "engine.h"
 
-
-#undef CATCH_API 
-#undef CATCH_API_S 
-#undef CATCH_API_O 
+#undef CATCH_API
+#undef CATCH_API_S
+#undef CATCH_API_O
 #undef CATCH_API_X
 
 //	we handle errors in this API by pushing them onto the error stack, and returning E_ERROR
@@ -257,6 +257,3 @@ struct EngineAPIHelper
 		if (!engine.resolve(hEngine)) return E_INVALID_HANDLE;
 		return engine.call("engine->close()");
 	}
-
-
-

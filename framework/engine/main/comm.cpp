@@ -30,7 +30,8 @@ ________________________________________________________________
 
 */
 
-
+#include "engine/main/enginedata.h"
+#include "channel/channel.h"
 
 #define fout (engineData.core.caller.tout)
 
@@ -404,7 +405,7 @@ namespace brahms
 
 			return ret;
 		}
-		
+
 		void Comms::flush(brahms::output::Source& tout)
 		{
 			tout << "Comms::flush()" << D_VERB;
@@ -470,5 +471,3 @@ namespace brahms
 
 	}
 }
-
-

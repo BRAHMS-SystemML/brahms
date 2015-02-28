@@ -30,7 +30,8 @@ ________________________________________________________________
 
 */
 
-
+#ifndef _ENGINE_SYSTEMML_SET_H_
+#define _ENGINE_SYSTEMML_SET_H_
 
 namespace brahms
 {
@@ -91,11 +92,7 @@ namespace brahms
 			//	interface
 			InputPort* addPort(Link* link);
 		};
-
-
-
-
 	}
 }
 
-
+#endif // _ENGINE_SYSTEMML_SET_H_

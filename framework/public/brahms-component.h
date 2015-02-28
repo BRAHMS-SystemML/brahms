@@ -1075,6 +1075,3 @@ namespace brahms { extern "C" {
 ////////////////    INCLUSION GUARD
 
 #endif
-
-
-

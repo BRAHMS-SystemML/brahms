@@ -39,8 +39,11 @@ ________________________________________________________________
 #define INCLUDED_BRAHMS_CHANNEL
 
 #include "compress/compress.h"
+#include "engine/base/ipm.h"
+#include "engine/base/core.h"
+#include <string>
 
-
+using std::string;
 
 #ifdef BRAHMS_BUILDING_CHANNEL
 #define BRAHMS_CHANNEL_VIS BRAHMS_DLL_EXPORT
@@ -106,7 +109,7 @@ namespace brahms
 				compressed = 0;
 				queue = 0;
 			}
-			
+
 			UINT64 uncompressed;
 			UINT64 compressed;
 			UINT32 queue;
@@ -154,7 +157,7 @@ namespace brahms
 			//	knowing they will be there to be received.
 			virtual UINT32 push(brahms::base::IPM* ipm, brahms::output::Source* tout, bool ignoreIfNotOpen = false) = 0;
 			virtual Symbol pull(brahms::base::IPM*& ipm, UINT8 tag, brahms::output::Source& tout, UINT32 timeout) = 0;
-			
+
 			//	flush all messages in the send queue (this ensures that no PUSHDATA are
 			//	there, which in turn ensures that no further callbacks will be generated
 			//	from this channel object)
@@ -188,7 +191,7 @@ namespace brahms
 		//	export prototypes
 		typedef CommsInitData (CommsInitFunc) (brahms::base::Core&, CompressFunction* compressFunction);
 		typedef Channel* (CreateChannelFunc) (brahms::base::Core&, brahms::channel::ChannelInitData);
-		
+
 		//	export declarations
 		BRAHMS_CHANNEL_VIS CommsInitData commsInit(brahms::base::Core& core, CompressFunction* p_compressFunction);
 		BRAHMS_CHANNEL_VIS Channel* createChannel(brahms::base::Core& core, ChannelInitData channelInitData);

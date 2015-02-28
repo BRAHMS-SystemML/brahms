@@ -50,12 +50,14 @@ ________________________________________________________________
 
 */
 
-
+#include <iostream>
+#include "systemml.h"
 
 
 using namespace brahms::xml;
 using namespace brahms::systemml;
 using namespace brahms::os;
+using namespace brahms::output;
 
 
 
@@ -417,7 +419,7 @@ struct APIFunctionScopeObject
 		%Symbol ENGINE_EVENT_GUI_TASK                 %[ C_BASE_ENGINE_EVENT + ]%
 		%Symbol ENGINE_EVENT_GUI_PROGRESS             %[ C_BASE_ENGINE_EVENT + ]%
 		*/
-		
+
 		COMPONENT_INTERFACE_FUNCTION_SCOPE
 
 		try
@@ -434,7 +436,7 @@ struct APIFunctionScopeObject
 
 					Process* process = objectRegister.resolveProcess(eventData->hCaller);
 					process->thread->signalActive();
-					
+
 					return C_OK;
 				}
 
@@ -497,7 +499,7 @@ struct APIFunctionScopeObject
 						brahms::error::Error e(data->error);
 						data->error = brahms::error::globalErrorRegister.push(e);
 					}
-					
+
 					//	do trace
 					if (data->flags & F_TRACE)
 						brahms::error::globalErrorRegister.borrow(data->error).trace(data->msg);
@@ -636,7 +638,7 @@ struct APIFunctionScopeObject
 					if (eventData->flags) ferr << E_INVALID_ARG << "one or more unrecognised flags was passed";
 					EventGetSet* data = (EventGetSet*) eventData->data;
 					ASSERT_NON_NULL(data);
-		
+
 					ASSERT_NON_NULL(data->name);
 					if (data->flags & (~(F_IIF | F_OIF)))
 						ferr << E_INVALID_ARG << "some flags were unrecognised";
@@ -768,7 +770,7 @@ struct APIFunctionScopeObject
 					{
 						//	but not both
 						if (data->hPortToCopy) ferr << E_INVALID_ARG << "cls and hPortToCopy are both non-NULL";
-					
+
 						//	return result
 						port = set->addPort(data->spec.cls, data->spec.release);
 					}
@@ -1186,5 +1188,3 @@ struct APIFunctionScopeObject
 ////////////////	ENGINE API
 
 #include "api-engine.cpp"
-
-

@@ -35,7 +35,13 @@ ________________________________________________________________
 #ifndef INCLUDED_ENGINE_LOADER
 #define INCLUDED_ENGINE_LOADER
 
-
+#include "support/support.h"
+#include "support/loader.h"
+#include "support/environment.h"
+#include "support/module.h"
+#include "support/xml.h"
+#include "base/ipm.h"
+#include "base/core.h"
 
 
 ////////////////	NAMESPACE
@@ -94,5 +100,3 @@ namespace brahms
 ////////////////	INCLUSION GUARD
 
 #endif
-
-

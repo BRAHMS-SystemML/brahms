@@ -30,8 +30,8 @@ ________________________________________________________________
 
 */
 
-
-
+#ifndef _ENGINE_SYSTEMML_PORT_H_
+#define _ENGINE_SYSTEMML_PORT_H_
 
 
 #include "alternator.h"
@@ -132,7 +132,7 @@ namespace brahms
 
 
 	////////////////	RING BUFFER
-		
+
 		class InputPort;
 
 		struct RingBufferItem
@@ -356,11 +356,7 @@ namespace brahms
 			void endInitPhase(brahms::output::Source& fout);
 
 		};
-
-
-
-
-
 	}
 }
 
+#endif // _ENGINE_SYSTEMML_PORT_H_

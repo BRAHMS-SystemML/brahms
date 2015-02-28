@@ -44,7 +44,9 @@ ________________________________________________________________
 #include "windows.h"
 #endif
 
-
+#ifdef __NIX__
+#include <pthread.h>
+#endif
 
 ////////////////	NAMESPACE
 
@@ -183,5 +185,3 @@ namespace brahms
 ////////////////	INCLUSION GUARD
 
 #endif
-
-

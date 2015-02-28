@@ -35,7 +35,14 @@ ________________________________________________________________
 #ifndef INCLUDED_BRAHMS_FRAMEWORK_BASE_ERROR
 #define INCLUDED_BRAHMS_FRAMEWORK_BASE_ERROR
 
+#include <string>
+#include <vector>
+#include <sstream>
+using std::string;
+using std::vector;
+using std::stringstream;
 
+#include "brahms-client.h"
 
 ////////////////	NAMESPACE
 
@@ -43,8 +50,6 @@ namespace brahms
 {
 	namespace error
 	{
-
-
 
 ////////////////	EXCEPTION CLASS
 
@@ -65,7 +70,7 @@ namespace brahms
 				this->code = code;
 				this->msg = msg;
 			}
-			
+
 			~Error() throw()
 			{
 			}
@@ -74,7 +79,7 @@ namespace brahms
 			Error& trace(const string& msg);
 			Error& debugtrace(const string& msg);
 			string format(TextFormat ef, bool debugtrace);
-			
+
 			Symbol code;			//	e.g. E_USER
 			string msg;				//	additional info on top of "code"
 			vector<string> traces;	//	one or more trace messages
@@ -137,8 +142,8 @@ namespace brahms
 
 		#define ferr brahms::error::ErrBuilder unusedInstanceInvokesCopyCtor = brahms::error::ErrBuilder().at(__FILE__, __LINE__)
 
-		
-		
+
+
 	}
 }
 
@@ -147,5 +152,3 @@ namespace brahms
 ////////////////	INCLUSION GUARD
 
 #endif
-
-

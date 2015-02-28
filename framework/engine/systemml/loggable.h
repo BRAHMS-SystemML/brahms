@@ -30,7 +30,8 @@ ________________________________________________________________
 
 */
 
-
+#ifndef _ENGINE_SYSTEMML_LOGGABLE_H_
+#define _ENGINE_SYSTEMML_LOGGABLE_H_
 
 namespace brahms
 {
@@ -66,4 +67,4 @@ namespace brahms
 	}
 }
 
-
+#endif // _ENGINE_SYSTEMML_LOGGABLE_H_

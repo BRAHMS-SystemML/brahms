@@ -30,53 +30,38 @@ ________________________________________________________________
 
 */
 
-
-
-
+#ifndef _ENGINE_SYSTEMML_LINK_H_
+#define _ENGINE_SYSTEMML_LINK_H_
 
 namespace brahms
 {
-	namespace systemml
-	{
+    namespace systemml
+    {
+        class Link
+        {
+        public:
+            Link(string name, string path, string src, string dst, string lag);
 
+            void setSrc(string src);
+            void setDst(string dst);
 
+            string getSrc();
+            string getDst();
+            UINT32 getLag();
 
+            string getSrcProcessName();
+            string getDstProcessName();
 
-	////////////////	LINK
+            operator string() const;
 
-		class Link
-		{
-
-		public:
-
-			Link(string name, string path, string src, string dst, string lag);
-
-			void setSrc(string src);
-			void setDst(string dst);
-
-			string getSrc();
-			string getDst();
-			UINT32 getLag();
-
-			string getSrcProcessName();
-			string getDstProcessName();
-
-			operator string() const;
-
-//		private:
-
-			string name;
-			Identifier src;
-			Identifier dst;
-			UINT32 lag;
-			bool dstPortNameInferred;
-
-		};
-
-
-
-
-
-	}
+            // private: (ideally)
+            string name;
+            Identifier src;
+            Identifier dst;
+            UINT32 lag;
+            bool dstPortNameInferred;
+        };
+    }
 }
 
+#endif // _ENGINE_SYSTEMML_LINK_H_

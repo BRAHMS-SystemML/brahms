@@ -30,7 +30,11 @@ ________________________________________________________________
 
 */
 
+#include "brahms-client.h"
+#include "main/engine.h"
 
+using brahms::Symbol;
+using brahms::Engine;
 
 Symbol Engine::monitorSendEvent(Symbol eventType)
 {
@@ -99,7 +103,3 @@ Symbol Engine::monitorSendProgress(DOUBLE progressMin, DOUBLE progressMax)
 	Symbol ret = engineData.core.createEngine.handler(&monitorEvent);
 	return ret;
 }
-
-
-
-

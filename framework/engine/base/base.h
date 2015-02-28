@@ -35,7 +35,10 @@ ________________________________________________________________
 #ifndef INCLUDED_BRAHMS_BASE
 #define INCLUDED_BRAHMS_BASE
 
-#include "brahms_config.h"
+// brahms_config.h is the autotools config file.
+//#include "brahms_config.h"
+// This is the cmake one:
+#include "BrahmsConfig.h"
 
 ////////////////	HEADERS
 

@@ -35,7 +35,14 @@ ________________________________________________________________
 #ifndef INCLUDED_ENGINE_ENGINE
 #define INCLUDED_ENGINE_ENGINE
 
+#include "support/register.h"
+#include "base/brahms_time.h"
+#include "systemml/system.h"
+#include "systemml/thread.h"
+#include "enginedata.h"
 
+#undef fout
+#define fout (engineData.core.caller.tout)
 
 ////////////////	NAMESPACE
 
@@ -87,7 +94,7 @@ namespace brahms
 		brahms::EngineData engineData;
 
 	private:
-	
+
 		//	engine components
 		brahms::thread::Workers workers;
 		brahms::systemml::System system;
@@ -124,7 +131,7 @@ namespace brahms
 
 //	#define FOUT_FUNCTION LogSection fout_function(engineData.sink, __FUNCTION__);
 	#define FOUT_SECTION(key) LogSection fout_section(engineData.core.sink, key);
-	
+
 	//#define TOUT_SECTION(key) LogSection fout_section(tout, key);
 
 
@@ -138,5 +145,3 @@ namespace brahms
 ////////////////	INCLUSION GUARD
 
 #endif
-
-

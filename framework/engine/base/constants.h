@@ -35,7 +35,8 @@ ________________________________________________________________
 #ifndef INCLUDED_BRAHMS_BASE_CONSTANTS
 #define INCLUDED_BRAHMS_BASE_CONSTANTS
 
-
+#include "brahms-client.h"
+using brahms::Symbol;
 
 const INT32 PRECISION_DO_NOT_LOG = 0x40000001;
 
@@ -102,5 +103,3 @@ namespace brahms
 
 
 #endif
-
-

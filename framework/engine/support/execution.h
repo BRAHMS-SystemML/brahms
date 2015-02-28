@@ -35,7 +35,13 @@ ________________________________________________________________
 #ifndef INCLUDED_ENGINE_EXECUTION
 #define INCLUDED_ENGINE_EXECUTION
 
+#include "channel/channel.h"
+#include "engine/support/xml.h"
+#include <vector>
+#include <string>
 
+using std::vector;
+using std::string;
 
 ////////////////	NAMESPACE
 
@@ -54,7 +60,7 @@ namespace brahms
 				members = 0;
 			}
 
-			vector<string> ident;
+                        vector<string> ident;
 			VoiceIndex voice;
 			UINT32 members;
 		};
@@ -78,7 +84,7 @@ namespace brahms
 
 
 	////////////////	LOG MODE
-	
+
 		const BaseSamples BASE_SAMPLES_INF = 0xFFFFFFFFFFFFFFFFULL;
 
 		struct RepeatWindowSeconds
@@ -222,5 +228,3 @@ namespace brahms
 ////////////////	INCLUSION GUARD
 
 #endif
-
-

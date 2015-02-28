@@ -30,8 +30,8 @@ ________________________________________________________________
 
 */
 
-
-
+#ifndef _ENGINE_SYSTEMML_UTILITY_H_
+#define _ENGINE_SYSTEMML_UTILITY_H_
 
 
 namespace brahms
@@ -71,3 +71,5 @@ namespace brahms
 
 	}
 }
+
+#endif // _ENGINE_SYSTEMML_UTILITY_H_

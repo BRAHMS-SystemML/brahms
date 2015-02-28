@@ -37,7 +37,7 @@ ________________________________________________________________
 using namespace brahms::output; // for D_INFO, etc.
 using namespace brahms::xml;
 using namespace brahms::math;
-
+using namespace brahms::text; // explode, s2n.
 
 
 ////////////////	NAMESPACE
@@ -245,7 +245,7 @@ namespace brahms
 
 				case brahms::channel::PROTOCOL_SOCKETS:
 					return "SOCKETS";
-					
+
 				default:
 					return "<unknown protocol>";
 			}
@@ -599,5 +599,3 @@ namespace brahms
 ////////////////	NAMESPACE
 
 }
-
-

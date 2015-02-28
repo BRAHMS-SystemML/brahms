@@ -30,7 +30,17 @@ ________________________________________________________________
 
 */
 
-
+#include "main/engine.h"
+using brahms::Engine;
+#include "base/output.h"
+using namespace brahms::output;
+#include "base/text.h"
+using brahms::text::n2s;
+using brahms::text::s2n;
+using brahms::text::S2N_FAILED;
+using brahms::text::sampleRateToString;
+#include "base/brahms_math.h"
+using brahms::math::unitIndex;
 
 void Engine::open()
 {
@@ -230,7 +240,7 @@ void Engine::open()
 						//	move the process into the earlier listed thread
 						threadIndex[p] = threadIndex[q];
 						fout << process_p->getObjectName() << " ==> thread " << unitIndex(threadIndex[p]) << D_VERB;
-						
+
 						/*fout << "W_PROCESS_NOT_THREAD_SAFE: moving process \"" << process_p->getObjectName()
 							<< "\" into same thread as previous instance \"" << process_q->getObjectName() << "\"" << D_WARN;
 							*/
@@ -250,7 +260,7 @@ void Engine::open()
 			ss << "Processes computed by Thread " << unitIndex(t);
 
 			{ FOUT_SECTION(ss.str().c_str())
-			
+
 				bool assigned = false;
 				for (UINT32 p=0; p<system.getProcessCount(); p++)
 				{
@@ -261,7 +271,7 @@ void Engine::open()
 					}
 				}
 				if (!assigned) fout << "(no assignments)" << D_VERB;
-				
+
 			}
 		}
 */
@@ -588,7 +598,7 @@ void Engine::open()
 					ferr << E_COMMS << "invalid IPMTAG_PUSHBASERATE msg";
 				baseRate.baseSampleRate = *((SampleRate*)ipmr->body());
 				baseRate.setSystemTime(&system.systemTime, engineData.execution.executionStop);
-			
+
 				//	release
 				ipmr->release();
 			}
@@ -617,7 +627,7 @@ void Engine::open()
 			non-zero time. In this case, each <Process> tag will have time information
 			that we must use now to set the time of each Process.
 
-			In addition, any Data states must be laid in to the appropriate data objects, 
+			In addition, any Data states must be laid in to the appropriate data objects,
 			and the read/write locks of the associated Manifolds must be set correctly so
 			that inter-thread comms begins with the right relationships between readers
 			and writers.
@@ -696,7 +706,7 @@ void Engine::open()
 		protections could be afforded, but this basic (and penalty-
 		free) protection is easily implemented by the exchange of
 		sync messages.
-		
+
 	*/
 
 	comms.synchronize(fout);
@@ -712,9 +722,3 @@ void Engine::open()
 
 
 }
-
-
-
-
-
-

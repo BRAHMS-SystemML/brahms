@@ -30,13 +30,8 @@ ________________________________________________________________
 
 */
 
-
-
-
 #ifndef INCLUDED_BRAHMS_SYSTEMML_ALTERNATOR
 #define INCLUDED_BRAHMS_SYSTEMML_ALTERNATOR
-
-
 
 ////////////////	NAMESPACE
 

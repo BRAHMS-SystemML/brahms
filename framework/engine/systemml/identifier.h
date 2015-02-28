@@ -30,9 +30,8 @@ ________________________________________________________________
 
 */
 
-
-
-
+#ifndef _ENGINE_SYSTEMML_IDENTIFIER_H_
+#define _ENGINE_SYSTEMML_IDENTIFIER_H_
 
 namespace brahms
 {
@@ -46,7 +45,7 @@ namespace brahms
 		bool validSampleRate(SampleRate sampleRate);
 		SampleRate toLowestTerms(SampleRate sampleRate);
 		SampleRate parseSampleRate(string s_sampleRate);
-		
+
 
 
 
@@ -94,12 +93,7 @@ namespace brahms
 			IdentifierType type;			//	identifier type
 
 		};
-
-
-
-
-
-
 	}
 }
 
+#endif // _ENGINE_SYSTEMML_IDENTIFIER_H_

@@ -30,7 +30,14 @@ ________________________________________________________________
 
 */
 
-
+#include "main/engine.h"
+using brahms::Engine;
+#include "base/output.h"
+using namespace brahms::output;
+#include "support/xml.h"
+using brahms::xml::XMLNode;
+#include "base/text.h"
+using brahms::text::n2s;
 
 void Engine::close()
 {
@@ -153,7 +160,7 @@ void Engine::close()
 					nodeTime = new XMLNode("Time");
 					nodeProcess->insertBefore(nodeTime, NULL);
 				}
-				
+
 				XMLNode* nodeBaseSampleRate = nodeTime->getChildOrNull("BaseSampleRate");
 				if (!nodeBaseSampleRate)
 					nodeBaseSampleRate = nodeTime->appendChild(new XMLNode("BaseSampleRate"));
@@ -545,14 +552,14 @@ void Engine::close()
 ////////////////	NOTES
 
 	/*
-	
+
 		Calling system.terminate() deletes all of the objects in the system. We can't do
 		this until all threads that may operate on these objects are no longer going to
 		do so. This means all the W threads, of course, but also all S threads which may
 		make callbacks following delivery of PUSHDATA messages. Obviously, we start by
 		terminating the W threads. But then, we don't want to close comms yet, so instead
 		we have each channel flush its send message queue at this point.
-	
+
 	*/
 
 ////////////////	TERMINATE WORKERS
@@ -568,8 +575,8 @@ void Engine::close()
 ////////////////	FLUSH COMMS (see NOTES above)
 
 	comms.flush(fout);
-	
-	
+
+
 
 ////////////////	TERMINATE SYSTEM
 
@@ -627,10 +634,3 @@ void Engine::close()
 	fout << (engineData.systemTimer.elapsed() - t_bracket) << " seconds of untimed operation whilst writing ExecutionML file" << D_VERB;
 
 }
-
-
-
-
-
-
-

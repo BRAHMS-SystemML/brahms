@@ -36,10 +36,6 @@ ________________________________________________________________
 #include "engine.h"
 #include "comm.cpp"
 
-
-#undef fout
-#define fout (engineData.core.caller.tout)
-
 using namespace brahms::output;
 using namespace brahms::xml;
 using namespace brahms::text;
@@ -225,7 +221,7 @@ namespace brahms
 					{
 						//	are stored as "X=Y;X=Y;\0"
 						const char* p = engineData.core.createEngine.executionParameters;
-			
+
 						//	dropout when NULL is reached
 						while(*p)
 						{
@@ -248,7 +244,7 @@ namespace brahms
 
 				//	finalize environment
 				{ FOUT_SECTION("Finalize Environment")
-		
+
 					engineData.environment.finalize(engineData.core.getVoiceCount(), engineData.core.getVoiceIndex(), fout);
 
 					//	tell anyone that needs to know
@@ -448,5 +444,3 @@ namespace brahms
 
 
 #include "api.cpp"
-
-

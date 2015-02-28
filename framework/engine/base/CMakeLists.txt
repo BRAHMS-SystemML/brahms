@@ -1,1 +1,1 @@
-add_library(brahms_engineBase core.cpp ipm.cpp os.cpp text.cpp constants.cpp brahms_error.cpp brahms_math.cpp output.cpp thread.cpp)
+add_library(brahms_engine_base core.cpp ipm.cpp os.cpp text.cpp constants.cpp brahms_error.cpp brahms_math.cpp output.cpp thread.cpp)

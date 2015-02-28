@@ -35,7 +35,13 @@ ________________________________________________________________
 #ifndef INCLUDED_ENGINE_REGISTER
 #define INCLUDED_ENGINE_REGISTER
 
+#include <vector>
+#include <string>
+using std::vector;
+using std::string;
 
+#include "support/os.h"
+#include "base/os.h" // brahms::os::Mutex
 
 ////////////////	NAMESPACE
 
@@ -232,5 +238,3 @@ namespace brahms
 ////////////////	INCLUSION GUARD
 
 #endif
-
-

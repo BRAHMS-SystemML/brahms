@@ -35,7 +35,13 @@ ________________________________________________________________
 #ifndef INCLUDED_ENGINE_ENGINEDATA
 #define INCLUDED_ENGINE_ENGINEDATA
 
-
+#include "public/brahms-client.h"
+#include "engine/base/os.h"
+#include "engine/support/execution.h"
+#include "engine/support/loader.h"
+#include "engine/support/environment.h"
+#include "engine/base/ipm.h"
+#include "engine/base/core.h"
 
 ////////////////	NAMESPACE
 
@@ -99,7 +105,7 @@ namespace brahms
 
 
 
-	
+
 	namespace comms
 	{
 
@@ -155,5 +161,3 @@ namespace brahms
 ////////////////	INCLUSION GUARD
 
 #endif
-
-

@@ -31,7 +31,8 @@ ________________________________________________________________
 */
 
 
-
+#ifndef _ENGINE_SYSTEMML_INTERFACE
+#define _ENGINE_SYSTEMML_INTERFACE
 
 
 namespace brahms
@@ -132,3 +133,6 @@ namespace brahms
 
 	}
 }
+
+
+#endif // _ENGINE_SYSTEMML_INTERFACE
