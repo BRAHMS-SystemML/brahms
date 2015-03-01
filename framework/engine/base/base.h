@@ -72,6 +72,9 @@ using namespace std;
 #endif
 
 //	public interface
+#ifndef BRAHMS_BUILDING_ENGINE
+#define BRAHMS_BUILDING_ENGINE
+#endif
 #include "brahms-client.h"
 using namespace brahms;
 

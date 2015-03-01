@@ -35,6 +35,9 @@ ________________________________________________________________
 #ifndef INCLUDED_BRAHMS_BASE_CONSTANTS
 #define INCLUDED_BRAHMS_BASE_CONSTANTS
 
+#ifndef BRAHMS_BUILDING_ENGINE
+#define BRAHMS_BUILDING_ENGINE
+#endif
 #include "brahms-client.h"
 using brahms::Symbol;
 

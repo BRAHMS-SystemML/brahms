@@ -39,6 +39,9 @@ ________________________________________________________________
 #include <string>
 using std::string;
 
+#ifndef BRAHMS_BUILDING_ENGINE
+#define BRAHMS_BUILDING_ENGINE
+#endif
 #include "brahms-client.h" // for UINT32
 
 ////////////////	NAMESPACE

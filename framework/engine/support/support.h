@@ -47,6 +47,9 @@ ________________________________________________________________
 #include "channel.h"
 
 //	include engine
+#ifndef BRAHMS_BUILDING_ENGINE
+#define BRAHMS_BUILDING_ENGINE
+#endif
 #include "brahms-client.h"
 
 //	import namespace

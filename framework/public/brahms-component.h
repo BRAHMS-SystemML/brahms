@@ -1025,7 +1025,6 @@ namespace brahms { extern "C" {
 	*/
 
 	/* W3C */
-
 	BRAHMS_ENGINE_VIS Symbol xml_createElement(const char* name);
 	BRAHMS_ENGINE_VIS Symbol xml_setNodeName(Symbol node, const char* name);
 	BRAHMS_ENGINE_VIS Symbol xml_getNodeName(Symbol node, const char** name);
@@ -1061,7 +1060,6 @@ namespace brahms { extern "C" {
 	BRAHMS_ENGINE_VIS Symbol xml_getNodeText(Symbol node, const char** text);				//	node text is a property
 	BRAHMS_ENGINE_VIS Symbol xml_clearNode(Symbol node);									//	delete children, attributes, and set text to "" (name is unchanged)
 	BRAHMS_ENGINE_VIS Symbol xml_getChild(Symbol node, const char* name, UINT32 index);		//	get index'th child with specified name (i.e. behave as associative array)
-
 
 
 ////////////////    END EXTERN C / NAMESPACE

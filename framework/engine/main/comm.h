@@ -30,6 +30,9 @@ ________________________________________________________________
 
 */
 
+#ifndef _ENGINE_MAIN_COMM_H_
+#define _ENGINE_MAIN_COMM_H_
+
 #include "main/enginedata.h"
 #include "channel.h"
 
@@ -471,3 +474,5 @@ namespace brahms
 
 	}
 }
+
+#endif // _ENGINE_MAIN_COMM_H_

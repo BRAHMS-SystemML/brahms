@@ -1180,11 +1180,3 @@ struct APIFunctionScopeObject
 		}
 		CATCH_API
 	}
-
-
-
-
-
-////////////////	ENGINE API
-
-#include "api-engine.cpp"

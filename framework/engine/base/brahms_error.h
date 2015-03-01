@@ -42,6 +42,9 @@ using std::string;
 using std::vector;
 using std::stringstream;
 
+#ifndef BRAHMS_BUILDING_ENGINE
+#define BRAHMS_BUILDING_ENGINE
+#endif
 #include "brahms-client.h"
 
 ////////////////	NAMESPACE

@@ -30,6 +30,9 @@ ________________________________________________________________
 
 */
 
+#ifndef BRAHMS_BUILDING_ENGINE
+#define BRAHMS_BUILDING_ENGINE
+#endif
 #include "brahms-client.h"
 #include "main/engine.h"
 

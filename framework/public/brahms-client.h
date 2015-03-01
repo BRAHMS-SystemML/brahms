@@ -37,7 +37,6 @@ ________________________________________________________________
 #define INCLUDED_BRAHMS_CLIENT_INTERFACE
 
 
-
 ////////////////////////////////////////////////////////////////////////////////
 //
 //	"brahms-client.h" defines the Client Interface, which is the
@@ -74,11 +73,11 @@ namespace brahms { extern "C" {
 
 	typedef UINT32 VoiceIndex;
 	typedef UINT32 VoiceCount;
-	
+
 	const VoiceIndex VOICE_MASTER = 0;
 	const VoiceIndex VOICE_UNDEFINED = 0xFFFFFFFF;
 	const VoiceIndex VOICE_FROM_MPI = 0xFFFFFFFE;
-	
+
 	const VoiceCount VOICECOUNT_UNDEFINED = 0;
 
 	const UINT32 F_PAUSE_ON_EXIT				= 0x00000001;
@@ -193,4 +192,3 @@ namespace brahms { extern "C" {
 ////////////////	INCLUSION GUARD
 
 #endif
-

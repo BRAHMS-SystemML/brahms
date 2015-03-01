@@ -34,7 +34,7 @@ ________________________________________________________________
 
 #include "systemml/systemml.h"
 #include "engine.h"
-#include "comm.cpp"
+#include "comm.h"
 
 using namespace brahms::output;
 using namespace brahms::xml;
@@ -401,21 +401,6 @@ namespace brahms
 		return false;
 	}
 
-
-
-
-
-
-#include "engine-open.cpp"
-#include "engine-execute.cpp"
-#include "engine-close.cpp"
-
-#include "engine-walk.cpp"
-#include "engine-monitor.cpp"
-
-
-
-
 ////////////////	ENGINE DESTRUCTION WARNING
 
 	class EngineCheck
@@ -441,6 +426,3 @@ namespace brahms
 ////////////////	NAMESPACE
 
 }
-
-
-#include "api.cpp"
