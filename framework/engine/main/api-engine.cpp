@@ -196,64 +196,66 @@ struct EngineAPIHelper
 #define strncpy(dst, src, l) strncpy_s((dst), (l), (src), (l))
 #endif
 
-	BRAHMS_ENGINE_VIS Symbol engine_create(CreateEngine* createEngine)
-	{
-		EngineAPIHelper engine;
-		string err = engine.create(createEngine);
-		if (err.length())
-		{
-			strncpy(createEngine->errorMessage, err.c_str(), CREATEENGINE_MSG_LENGTH-1);
-			createEngine->errorMessage[CREATEENGINE_MSG_LENGTH-1] = 0;
-			return E_ERROR;
-		}
-		return engine.call("engine->getObjectHandle()");
-	}
+// Problem: These are in brahms-client as declarations and here also
+// so you get conflicting symbols when building.
+BRAHMS_ENGINE_VIS Symbol engine_create(CreateEngine* createEngine)
+{
+    EngineAPIHelper engine;
+    string err = engine.create(createEngine);
+    if (err.length())
+    {
+        strncpy(createEngine->errorMessage, err.c_str(), CREATEENGINE_MSG_LENGTH-1);
+        createEngine->errorMessage[CREATEENGINE_MSG_LENGTH-1] = 0;
+        return E_ERROR;
+    }
+    return engine.call("engine->getObjectHandle()");
+}
 
-	BRAHMS_ENGINE_VIS Symbol engine_up(Symbol hEngine)
-	{
-		EngineAPIHelper engine;
-		if (!engine.resolve(hEngine)) return E_INVALID_HANDLE;
-		return engine.call("engine->up()");
-	}
+BRAHMS_ENGINE_VIS Symbol engine_up(Symbol hEngine)
+{
+    EngineAPIHelper engine;
+    if (!engine.resolve(hEngine)) return E_INVALID_HANDLE;
+    return engine.call("engine->up()");
+}
 
-	BRAHMS_ENGINE_VIS Symbol engine_down(Symbol hEngine, UINT32* messageCount)
-	{
-		EngineAPIHelper engine;
-		if (!engine.resolve(hEngine)) return E_INVALID_HANDLE;
-		return engine.call("engine->down()", messageCount);
-	}
+BRAHMS_ENGINE_VIS Symbol engine_down(Symbol hEngine, UINT32* messageCount)
+{
+    EngineAPIHelper engine;
+    if (!engine.resolve(hEngine)) return E_INVALID_HANDLE;
+    return engine.call("engine->down()", messageCount);
+}
 
-	BRAHMS_ENGINE_VIS Symbol engine_destroy(Symbol hEngine)
-	{
-		EngineAPIHelper engine;
-		if (!engine.resolve(hEngine)) return E_INVALID_HANDLE;
-		return engine.call("delete engine");
-	}
+BRAHMS_ENGINE_VIS Symbol engine_destroy(Symbol hEngine)
+{
+    EngineAPIHelper engine;
+    if (!engine.resolve(hEngine)) return E_INVALID_HANDLE;
+    return engine.call("delete engine");
+}
 
-	BRAHMS_ENGINE_VIS Symbol engine_walk(Symbol hEngine, WalkLevel walkLevel)
-	{
-		EngineAPIHelper engine;
-		if (!engine.resolve(hEngine)) return E_INVALID_HANDLE;
-		return engine.call("engine->walk()", (void*) &walkLevel);
-	}
+BRAHMS_ENGINE_VIS Symbol engine_walk(Symbol hEngine, WalkLevel walkLevel)
+{
+    EngineAPIHelper engine;
+    if (!engine.resolve(hEngine)) return E_INVALID_HANDLE;
+    return engine.call("engine->walk()", (void*) &walkLevel);
+}
 
-	BRAHMS_ENGINE_VIS Symbol engine_open(Symbol hEngine)
-	{
-		EngineAPIHelper engine;
-		if (!engine.resolve(hEngine)) return E_INVALID_HANDLE;
-		return engine.call("engine->open()");
-	}
+BRAHMS_ENGINE_VIS Symbol engine_open(Symbol hEngine)
+{
+    EngineAPIHelper engine;
+    if (!engine.resolve(hEngine)) return E_INVALID_HANDLE;
+    return engine.call("engine->open()");
+}
 
-	BRAHMS_ENGINE_VIS Symbol engine_execute(Symbol hEngine)
-	{
-		EngineAPIHelper engine;
-		if (!engine.resolve(hEngine)) return E_INVALID_HANDLE;
-		return engine.call("engine->execute()");
-	}
+BRAHMS_ENGINE_VIS Symbol engine_execute(Symbol hEngine)
+{
+    EngineAPIHelper engine;
+    if (!engine.resolve(hEngine)) return E_INVALID_HANDLE;
+    return engine.call("engine->execute()");
+}
 
-	BRAHMS_ENGINE_VIS Symbol engine_close(Symbol hEngine)
-	{
-		EngineAPIHelper engine;
-		if (!engine.resolve(hEngine)) return E_INVALID_HANDLE;
-		return engine.call("engine->close()");
-	}
+BRAHMS_ENGINE_VIS Symbol engine_close(Symbol hEngine)
+{
+    EngineAPIHelper engine;
+    if (!engine.resolve(hEngine)) return E_INVALID_HANDLE;
+    return engine.call("engine->close()");
+}

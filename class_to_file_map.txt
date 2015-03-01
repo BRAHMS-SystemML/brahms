@@ -1,12 +1,28 @@
 D_VERB, D_INFO etc                      framework/engine/base/output.h
 
+brahms::thread::Thread                  framework/engine/base/thread.h
+                                        OR: systemml/thread.h
+
+brahms::error::Error                    framework/engine/base/brahms_error.h
+
+brahms::output                          framework/engine/base/output.h
+
+brahms::text::n2s()                     framework/engine/base/text.h
 
 brahms::EngineData                      framework/engine/main/enginedata.h
 
-brahms::text::n2s()                     framework/engine/base/text.h
 
 brahms::systemml::Link                  framework/engine/systemml/link.h
 brahms::systemml::Identifier            framework/engine/systemml/identifier.h
 brahms::systemml::Expose                framework/engine/systemml/systemml.h
 
 brahms::xml::XMLNode                    framework/engine/support/xml.h
+
+brahms::os::Mutex                       framework/engine/base/os.h
+brahms::os                              framework/engine/base/os.h
+                                        AND
+                                        framework/engine/support/os.h
+
+brahms::time                            framework/engine/base/brahms_time.h
+
+IPM                                     framework/engine/base/ipm.h

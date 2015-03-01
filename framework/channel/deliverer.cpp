@@ -31,8 +31,22 @@ ________________________________________________________________
 */
 
 
-	
-	
+#include "brahms-client.h"
+#include <string>
+using std::string;
+#include <sstream>
+using std::ostringstream;
+#include <stdexcept>
+using std::exception;
+#include "base/thread.h"
+#include "base/brahms_error.h"
+#include "channel.h"
+using namespace brahms::channel;
+#include "base/ipm.h"
+using namespace brahms::base;
+#include "fifo.cpp"
+#include "base/output.h"
+using namespace brahms::output;
 
 ////////////////	DELIVERER CLASS
 
@@ -127,7 +141,7 @@ private:
 	brahms::base::Core& core;
 
 	IPMPool delivererIPMPool;
-	
+
 	PushDataHandler pushDataHandler;
 	void* pushDataHandlerArgument;
 
@@ -167,7 +181,7 @@ void Deliverer::ThreadProc()
 			if (result == C_CANCEL) break;
 
 			//	if timeout, that's unexpected!
-			if (result == E_SYNC_TIMEOUT) 
+			if (result == E_SYNC_TIMEOUT)
 				ferr << E_INTERNAL << "E_SYNC_TIMEOUT unexpected";
 
 			/*
@@ -195,7 +209,7 @@ void Deliverer::ThreadProc()
 			}
 //			else tout << "in order: " << header.order << "/" << order << ")" << D_INFO;
 			order++;
-				
+
 			//	call message handler function (if C_CANCEL is returned, break loop, discarding all queued messages)
 			UINT32 bytes = header.bytesAfterHeaderUncompressed;
 			REPORT_THREAD_WAIT_STATE_IN("pushDataHandler()");
@@ -274,4 +288,3 @@ void Deliverer::ThreadProc()
 		storeError(e, tout);
 	}
 }
-

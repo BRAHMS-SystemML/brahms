@@ -51,6 +51,7 @@ TODO: CHANNEL MUTEX
 #define BRAHMS_BUILDING_CHANNEL
 
 //	includes
+#include "BrahmsConfig.h" // For __MSI__ and __SOCKETS__
 #include "base/base.h"
 #include "channel.h"
 #include <queue>
@@ -162,17 +163,6 @@ void ipm_dump(IPM* ipm, brahms::output::Source& tout, const char* name)
 
 #endif
 
-
-//#define REPORT_WAIT_STATES
-
-#ifdef REPORT_WAIT_STATES
-#define REPORT_THREAD_WAIT_STATE_IN(w) tout << "WAIT IN (" << w << ")" << D_INFO;
-#define REPORT_THREAD_WAIT_STATE_OUT(w) tout << "WAIT OUT (" << w << ")" << D_INFO;
-#else
-#define REPORT_THREAD_WAIT_STATE_IN(w) ;
-#define REPORT_THREAD_WAIT_STATE_OUT(w) ;
-#endif
-
 //	compress function, if available
 CompressFunction* compressFunction = NULL;
 
@@ -187,15 +177,6 @@ CompressFunction* compressFunction = NULL;
 #ifdef __SOCKETS__
 #include "sockets.cpp"
 #endif
-
-
-
-
-
-
-
-
-
 
 
 ////////////////	START NAMESPACE
@@ -352,7 +333,7 @@ namespace brahms
 		protocolChannel.flush(tout);
 	}
 
-	
+
 
 ////////////////	PUSH FUNCTION
 
@@ -636,5 +617,3 @@ namespace brahms
 
 	}
 }
-
-

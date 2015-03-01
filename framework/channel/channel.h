@@ -51,7 +51,15 @@ using std::string;
 #define BRAHMS_CHANNEL_VIS BRAHMS_DLL_IMPORT
 #endif
 
+//#define REPORT_WAIT_STATES
 
+#ifdef REPORT_WAIT_STATES
+#define REPORT_THREAD_WAIT_STATE_IN(w) tout << "WAIT IN (" << w << ")" << D_INFO;
+#define REPORT_THREAD_WAIT_STATE_OUT(w) tout << "WAIT OUT (" << w << ")" << D_INFO;
+#else
+#define REPORT_THREAD_WAIT_STATE_IN(w) ;
+#define REPORT_THREAD_WAIT_STATE_OUT(w) ;
+#endif
 
 namespace brahms
 {

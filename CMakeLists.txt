@@ -26,7 +26,8 @@ endif()
 set(CMAKE_CXX_FLAGS -D${BRAHMS_HOST_DEFINITION})
 message(STATUS "Flags " ${CMAKE_CXX_FLAGS})
 
-# This needs work.
+# This needs work - it's too simplistic and I've no idea if it would
+# work on Mac or Windows.
 if(CMAKE_SYSTEM_PROCESSOR MATCHES .*64.*)
   set(ARCH_BITS 64)
 else()

@@ -30,7 +30,12 @@ ________________________________________________________________
 
 */
 
+#ifndef _CHANNEL_FIFO_CPP_
+#define _CHANNEL_FIFO_CPP_
 
+#include <queue>
+using std::queue;
+#include "base/os.h"
 
 ////////////////	THREAD-SAFE FIRST-IN-FIRST-OUT QUEUE CLASS
 
@@ -158,5 +163,4 @@ struct IPM_FIFO
 	QueueAuditData m_audit;
 };
 
-
-
+#endif // _CHANNEL_FIFO_CPP_

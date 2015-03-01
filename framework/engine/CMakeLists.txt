@@ -1,8 +1,4 @@
-#add_subdirectory(base)
-#add_subdirectory(systemml)
-#add_subdirectory(support)
-
-add_library(brahms-engine
+add_library(brahms-engine SHARED
   base/core.cpp base/ipm.cpp base/os.cpp base/text.cpp base/constants.cpp
   base/brahms_error.cpp base/brahms_math.cpp base/output.cpp base/thread.cpp
   systemml/component.cpp systemml/event.cpp systemml/interface.cpp
