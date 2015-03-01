@@ -30,278 +30,268 @@ ________________________________________________________________
 
 */
 
-
-
-
 #include "systemml.h"
-
 
 using namespace brahms::output;
 
-
 namespace brahms
 {
-	namespace systemml
-	{
+    namespace systemml
+    {
+        Component::Component(
+            string p_name,
+            EngineData& p_engineData,
+            brahms::output::Source* p_tout,
+            string p_desiredClassName,
+            UINT16 p_desiredRelease,
+            ComponentType p_type
+            )
+            :
+            RegisteredObject(p_type, p_name),
+            engineData(p_engineData),
+            desiredClassName(p_desiredClassName),
+            desiredRelease(p_desiredRelease),
+            tout(p_tout)
+        {
+            // ZEROED IN CONSTRUCTOR
+            ____CLEAR(componentTime);
+            componentInfo = NULL;
+            object = NULL;
+            module = NULL;
+            flags = 0;
 
-		Component::Component(
-			string p_name,
-			EngineData& p_engineData,
-			brahms::output::Source* p_tout,
-			string p_desiredClassName,
-			UINT16 p_desiredRelease,
-			ComponentType p_type
-		)
-			:
-			RegisteredObject(p_type, p_name),
-			engineData(p_engineData),
-			desiredClassName(p_desiredClassName),
-			desiredRelease(p_desiredRelease),
-			tout(p_tout)
-		{
-			////////////////////////////////////////////////////////////////////////
-			//	ZEROED IN CONSTRUCTOR
-			____CLEAR(componentTime);
-			componentInfo = NULL;
-			object = NULL;
-			module = NULL;
-			flags = 0;
+            // INITIALISED IN CONSTRUCTOR
+            componentData.name = getObjectName().c_str();
+            componentData.time = &componentTime;
+        }
 
-			////////////////////////////////////////////////////////////////////////
-			//	INITIALISED IN CONSTRUCTOR
-			componentData.name = getObjectName().c_str();
-			componentData.time = &componentTime;
-		}
+        Component::Component(const Component& copy)
+            :
+            RegisteredObject(copy.getObjectType(), copy.getObjectName()),
+            engineData(copy.engineData),
+            desiredClassName(copy.desiredClassName),
+            desiredRelease(copy.desiredRelease)
+        {
+            // can only copy if already instantiated
+            if (!copy.module)
+                ferr << E_INTERNAL << "Component() copy ctor before instantiate()";
 
-		Component::Component(const Component& copy)
-			:
-			RegisteredObject(copy.getObjectType(), copy.getObjectName()),
-			engineData(copy.engineData),
-			desiredClassName(copy.desiredClassName),
-			desiredRelease(copy.desiredRelease)
-		{
-			//	can only copy if already instantiated
-			if (!copy.module)
-				ferr << E_INTERNAL << "Component() copy ctor before instantiate()";
+            // COPIED IN CONSTRUCTOR
+            componentTime = copy.componentTime;
+            componentInfo = copy.componentInfo;
+            /* NOTE the object field is not set by copy ctor, since it
+             * needs to be created anew through
+             * EVENT_MODULE_DUPLICATE */
+            object = NULL;
+            module = copy.module;
+            flags = copy.flags;
+            tout = NULL; // always start with a null tout (only data components are copied, anyway)
 
-			////////////////////////////////////////////////////////////////////////
-			//	COPIED IN CONSTRUCTOR
-			componentTime = copy.componentTime;
-			componentInfo = copy.componentInfo;
-			object = NULL;				/* NOTE the object field is not set by copy ctor, since it needs to be created anew through EVENT_MODULE_DUPLICATE */
-			module = copy.module;
-			flags = copy.flags;
-			tout = NULL; // always start with a null tout (only data components are copied, anyway)
+            // INITIALISED IN CONSTRUCTOR
+            componentData.name = getObjectName().c_str();
+            componentData.time = &componentTime;
+        }
 
-			////////////////////////////////////////////////////////////////////////
-			//	INITIALISED IN CONSTRUCTOR
-			componentData.name = getObjectName().c_str();
-			componentData.time = &componentTime;
-		}
+        void Component::load(brahms::output::Source& tout)
+        {
+            /*
+              WHY is load() a separate call at all? Because during System
+              instantiation, we create a Process object for each process
+              in the system. However, if we're running Concerto, some of
+              these Processes will actually be computed in other voices.
+              These, we will destroy before we ever load them.
 
-		void Component::load(brahms::output::Source& tout)
-		{
-			/*
+              Conversely, we only instantiate Data and Utility that we *are*
+              going to use, so those code branches call load immediately
+              after operator new.
+            */
 
-				WHY is load() a separate call at all? Because during System
-				instantiation, we create a Process object for each process
-				in the system. However, if we're running Concerto, some of
-				these Processes will actually be computed in other voices.
-				These, we will destroy before we ever load them.
+            // check
+            if (module) {
+                ferr << E_INTERNAL << "load() called twice";
+            }
 
-				Conversely, we only instantiate Data and Utility that we *are*
-				going to use, so those code branches call load immediately
-				after operator new.
+            // load release 0 (in future, we'll use ICI to infer the release)
+            componentCreateS.componentClass = desiredClassName;
+            module = engineData.loader.loadComponent(componentCreateS, tout, &engineData.systemInfo, desiredRelease);
+        }
 
-			*/
+        const char* ComponentTypeString(ObjectType ot)
+        {
+            switch(ot)
+            {
+            case CT_DATA: return "Data";
+            case CT_PROCESS: return "Process";
+            case CT_UTILITY: return "Utility";
+            default: return "<Unknown Component Type>";
+            }
+        }
 
-			//	check
-			if (module) ferr << E_INTERNAL << "load() called twice";
+        ObjectType Component::instantiate(brahms::output::Source* tout)
+        {
+            // load if not already loaded
+            if (!module) ferr << E_INTERNAL << "instantiate() before load()";
+            if (object) ferr << E_INTERNAL << "instantiate() called twice";
 
-			//	load release 0 (in future, we'll use ICI to infer the release)
-			componentCreateS.componentClass = desiredClassName;
-			module = engineData.loader.loadComponent(componentCreateS, tout, &engineData.systemInfo, desiredRelease);
-		}
+            // event data
+            EventModuleCreateBindings data;
+            ____CLEAR(data);
+            data.hComponent = getObjectHandle();
+            data.data = &componentData;
 
-		const char* ComponentTypeString(ObjectType ot)
-		{
-			switch(ot)
-			{
-				case CT_DATA: return "Data";
-				case CT_PROCESS: return "Process";
-				case CT_UTILITY: return "Utility";
-				default: return "<Unknown Component Type>";
-			}
-		}
+            // data about the wrapped function, only known about and used by bindings
+            data.wrapped.namespaceRootPath = componentCreateS.namespaceRootPath.c_str();
+            data.wrapped.componentClass = desiredClassName.c_str();
+            data.wrapped.releasePath = componentCreateS.releasePath.c_str();
+            data.wrapped.moduleFilename = componentCreateS.moduleFilename.c_str();
 
-		ObjectType Component::instantiate(brahms::output::Source* tout)
-		{
-			//	load if not already loaded
-			if (!module) ferr << E_INTERNAL << "instantiate() before load()";
-			if (object) ferr << E_INTERNAL << "instantiate() called twice";
+            // event
+            brahms::EventEx event(
+                EVENT_MODULE_CREATE,
+                0,
+                this,
+                &data,
+                true,
+                tout
+                );
+            event.fire();
 
-			//	event data
-			EventModuleCreateBindings data;
-			____CLEAR(data);
-			data.hComponent = getObjectHandle();
-			data.data = &componentData;
+            // check it instantiated ok
+            if (!event.object)
+                ferr << E_NOT_COMPLIANT << "\"" << desiredClassName << "\" failed to instantiate component";
 
-			//	data about the wrapped function, only known about and used by bindings
-			data.wrapped.namespaceRootPath = componentCreateS.namespaceRootPath.c_str();
-			data.wrapped.componentClass = desiredClassName.c_str();
-			data.wrapped.releasePath = componentCreateS.releasePath.c_str();
-			data.wrapped.moduleFilename = componentCreateS.moduleFilename.c_str();
+            // store newly created object and component info
+            object = event.object;
+            componentInfo = data.info;
 
-			//	event
-			brahms::EventEx event(
-					EVENT_MODULE_CREATE,
-					0,
-					this,
-					&data,
-					true,
-					tout
-				);
-			event.fire();
+            // check info is valid right now, to avoid seg faults later
+            if (!data.info) ferr << E_NOT_COMPLIANT << "\"" << desiredClassName << "\" did not return ComponentInfo";
+            if (!data.info->cls) ferr << E_NOT_COMPLIANT << "\"" << desiredClassName << "\" did not set \"cls\" in ComponentInfo";
+            ObjectType ret = data.info->type;
 
-			//	check it instantiated ok
-			if (!event.object)
-				ferr << E_NOT_COMPLIANT << "\"" << desiredClassName << "\" failed to instantiate component";
+            // check type is right
+            if ((getObjectType() != CT_COMPONENT) && (ret != getObjectType()))
+            {
+                ferr << E_WRONG_COMPONENT_TYPE << "instantiated \"" << desiredClassName << "\" expecting a "
+                     << ComponentTypeString(getObjectType()) << ", but it was a " << ComponentTypeString(ret);
+            }
 
-			//	store newly created object and component info
-			object = event.object;
-			componentInfo = data.info;
+            if (!data.info->componentVersion) ferr << E_NOT_COMPLIANT << "\"" << desiredClassName << "\" did not set \"componentVersion\" in ComponentInfo";
+            if (!data.info->additional) ferr << E_NOT_COMPLIANT << "\"" << desiredClassName << "\" did not set \"additional\" in ComponentInfo";
+            if (!data.info->libraries) ferr << E_NOT_COMPLIANT << "\"" << desiredClassName << "\" did not set \"libraries\" in ComponentInfo";
 
-			//	check info is valid right now, to avoid seg faults later
-			if (!data.info) ferr << E_NOT_COMPLIANT << "\"" << desiredClassName << "\" did not return ComponentInfo";
-			if (!data.info->cls) ferr << E_NOT_COMPLIANT << "\"" << desiredClassName << "\" did not set \"cls\" in ComponentInfo";
-			ObjectType ret = data.info->type;
+            // spec must match release (but we don't know or care about the developer revision)
+            bool correctSpec =
+                data.info->cls == desiredClassName &&
+                data.info->componentVersion->release == desiredRelease;
+            if (!correctSpec)
+            {
+                // check for case-sensitive error
+                if (data.info->cls != desiredClassName && brahms::text::strimatch(data.info->cls, desiredClassName) == 0)
+                    (*tout) << "requested component is case-insensitive match for instantiated component: have you got your cases right?" << D_WARN;
+                ferr << E_NOT_COMPLIANT << "supplied component (" << brahms::text::info2string(data.info)
+                     << ") does not support requested component (" << desiredClassName << "-" << desiredRelease << ")";
+            }
 
-			//	check type is right
-			if ((getObjectType() != CT_COMPONENT) && (ret != getObjectType()))
-			{
-				ferr << E_WRONG_COMPONENT_TYPE << "instantiated \"" << desiredClassName << "\" expecting a "
-					<< ComponentTypeString(getObjectType()) << ", but it was a " << ComponentTypeString(ret);
-			}
+            // ok
+            return ret;
+        }
 
-			if (!data.info->componentVersion) ferr << E_NOT_COMPLIANT << "\"" << desiredClassName << "\" did not set \"componentVersion\" in ComponentInfo";
-			if (!data.info->additional) ferr << E_NOT_COMPLIANT << "\"" << desiredClassName << "\" did not set \"additional\" in ComponentInfo";
-			if (!data.info->libraries) ferr << E_NOT_COMPLIANT << "\"" << desiredClassName << "\" did not set \"libraries\" in ComponentInfo";
+        void Component::destroy(brahms::output::Source* tout)
+        {
+            // load if not already loaded
+            //if (!module) ferr << E_INTERNAL << "destroy() before load()";
 
-			//	spec must match release (but we don't know or care about the developer revision)
-			bool correctSpec =
-				data.info->cls == desiredClassName &&
-				data.info->componentVersion->release == desiredRelease;
-			if (!correctSpec)
-			{
-				//	check for case-sensitive error
-				if (data.info->cls != desiredClassName && brahms::text::strimatch(data.info->cls, desiredClassName) == 0)
-					(*tout) << "requested component is case-insensitive match for instantiated component: have you got your cases right?" << D_WARN;
-				ferr << E_NOT_COMPLIANT << "supplied component (" << brahms::text::info2string(data.info)
-					<< ") does not support requested component (" << desiredClassName << "-" << desiredRelease << ")";
-			}
+            // IGNORE THE ABOVE - the module may never have loaded, that's no reason to panic
 
-			//	ok
-			return ret;
-		}
+            //if (!object) ferr << E_INTERNAL << "destroy() before instantiate() (or called twice)";
+            // only destroy if it was successfully instantiated
+            if (object)
+            {
+                // fire event
+                brahms::EventEx event(
+                    EVENT_MODULE_DESTROY,
+                    0,
+                    this,
+                    NULL,
+                    false,
+                    tout
+                    );
+                event.fire();
 
-		void Component::destroy(brahms::output::Source* tout)
-		{
-			//	load if not already loaded
-			//if (!module) ferr << E_INTERNAL << "destroy() before load()";
+                // mark object as destroyed
+                object = NULL;
+            }
+        }
 
-			//	IGNORE THE ABOVE - the module may never have loaded, that's no reason to panic
+        Component::~Component()
+        {
+            if (object)
+                ____WARN("component dtor called when object has not been destroy()ed");
+        }
 
-			//if (!object) ferr << E_INTERNAL << "destroy() before instantiate() (or called twice)";
-			//	only destroy if it was successfully instantiated
-			if (object)
-			{
-				//	fire event
-				brahms::EventEx event(
-					EVENT_MODULE_DESTROY,
-					0,
-					this,
-					NULL,
-					false,
-					tout
-				);
-				event.fire();
+        void Component::setName(string p_name)
+        {
+            setObjectName(p_name);
+            componentData.name = getObjectName().c_str();
+        }
 
-				//	mark object as destroyed
-				object = NULL;
-			}
-		}
+        void Component::setSampleRate(SampleRate p_sampleRate)
+        {
+            componentTime.sampleRate = p_sampleRate;
+        }
 
-		Component::~Component()
-		{
-			if (object)
-				____WARN("component dtor called when object has not been destroy()ed");
-		}
+        SampleRate Component::getSampleRate()
+        {
+            return componentTime.sampleRate;
+        }
 
-		void Component::setName(string p_name)
-		{
-			setObjectName(p_name);
-			componentData.name = getObjectName().c_str();
-		}
+        string Component::getName()
+        {
+            return getObjectName();
+        }
 
-		void Component::setSampleRate(SampleRate p_sampleRate)
-		{
-			componentTime.sampleRate = p_sampleRate;
-		}
+        string Component::getClassName()
+        {
+            return desiredClassName;
+        }
 
-		SampleRate Component::getSampleRate()
-		{
-			return componentTime.sampleRate;
-		}
+        UINT16 Component::getRelease()
+        {
+            return desiredRelease;
+        }
 
-		string Component::getName()
-		{
-			return getObjectName();
-		}
+        void* Component::getObject()
+        {
+            return object;
+        }
 
-		string Component::getClassName()
-		{
-			return desiredClassName;
-		}
+        void Component::setFlag(UINT32 flag)
+        {
+            flags |= flag;
+        }
 
-		UINT16 Component::getRelease()
-		{
-			return desiredRelease;
-		}
+        void Component::finalizeComponentTime(SampleRate baseSampleRate, BaseSamples executionStop)
+        {
+            // get rate
+            SampleRate rsr = componentTime.sampleRate;
 
-		void* Component::getObject()
-		{
-			return object;
-		}
+            // BSR has a numerator >= all SRs and a denominator <= all SRs (see find() algorithm)
+            // which two facts allow us to the division succinctly
+            UINT64 divisor = (baseSampleRate.num / rsr.num) * (rsr.den / baseSampleRate.den);
 
-		void Component::setFlag(UINT32 flag)
-		{
-			flags |= flag;
-		}
+            // lay in to component
+            componentTime.baseSampleRate = baseSampleRate;
+            componentTime.executionStop = executionStop;
+            componentTime.samplePeriod = divisor;
+            componentTime.now = 0;
 
-		void Component::finalizeComponentTime(SampleRate baseSampleRate, BaseSamples executionStop)
-		{
-			//	get rate
-			SampleRate rsr = componentTime.sampleRate;
-
-			//	BSR has a numerator >= all SRs and a denominator <= all SRs (see find() algorithm)
-			//	which two facts allow us to the division succinctly
-			UINT64 divisor = (baseSampleRate.num / rsr.num) * (rsr.den / baseSampleRate.den);
-
-			//	lay in to component
-			componentTime.baseSampleRate = baseSampleRate;
-			componentTime.executionStop = executionStop;
-			componentTime.samplePeriod = divisor;
-			componentTime.now = 0;
-
-			//	fout
-			(engineData.core.caller.tout) << getObjectName() << ": "
-				<< "(" << brahms::text::sampleRateToString(baseSampleRate) << ")Hz / " << divisor << " = "
-				<< "(" << brahms::text::sampleRateToString(componentTime.sampleRate) << ")Hz" << D_VERB;
-		}
-
-
-
-
-
-	}
+            // fout
+            (engineData.core.caller.tout) << getObjectName() << ": " << "("
+                                          << brahms::text::sampleRateToString(baseSampleRate)
+                                          << ")Hz / " << divisor << " = " << "("
+                                          << brahms::text::sampleRateToString(componentTime.sampleRate)
+                                          << ")Hz" << D_VERB;
+        }
+    }
 }

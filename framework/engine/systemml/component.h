@@ -35,108 +35,104 @@ ________________________________________________________________
 
 namespace brahms
 {
-	namespace thread
-	{
-		class WorkerThread;
-	}
+    namespace thread
+    {
+        class WorkerThread;
+    }
 
-	namespace systemml
-	{
+    namespace systemml
+    {
+        class Component : public RegisteredObject
+        {
+            friend class System;
+            friend class brahms::thread::WorkerThread;
+            friend class EventEx;
+            friend class brahms::systemml::OutputPort;
+            friend class brahms::systemml::InputInterface;
+            friend class brahms::systemml::OutputInterface;
 
+        public:
+            // tors
+            Component(
+                string name,
+                EngineData& engineData,
+                brahms::output::Source* tout,
+                string desiredClassName,
+                UINT16 desiredRelease,
+                ComponentType type
+                );
+            Component(const Component& copy);
+            virtual ~Component();
 
+            // state interface
+            void setName(string name);
+            void setSampleRate(SampleRate sampleRate);
+            string getName();
+            string getClassName();
+            UINT16 getRelease();
+            SampleRate getSampleRate();
+            void* getObject();
 
-	////////////////	COMPONENT
+            // load module and make module->moduleInfo available
+            void load(brahms::output::Source& tout);
 
-		class Component : public RegisteredObject
-		{
+            // load module if not already loaded, and call EVENT_MODULE_CREATE to create component
+            ObjectType instantiate(brahms::output::Source* tout);
 
-			friend class System;
-			friend class brahms::thread::WorkerThread;
-			friend class EventEx;
-			friend class brahms::systemml::OutputPort;
-			friend class brahms::systemml::InputInterface;
-			friend class brahms::systemml::OutputInterface;
+            // EVENT_MODULE_DESTROY
+            virtual void destroy(brahms::output::Source* tout);
 
-		public:
+            // accessor
+            const ComponentInfo* getComponentInfo()
+            {
+                return componentInfo;
+            }
 
-			//	tors
-			Component(
-				string name,
-				EngineData& engineData,
-				brahms::output::Source* tout,
-				string desiredClassName,
-				UINT16 desiredRelease,
-				ComponentType type
-				);
+            // accessor
+            const ComponentData* getComponentData()
+            {
+                return &componentData;
+            }
 
-			Component(const Component& copy);
-			virtual ~Component();
+            void setFlag(UINT32 flag);
 
-			//	state interface
-			void setName(string name);
-			void setSampleRate(SampleRate sampleRate);
-			string getName();
-			string getClassName();
-			UINT16 getRelease();
-			SampleRate getSampleRate();
-			void* getObject();
+            void finalizeComponentTime(SampleRate baseSampleRate, BaseSamples executionStop);
 
-			//	load module and make module->moduleInfo available
-			void load(brahms::output::Source& tout);
+            ComponentCreateS componentCreateS;
 
-			//	load module if not already loaded, and call EVENT_MODULE_CREATE to create component
-			ObjectType instantiate(brahms::output::Source* tout);
+        public:
+            // SPECIFIED AS ARGUMENTS TO CONSTRUCTOR
+            //@{
+            EngineData& engineData;
+            // *DESIRED* class name (once instantiated, this is available through "module->moduleInfo")
+            string desiredClassName;
+            // *DESIRED* release (once instantiated, this is available through "module->moduleInfo")
+            UINT16 desiredRelease;
+            //@}
 
-			//	EVENT_MODULE_DESTROY
-			virtual void destroy(brahms::output::Source* tout);
+            // ZEROED IN CONSTRUCTOR
+            //@{
+            // initialised by framework in phase POST_CONNECT
+            ComponentTime componentTime;
+            // initialised in instantiate()
+            const ComponentInfo* componentInfo;
+            // initialised in instantiate() or duplicate()
+            void* object;
+            // initialised in instantiate()
+            brahms::module::Module* module;
+            // zero, or F_LOCAL_ERROR, if component has thrown
+            UINT32 flags;
+            // parent thread's output source
+            brahms::output::Source* tout;
+            //@}
 
-			//	accessor
-			const ComponentInfo* getComponentInfo()
-			{
-				return componentInfo;
-			}
-
-			//	accessor
-			const ComponentData* getComponentData()
-			{
-				return &componentData;
-			}
-
-			void setFlag(UINT32 flag);
-
-			void finalizeComponentTime(SampleRate baseSampleRate, BaseSamples executionStop);
-
-			ComponentCreateS componentCreateS;
-
-
-		public:
-
-			////////////////////////////////////////////////////////////////////////
-			//	SPECIFIED AS ARGUMENTS TO CONSTRUCTOR
-			EngineData& engineData;
-			string desiredClassName;					//	*DESIRED* class name (once instantiated, this is available through "module->moduleInfo")
-			UINT16 desiredRelease;						//	*DESIRED* release (once instantiated, this is available through "module->moduleInfo")
-
-			////////////////////////////////////////////////////////////////////////
-			//	ZEROED IN CONSTRUCTOR
-			ComponentTime componentTime;				//	initialised by framework in phase POST_CONNECT
-			const ComponentInfo* componentInfo;			//	initialised in instantiate()
-			void* object;								//	initialised in instantiate() or duplicate()
-			brahms::module::Module* module;				//	initialised in instantiate()
-			UINT32 flags;								//	zero, or F_LOCAL_ERROR, if component has thrown
-			brahms::output::Source* tout;				//	parent thread's output source
-
-			////////////////////////////////////////////////////////////////////////
-			//	INITIALISED IN CONSTRUCTOR
-			ComponentData componentData;				//	pointers to componentTime and componentInfo
-
-		};
-
-
-
-
-
-	}
+            // INITIALISED IN CONSTRUCTOR
+            //@{
+            // pointers to componentTime and componentInfo
+            ComponentData componentData;
+            //@}
+        };
+    }
 }
 
 #endif // _ENGINE_SYSTEMML_COMPONENT_H_

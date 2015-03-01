@@ -42,9 +42,6 @@ namespace brahms
 	namespace base
 	{
 
-
-
-
 ////////////////	IPM CONSTANTS
 
 		const UINT32 IPM_SIGNATURE			= 0x004D5049;		// "IPM\0" (Intel)
@@ -413,5 +410,3 @@ namespace brahms
 ////////////////	INCLUSION GUARD
 
 #endif
-
-

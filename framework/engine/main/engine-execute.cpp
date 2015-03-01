@@ -41,8 +41,6 @@ void Engine::execute()
 
 	monitorSendPhase(EP_EXECUTE, "Execute System");
 
-
-
 ////////////////	EVENT_BEGIN_RUNPHASE
 
 	{ FOUT_SECTION("EVENT_BEGIN_RUNPHASE")

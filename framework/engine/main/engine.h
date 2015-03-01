@@ -44,20 +44,11 @@ ________________________________________________________________
 #undef fout
 #define fout (engineData.core.caller.tout)
 
-////////////////	NAMESPACE
-
 namespace brahms
 {
-
-
-
-////////////////	ENGINE
-
 	class Engine : public RegisteredObject
 	{
-
 	public:
-
 		Engine(CreateEngine* createEngine);
 		~Engine();
 
@@ -75,7 +66,6 @@ namespace brahms
 		void close();
 
 	private:
-
 		//	send monitor event
 		MonitorEvent monitorEvent;
 		Symbol monitorSendEvent(Symbol eventType);
@@ -102,18 +92,11 @@ namespace brahms
 
 	};
 
-
-
-////////////////	OUTPUT SECTION
-
 	class LogSection
 	{
-
 	public:
-
 		LogSection(brahms::output::Sink& p_sink, const string& key)
-			:
-			sink(p_sink)
+			: sink(p_sink)
 		{
 			sink.section(key);
 		}
@@ -124,24 +107,10 @@ namespace brahms
 		}
 
 	private:
-
 		brahms::output::Sink& sink;
-
 	};
 
-//	#define FOUT_FUNCTION LogSection fout_function(engineData.sink, __FUNCTION__);
 	#define FOUT_SECTION(key) LogSection fout_section(engineData.core.sink, key);
-
-	//#define TOUT_SECTION(key) LogSection fout_section(tout, key);
-
-
-
-////////////////	NAMESPACE
-
 }
 
-
-
-////////////////	INCLUSION GUARD
-
-#endif
+#endif // INCLUDED_ENGINE_ENGINE
