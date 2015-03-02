@@ -63,8 +63,10 @@ namespace brahms
 			//	just add one
 			return zeroBasedIndex + 1;
 		}
+		UINT32 unitIndex(UINT32 zeroBasedIndex)
+		{
+			//	just add one
+			return zeroBasedIndex + 1;
+		}
 	}
 }
-
-
-

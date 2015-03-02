@@ -54,7 +54,7 @@ using namespace std;
 using namespace brahms;
 
 #include "ferr.h"
-#include "version.cpp"
+#include "version.h"
 #include "os.h"
 #include "tfs.h"
 #include "info.h"

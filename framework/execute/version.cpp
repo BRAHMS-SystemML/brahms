@@ -30,6 +30,8 @@ ________________________________________________________________
 
 */
 
+#include "version.h"
+
 // Ensure __NIX__ and __WIN__ etc are set up and also get FrameworkVersion
 #ifndef BRAHMS_BUILDING_ENGINE
 #define BRAHMS_BUILDING_ENGINE
@@ -37,8 +39,6 @@ ________________________________________________________________
 #include "brahms-client.h"
 using brahms::FrameworkVersion;
 
-#include <string>
-using std::string;
 #include <sstream>
 using std::ostringstream;
 

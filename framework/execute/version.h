@@ -22,25 +22,29 @@ ________________________________________________________________
 
 	Subversion Repository Information (automatically updated on commit)
 
-	$Id:: math.h 2278 2009-11-01 21:23:08Z benjmitch           $
-	$Rev:: 2278                                                $
+	$Id:: version.cpp 2251 2009-10-31 01:42:16Z benjmitch      $
+	$Rev:: 2251                                                $
 	$Author:: benjmitch                                        $
-	$Date:: 2009-11-01 21:23:08 +0000 (Sun, 01 Nov 2009)       $
+	$Date:: 2009-10-31 01:42:16 +0000 (Sat, 31 Oct 2009)       $
 ________________________________________________________________
 
 */
 
-#ifndef INCLUDED_BRAHMS_BASE_MATH
-#define INCLUDED_BRAHMS_BASE_MATH
+#ifndef _EXECUTE_VERSION_H_
+#define _EXECUTE_VERSION_H_
 
-namespace brahms
-{
-    namespace math
-    {
-        UINT64 gcd(UINT64 a, UINT64 b);
-        INT32 unitIndex(INT32 zeroBasedIndex);
-        UINT32 unitIndex(UINT32 zeroBasedIndex);
-    }
-}
-
+// Ensure __NIX__ and __WIN__ etc are set up and also get FrameworkVersion
+#ifndef BRAHMS_BUILDING_ENGINE
+#define BRAHMS_BUILDING_ENGINE
 #endif
+#include "brahms-client.h"
+using brahms::FrameworkVersion;
+
+#include <sstream>
+using std::ostringstream;
+
+extern const FrameworkVersion VERSION_ENGINE;
+
+void v2s(UINT16 version, ostringstream &ret);
+
+#endif // _EXECUTE_VERSION_H_

@@ -32,6 +32,9 @@ ________________________________________________________________
 
 #include "mpich2/mpi.h"
 
+#include "base/brahms_math.h"
+using brahms::math::unitIndex;
+
 void CommsSendProc(void* arg)
 {
     ((CommsLayer*)arg)->SendProc();

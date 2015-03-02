@@ -53,6 +53,8 @@ TODO: CHANNEL MUTEX
 //	includes
 #include "BrahmsConfig.h" // For __MSI__ and __SOCKETS__
 #include "base/base.h"
+#include "base/brahms_math.h"
+using brahms::math::unitIndex;
 #include "base/ipm.h"
 using brahms::base::IPM;
 #include "channel.h"
@@ -100,11 +102,6 @@ IPM* SAFE_IPM::retrieve()
     return temp;
 }
 //@}
-
-UINT32 unitIndex(UINT32 i)
-{
-	return i + 1;
-}
 
 // ipm_dump implementation
 void ipm_dump(IPM* ipm, brahms::output::Source& tout, const char* name)
@@ -562,11 +559,4 @@ namespace brahms
             return new DerivedChannel(channelInitData, core);
         }
     }
-}
-
-ChannelSimplexData::ChannelSimplexData()
-{
-    uncompressed = 0;
-    compressed = 0;
-    queue = 0;
 }

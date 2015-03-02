@@ -52,5 +52,9 @@ include_directories ("${CMAKE_BINARY_DIR}") # for BrahmsConfig.h
 
 add_subdirectory(framework)
 
-
+#add_executable(brahms-execute2
+#  framework/execute/main.cpp framework/execute/info.cpp framework/execute/os.cpp
+#  framework/execute/tfs.cpp framework/execute/version.cpp
+#  )
+#target_link_libraries(brahms-execute2 brahms-engine)
 
