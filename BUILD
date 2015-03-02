@@ -1,3 +1,4 @@
+Note: These are OUT OF DATE build notes. Now, you build BRAHMS with cmake.
 
 Build Notes
 -----------
@@ -38,6 +39,3 @@ We use G++ 4.2 on linux, or cl v14 on windows. Other
 compilers should work fine, but your binaries will be
 incompatible with ours. That won't usually matter, since
 you'll build all the binaries yourself.
-
-
-
