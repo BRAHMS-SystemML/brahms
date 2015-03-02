@@ -30,10 +30,7 @@ ________________________________________________________________
 
 */
 
-
-
 ////////////////	INCLUDE SUPPORT
-
 #define BRAHMS_BUILDING_COMPRESS
 
 //	includes
@@ -50,12 +47,9 @@ ________________________________________________________________
 #include "zlib.h"
 #endif
 
-#if ZLIB_VERNUM < 0x1210 // should be 0x1230 really, but ACE has 0x1210
+#if ZLIB_VERNUM < 0x1230
 #error must link to zlib 1.2.1 or greater
 #endif
-
-
-
 
 BRAHMS_COMPRESS_VIS const char* Compress(void* src, UINT32 srcBytes, void* dst, UINT32* dstBytes, INT32 compress)
 {
@@ -162,6 +156,3 @@ BRAHMS_COMPRESS_VIS const char* Compress(void* src, UINT32 srcBytes, void* dst, 
 	//	unrecognised
 	return "unrecognised compress level";
 }
-
-
-
