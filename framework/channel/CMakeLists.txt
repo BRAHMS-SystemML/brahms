@@ -1,2 +1,2 @@
 add_subdirectory (sockets)
-#add_subdirectory (mpich2)
+add_subdirectory (mpich2)

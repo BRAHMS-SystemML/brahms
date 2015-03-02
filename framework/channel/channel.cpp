@@ -142,7 +142,7 @@ void ipm_dump(IPM* ipm, brahms::output::Source& tout, const char* name)
 #include "deliverer.h"
 
 #ifdef __MPI__
-#include "mpich2/mpi.cpp"
+#include "mpich2/mpi.h"
 #endif
 
 #ifdef __SOCKETS__
