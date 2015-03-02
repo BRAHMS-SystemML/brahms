@@ -30,7 +30,7 @@ ________________________________________________________________
 
 */
 
-#include "sockets.h"
+#include "sockets/sockets.h"
 
 ////////////////	SENDER PROCEDURE
 

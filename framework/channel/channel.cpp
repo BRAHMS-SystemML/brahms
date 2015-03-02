@@ -142,11 +142,11 @@ void ipm_dump(IPM* ipm, brahms::output::Source& tout, const char* name)
 #include "deliverer.h"
 
 #ifdef __MPI__
-#include "mpi.cpp"
+#include "mpich2/mpi.cpp"
 #endif
 
 #ifdef __SOCKETS__
-#include "sockets.h"
+#include "sockets/sockets.h"
 #endif
 
 CompressFunction* compressFunction = NULL;

@@ -1,6 +1,6 @@
 // ProtocolChannel class implementation
 
-#include "sockets.h"
+#include "sockets/sockets.h"
 
 ////////////////	CHANNEL
 ProtocolChannel::ProtocolChannel(ChannelInitData channelInitData, brahms::base::Core& p_core)
