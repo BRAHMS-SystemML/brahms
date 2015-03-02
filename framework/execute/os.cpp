@@ -30,150 +30,115 @@ ________________________________________________________________
 
 */
 
-
-
-
+// Ensure __NIX__ is set up
+#ifndef BRAHMS_BUILDING_ENGINE
+#define BRAHMS_BUILDING_ENGINE
+#endif
+#include "brahms-client.h"
 
 #include "os.h"
-
+#include "ferr.h"
 
 #ifdef __NIX__
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <sys/types.h>
+string lasterr;
 #endif
-
-
-
 
 namespace os
 {
 
+    // GET THE VALUE OF AN ENVIRONMENT VARIABLE
 
+    string getenv(string key, bool exceptionIfAbsent)
+    {
+        //	return the value of the environment variable named "key"
+        //	if absent, throw an exception or return the empty string
 
-////////////////////////////////////////////////////////////////
-//	GET THE VALUE OF AN ENVIRONMENT VARIABLE
+#ifdef __WIN__
+        char value[16384];
+        UINT32 L = GetEnvironmentVariable(key.c_str(), value, 16384);
 
-	string getenv(string key, bool exceptionIfAbsent)
-	{
-		//	return the value of the environment variable named "key"
-		//	if absent, throw an exception or return the empty string
+        if (L)
+        {
+            //	check for overflow
+            if (L > 16384) client_err << "E_INVOCATION: Environment variable too big \"" + key + "\"";
 
-	#ifdef __WIN__
+            //	found, and ok
+            return value;
+        }
 
-		char value[16384];
-		UINT32 L = GetEnvironmentVariable(key.c_str(), value, 16384);
+        if (!L)
+        {
+            //	the variable might just have been zero length!
+            if (GetLastError() != ERROR_ENVVAR_NOT_FOUND)  return value;
+        }
+#endif
 
-		if (L)
-		{
-			//	check for overflow
-			if (L > 16384) client_err << "E_INVOCATION: Environment variable too big \"" + key + "\"";
+#ifdef __NIX__
+        char *value = ::getenv(key.c_str());
+        if (value) return value;
+#endif
 
-			//	found, and ok
-			return value;
-		}
+        //	otherwise, not found
+        if (exceptionIfAbsent) client_err << "E_INVOCATION: Environment variable not found \"" + key + "\"";
+        return "";
+    }
 
-		if (!L)
-		{
-			//	the variable might just have been zero length!
-			if (GetLastError() != ERROR_ENVVAR_NOT_FOUND)  return value;
-		}
+    // EXPAND TOKENS IN PATH
+    string expandpath(string path)
+    {
 
-	#endif
+        if (path.length())
+        {
+            if (path.substr(0,1) == "~")
+            {
+                //	string to take HOME directory
+                string SHOME;
 
-	#ifdef __NIX__
+#ifdef __WIN__
+                //	can get from environment
+                SHOME = os::getenv("USERPROFILE");
+#endif
 
-		char *value = ::getenv(key.c_str());
-		if (value) return value;
+#ifdef __NIX__
+                //	can get from environment
+                SHOME = os::getenv("HOME");
 
-	#endif
+                //	but if not there, can get from system
+                if (!SHOME.length())
+                {
+                    struct passwd* pw = getpwuid(getuid());
+                    if (pw) SHOME = pw->pw_dir;
+                }
+#endif
 
-		//	otherwise, not found
-		if (exceptionIfAbsent) client_err << "E_INVOCATION: Environment variable not found \"" + key + "\"";
-		return "";
+                //	replace, or don't bother if empty
+                if (SHOME.length())
+                {
+                    path = SHOME + path.substr(1);
+                }
+            }
+        }
 
-	}
+        //	ok
+        return path;
+    }
 
+    // SEE IF A FILE EXISTS
+    bool fileexists(string path)
+    {
+#ifdef __WIN__
+        WIN32_FIND_DATA FindFileData;
+        HANDLE hFind = FindFirstFile(path.c_str(), &FindFileData);
+        FindClose(hFind);
+        return hFind != INVALID_HANDLE_VALUE;
+#endif
 
-
-////////////////////////////////////////////////////////////////
-//	EXPAND TOKENS IN PATH
-
-	string expandpath(string path)
-	{
-
-		if (path.length())
-		{
-			if (path.substr(0,1) == "~")
-			{
-
-				//	string to take HOME directory
-				string SHOME;
-
-	#ifdef __WIN__
-
-				//	can get from environment
-				SHOME = os::getenv("USERPROFILE");
-
-	#endif
-
-	#ifdef __NIX__
-
-				//	can get from environment
-				SHOME = os::getenv("HOME");
-
-				//	but if not there, can get from system
-				if (!SHOME.length())
-				{
-					struct passwd* pw = getpwuid(getuid());
-					if (pw) SHOME = pw->pw_dir;
-				}
-
-	#endif
-
-				//	replace, or don't bother if empty
-				if (SHOME.length())
-				{
-					path = SHOME + path.substr(1);
-				}
-
-			}
-		}
-
-		//	ok
-		return path;
-	}
-
-
-
-////////////////////////////////////////////////////////////////
-//	SEE IF A FILE EXISTS
-
-	bool fileexists(string path)
-	{
-
-	#ifdef __WIN__
-
-		WIN32_FIND_DATA FindFileData;
-		HANDLE hFind = FindFirstFile(path.c_str(), &FindFileData);
-		FindClose(hFind);
-		return hFind != INVALID_HANDLE_VALUE;
-
-	#endif
-
-	#ifdef __NIX__
-
-		struct stat buf;
-		return !stat(path.c_str(), &buf);
-
-	#endif
-
-	}
-
-
-
-
-
-////	END NAMESPACE
-
+#ifdef __NIX__
+        struct stat buf;
+        return !stat(path.c_str(), &buf);
+#endif
+    }
 }

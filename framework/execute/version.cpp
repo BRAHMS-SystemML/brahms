@@ -30,8 +30,17 @@ ________________________________________________________________
 
 */
 
+// Ensure __NIX__ and __WIN__ etc are set up and also get FrameworkVersion
+#ifndef BRAHMS_BUILDING_ENGINE
+#define BRAHMS_BUILDING_ENGINE
+#endif
+#include "brahms-client.h"
+using brahms::FrameworkVersion;
 
-////////////////	ENGINE VERSION
+#include <string>
+using std::string;
+#include <sstream>
+using std::ostringstream;
 
 const FrameworkVersion VERSION_ENGINE = {
 	VERSION_ENGINE_MAJ,
@@ -45,17 +54,3 @@ inline void v2s(UINT16 version, ostringstream &ret)
 	if (version == 0xFFFF) ret << "?";
 	else ret << version;
 }
-
-string toString(FrameworkVersion v)
-{
-	ostringstream ret;
-	v2s(v.major, ret);
-	ret << ".";
-	v2s(v.minor, ret);
-	ret << ".";
-	v2s(v.release, ret);
-	ret << ".";
-	v2s(v.revision, ret);
-	return ret.str();
-}
-

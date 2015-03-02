@@ -30,52 +30,58 @@ ________________________________________________________________
 
 */
 
+#ifndef _EXECUTE_FERR_H_
+#define _EXECUTE_FERR_H_
 
+#include <string>
+using std::string;
+#include <sstream>
+using std::stringstream;
 
 ////////////////	ERROR INTERFACE
+class ErrorBuilder
+{
 
-	class ErrorBuilder
-	{
+public:
 
-	public:
+    //	ctor
+    ErrorBuilder()
+        {
+        }
 
-		//	ctor
-		ErrorBuilder()
-		{
-		}
+    //	copy ctor (copy is used to invoke throwing)
+    ErrorBuilder(const ErrorBuilder& src)
+        {
+            string err = src.msg.str();
+            err += "\n\tat " + src.trace.str();
+            throw err;
+        }
 
-		//	copy ctor (copy is used to invoke throwing)
-		ErrorBuilder(const ErrorBuilder& src)
-		{
-			string err = src.msg.str();
-			err += "\n\tat " + src.trace.str();
-			throw err;
-		}
+    //	handle data
+    template<class T> ErrorBuilder& operator<<(const T& data)
+        {
+            msg << data;
+            return (*this);
+        }
 
-		//	handle data
-		template<class T> ErrorBuilder& operator<<(const T& data)
-		{
-			msg << data;
-			return (*this);
-		}
+    //	handle function
+    template<class T> ErrorBuilder& operator<<(T& (*data)(T&))
+        {
+            msg << data;
+            return (*this);
+        }
 
-		//	handle function
-		template<class T> ErrorBuilder& operator<<(T& (*data)(T&))
-		{
-			msg << data;
-			return (*this);
-		}
+    //	handle trace
+    ErrorBuilder& at(const char* file, int line)
+        {
+            trace << file << ":" << line;
+            return (*this);
+        }
 
-		//	handle trace
-		ErrorBuilder& at(const char* file, int line)
-		{
-			trace << file << ":" << line;
-			return (*this);
-		}
+    //	members
+    stringstream msg, trace;
+};
 
-		//	members
-		stringstream msg, trace;
-	};
+#define client_err ErrorBuilder unusedInstanceInvokesCopyCtor = ErrorBuilder().at(__FILE__, __LINE__)
 
-	#define client_err ErrorBuilder unusedInstanceInvokesCopyCtor = ErrorBuilder().at(__FILE__, __LINE__)
-
+#endif // _EXECUTE_FERR_H_

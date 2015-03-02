@@ -22,56 +22,36 @@ ________________________________________________________________
 
 	Subversion Repository Information (automatically updated on commit)
 
-	$Id:: os.h 2251 2009-10-31 01:42:16Z benjmitch             $
-	$Rev:: 2251                                                $
+	$Id:: info.cpp 2389 2009-11-18 11:40:24Z benjmitch         $
+	$Rev:: 2389                                                $
 	$Author:: benjmitch                                        $
-	$Date:: 2009-10-31 01:42:16 +0000 (Sat, 31 Oct 2009)       $
+	$Date:: 2009-11-18 11:40:24 +0000 (Wed, 18 Nov 2009)       $
 ________________________________________________________________
 
 */
 
-#ifndef _EXECUTE_OS_H_
-#define _EXECUTE_OS_H_
+#ifndef _EXECUTE_INFO_H_
+#define _EXECUTE_INFO_H_
 
-// Ensure __NIX__ is set up
 #ifndef BRAHMS_BUILDING_ENGINE
 #define BRAHMS_BUILDING_ENGINE
 #endif
 #include "brahms-client.h"
+using brahms::FrameworkVersion;
 
-#include <string>
-using std::string;
+extern const FrameworkVersion VERSION_ENGINE;
 
-#ifdef __NIX__
-# include "errno.h"
-# include "pthread.h"
-# include <dlfcn.h>
-# include <time.h>
-# include <sys/stat.h>
-# include <sys/time.h>
-# include <sys/times.h>
-# include <pwd.h>
-# ifdef __GUI__
-#  include <X11/Intrinsic.h>
-# endif
-// store last error here
-extern string lasterr;
-#endif
-
-#ifdef __WIN__
-# define _WIN32_IE 0x0500
-# define _WIN32_WINNT 0x0500
-# define WIN32_LEAN_AND_MEAN
-# include "windows.h"
-# include "commctrl.h"
-# include "shlobj.h"
-#endif
-
-namespace os
+// INFORMATION OPERATIONS
+namespace brahms
 {
-    string expandpath(string path);
-    string getenv(string key, bool exceptionIfAbsent = true);
-    bool fileexists(string path);
+	namespace info
+	{
+            void version(bool simple = false);
+            void usage();
+            void license();
+            void credits();
+            void audit();
+	}
 }
 
-#endif // _EXECUTE_OS_H_
+#endif // _EXECUTE_INFO_H_

@@ -30,19 +30,13 @@ ________________________________________________________________
 
 */
 
-
-
 /*
-
 	BRAHMS "solo" consists of a single Voice running on its own, which
 	will be asked to process the whole system.
 
 	BRAHMS "concerto" consists of one or more Voices running in synchrony,
 	and this is one of them.
-
 */
-
-
 
 #include <iostream>
 #include <vector>
@@ -53,6 +47,7 @@ using namespace std;
 
 #ifdef __GLN__
 #include <string.h>
+#include <stdlib.h> // atof
 #endif
 
 #include "brahms-client.h"
@@ -60,20 +55,16 @@ using namespace brahms;
 
 #include "ferr.h"
 #include "version.cpp"
-#include "os.cpp"
-#include "tfs.cpp"
-#include "info.cpp"
+#include "os.h"
+#include "tfs.h"
+#include "info.h"
 #include "gui/gui.h"
 
 #ifdef __NIX__
 #include <string.h>
 #endif
 
-
-
-
 ////////////////	GLOBALS
-
 enum Operation
 {
 	OP_NULL = 0,
@@ -107,7 +98,7 @@ struct Instance
 	brahms::WalkLevel walkLevel;
 	string execPars;
 	string logLevels;
-	
+
 	string logFilename;
 	string exitFilename;
 }
@@ -456,12 +447,12 @@ EngineResult execute(int argc, char *argv[])
 			case OP_AUDIT:
 				brahms::info::audit();
 				return engineResult;
-				
+
 			default:
 				//	just continue
 				;
 		}
-		
+
 		//	create engine
 		Engine engine;
 
@@ -473,7 +464,7 @@ EngineResult execute(int argc, char *argv[])
 			//	voice is now defined (if VOICE_FROM_MPI, was defined when engine was created)
 			if (createEngine.voiceIndex == VOICE_UNDEFINED)
 				client_err << "E_VOICE_UNDEFINED: voice undefined when first required";
-				
+
 			//	so we can replace tokens in file names
 			stringstream ss;
 			ss << (createEngine.voiceIndex + 1);
@@ -616,7 +607,7 @@ int main(int argc, char *argv[])
 
 	//	exit file will carry error code and message count (engine result)
 	EngineResult engineResult;
-	
+
 	//	we mustn't fall over if an exception is thrown since we *have* to write that exit file
 	try
 	{
@@ -664,5 +655,3 @@ int main(int argc, char *argv[])
 	//	return error/no-error code
 	return errorcode;
 }
-
-
