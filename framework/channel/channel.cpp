@@ -53,6 +53,8 @@ TODO: CHANNEL MUTEX
 //	includes
 #include "BrahmsConfig.h" // For __MSI__ and __SOCKETS__
 #include "base/base.h"
+#include "base/ipm.h"
+using brahms::base::IPM;
 #include "channel.h"
 #include <queue>
 #ifdef __NIX__
@@ -64,51 +66,47 @@ using namespace brahms::channel;
 using namespace brahms::base;
 using namespace brahms::output;
 
-//	safe IPM holder
-struct SAFE_IPM
+// SAFE_IPM implementation
+//@{
+SAFE_IPM::SAFE_IPM()
 {
-	SAFE_IPM()
-	{
-		m_ipm = NULL;
-	}
+    m_ipm = NULL;
+}
 
-	~SAFE_IPM()
-	{
-		release();
-	}
+SAFE_IPM::~SAFE_IPM()
+{
+    release();
+}
 
-	IPM*& ipm()
-	{
-		return m_ipm;
-	}
+IPM*& SAFE_IPM::ipm()
+{
+    return m_ipm;
+}
 
-	void release()
-	{
-		if (m_ipm)
-		{
-			IPM* temp = m_ipm;
-			m_ipm = NULL;
-			temp->release();
-		}
-	}
+void SAFE_IPM::release()
+{
+    if (m_ipm)
+    {
+        IPM* temp = m_ipm;
+        m_ipm = NULL;
+        temp->release();
+    }
+}
 
-	IPM* retrieve()
-	{
-		IPM* temp = m_ipm;
-		m_ipm = NULL; // we are relieved of this responsibility
-		return temp;
-	}
-
-	IPM* m_ipm;
-};
+IPM* SAFE_IPM::retrieve()
+{
+    IPM* temp = m_ipm;
+    m_ipm = NULL; // we are relieved of this responsibility
+    return temp;
+}
+//@}
 
 UINT32 unitIndex(UINT32 i)
 {
 	return i + 1;
 }
 
-////////////////	IPM DUMP
-
+// ipm_dump implementation
 void ipm_dump(IPM* ipm, brahms::output::Source& tout, const char* name)
 {
 	tout << "--- IPM " << name << " ---" << D_INFO;
@@ -141,7 +139,6 @@ void ipm_dump(IPM* ipm, brahms::output::Source& tout, const char* name)
 	}
 #endif
 
-#include "fifo.cpp"
 #include "deliverer.h"
 
 #ifdef __MPI__
@@ -149,26 +146,20 @@ void ipm_dump(IPM* ipm, brahms::output::Source& tout, const char* name)
 #endif
 
 #ifdef __SOCKETS__
-#include "sockets.cpp"
+#include "sockets.h"
 #endif
 
+CompressFunction* compressFunction = NULL;
 
 ////////////////	START NAMESPACE
 
 namespace brahms
 {
-
-
-
-
-
 ////////////////	CHANNEL CLASS
 
-	Channel::~Channel()
-	{
-	}
-
-
+    channel::Channel::~Channel()
+    {
+    }
 
 ////////////////	DERIVED CHANNEL CLASS
 
@@ -551,43 +542,24 @@ namespace brahms
 		protocolChannel.stopRouting(fout);
 	}
 
+    //	EXPORTS
+    namespace channel
+    {
+        // COMMS INIT FUNCTION
+        BRAHMS_CHANNEL_VIS CommsInitData commsInit(brahms::base::Core& core, CompressFunction* p_compressFunction)
+        {
+            //	store compressFunction, if supplied
+            compressFunction = p_compressFunction;
+            //	initialize comms layer
+            return commsLayer.init(core);
+        }
 
-
-
-
-
-
-
-
-////////////////	EXPORTS
-
-	namespace channel
-	{
-
-
-
-////////////////	COMMS INIT FUNCTION
-
-		BRAHMS_CHANNEL_VIS CommsInitData commsInit(brahms::base::Core& core, CompressFunction* p_compressFunction)
-		{
-			//	store compressFunction, if supplied
-			compressFunction = p_compressFunction;
-
-			//	initialize comms layer
-			return commsLayer.init(core);
-		}
-
-
-////////////////	CREATE CHANNEL FUNCTION
-
-		BRAHMS_CHANNEL_VIS Channel* createChannel(brahms::base::Core& core, ChannelInitData channelInitData)
-		{
-			if (!commsLayer.isinit())
-				ferr << E_INTERNAL << "must call commsInit() before createChannel()";
-			return new DerivedChannel(channelInitData, core);
-		}
-
-
-
-	}
+        // CREATE CHANNEL FUNCTION
+        BRAHMS_CHANNEL_VIS Channel* createChannel(brahms::base::Core& core, ChannelInitData channelInitData)
+        {
+            if (!commsLayer.isinit())
+                ferr << E_INTERNAL << "must call commsInit() before createChannel()";
+            return new DerivedChannel(channelInitData, core);
+        }
+    }
 }

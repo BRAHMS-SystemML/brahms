@@ -30,8 +30,7 @@ ________________________________________________________________
 
 */
 
-
-
+#include "sockets.h"
 
 ////////////////	RECEIVER PROCEDURE
 
@@ -94,12 +93,12 @@ void ProtocolChannel::MemberReceiverThreadProc()
 			}
 
 			/*	DOCUMENTATION: IPM_POOL
-			
+
 				PUSHDATA messages are read directly into a buffer from the
 				pool associated with their deliverer thread. Messages other
 				than PUSHDATA are put into a buffer from the channel slush
 				pool.
-				
+
 				Control messages are returned to the pool directly (see below).
 				PUSHDATA messages are routed to a deliverer thread, and that
 				thread will repool them. Other messages are placed in the receive
@@ -397,14 +396,10 @@ void ProtocolChannel::MemberReceiverThreadProc()
 	//	output must be *identical* (search tag PUSHDATA_IDENTICAL_TO_ALL_SENDERS), and since
 	//	the buffer estimates are per-receiver, they are not identical. therefore, this strategy
 	//	won't currently work. needs more thought.
-	
+
 	tout << "numMsgsRecv = " << numMsgsRecv << D_VERB;
 	tout << "numPushDataMsgsRecv = " << numPushDataMsgsRecv << D_VERB;
 	tout << "numUsedDataMsgsSentAfterPush = " << numUsedDataMsgsSentAfterPush << D_VERB;
 	tout << "numUsedDataMsgsSentAfterQuery = " << numUsedDataMsgsSentAfterQuery << D_VERB;
 	tout << "numPartialReceiveOnPeek = " << numPartialReceiveOnPeek << D_VERB;
 }
-
-
-
-

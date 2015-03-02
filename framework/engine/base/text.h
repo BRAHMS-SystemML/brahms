@@ -30,12 +30,13 @@ ________________________________________________________________
 
 */
 
-
-
 #ifndef INCLUDED_BRAHMS_BASE_TEXT
 #define INCLUDED_BRAHMS_BASE_TEXT
 
-
+#include <string>
+using std::string;
+#include <vector>
+using std::vector;
 
 namespace brahms
 {
@@ -64,12 +65,10 @@ namespace brahms
 		return ((DOUBLE)sr.den) / ((DOUBLE)sr.num);
 	}
 
-
-
 	namespace text
 	{
 		void grep(string& str, const string what, const string with);
-		VSTRING explode(const string delim, const string& data);
+		vector<string> explode(const string delim, const string& data);
 		void trim(string& str);
 		const char* type2string(TYPE type);
 		string precision2string(INT32 prec);
@@ -86,8 +85,4 @@ namespace brahms
 	}
 }
 
-
-
-#endif
-
-
+#endif // INCLUDED_BRAHMS_BASE_TEXT

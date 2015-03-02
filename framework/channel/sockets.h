@@ -30,6 +30,9 @@ ________________________________________________________________
 
 */
 
+#ifndef _CHANNEL_SOCKETS_H_
+#define _CHANNEL_SOCKETS_H_
+
 // Ensure __NIX__ and __WIN__ etc are set up
 #ifndef BRAHMS_BUILDING_ENGINE
 #define BRAHMS_BUILDING_ENGINE
@@ -98,7 +101,7 @@ struct ProtocolChannel
 	ProtocolChannel(ChannelInitData channelInitData, brahms::base::Core& p_core)
 		:
 		core(p_core),
-		channelSlushPool("channelSlushPool " + n2s(channelInitData.remoteVoiceIndex+1)),
+		channelSlushPool("channelSlushPool " + uint32_n2s(channelInitData.remoteVoiceIndex+1)),
 		sender(channelInitData.remoteVoiceIndex, p_core),
 		receiver(channelInitData.remoteVoiceIndex, p_core)
 	{
@@ -647,3 +650,5 @@ struct ProtocolChannel
 	}
 
 };
+
+#endif // _CHANNEL_SOCKETS_H_

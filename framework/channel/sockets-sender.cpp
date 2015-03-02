@@ -30,8 +30,7 @@ ________________________________________________________________
 
 */
 
-
-
+#include "sockets.h"
 
 ////////////////	SENDER PROCEDURE
 
@@ -62,7 +61,7 @@ void ProtocolChannel::MemberSenderThreadProc()
 			REPORT_THREAD_WAIT_STATE_IN("pull()");
 			Symbol result = sender.q.pull(messageForDispatch.ipm());
 			REPORT_THREAD_WAIT_STATE_OUT("pull()");
-			
+
 			//	if timeout
 			if (result == E_SYNC_TIMEOUT)
 			{
@@ -76,7 +75,7 @@ void ProtocolChannel::MemberSenderThreadProc()
 			}
 
 
-	
+
 	////////////////	A MESSAGE IS READY TO BE SENT
 
 			//	get pointer to header
@@ -104,7 +103,7 @@ void ProtocolChannel::MemberSenderThreadProc()
 	////////////////	AUDIT
 
 
-			//	audit			
+			//	audit
 			sender.simplex.uncompressed += totalBytesToSend;
 
 
@@ -239,7 +238,7 @@ void ProtocolChannel::MemberSenderThreadProc()
 				REPORT_THREAD_WAIT_STATE_IN("send()");
 				int bytesSent = send(dataSocket, (const char*)nextByteToSend, remainingBytesToSend, 0);
 				REPORT_THREAD_WAIT_STATE_OUT("send()");
-		
+
 				//	check for error
 				if (bytesSent == OS_SOCKET_ERROR)
 				{
@@ -309,6 +308,3 @@ void ProtocolChannel::MemberSenderThreadProc()
 		sender.thread.storeError(e, tout);
 	}
 }
-
-
-

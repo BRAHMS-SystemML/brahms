@@ -30,8 +30,8 @@ ________________________________________________________________
 
 */
 
-#ifndef _CHANNEL_FIFO_CPP_
-#define _CHANNEL_FIFO_CPP_
+#ifndef _CHANNEL_FIFO_H_
+#define _CHANNEL_FIFO_H_
 
 #include <queue>
 using std::queue;
@@ -166,4 +166,4 @@ struct IPM_FIFO
 	QueueAuditData m_audit;
 };
 
-#endif // _CHANNEL_FIFO_CPP_
+#endif // _CHANNEL_FIFO_H_

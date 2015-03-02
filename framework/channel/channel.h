@@ -30,9 +30,6 @@ ________________________________________________________________
 
 */
 
-
-
-
 ////////////////	INTER-PROCESS COMMUNICATIONS CHANNEL (CONCERTO ONLY)
 
 #ifndef INCLUDED_BRAHMS_CHANNEL
@@ -47,6 +44,7 @@ ________________________________________________________________
 #include "compress.h"
 #include "base/ipm.h"
 using brahms::base::QueueAuditData;
+using brahms::base::IPM;
 #include "base/core.h"
 #include <string>
 using std::string;
@@ -61,7 +59,6 @@ using std::string;
 #endif
 
 //#define REPORT_WAIT_STATES
-
 #ifdef REPORT_WAIT_STATES
 #define REPORT_THREAD_WAIT_STATE_IN(w) tout << "WAIT IN (" << w << ")" << D_INFO;
 #define REPORT_THREAD_WAIT_STATE_OUT(w) tout << "WAIT OUT (" << w << ")" << D_INFO;
@@ -80,29 +77,41 @@ struct QueueAuditDataX
 
 	QueueAuditData queueAuditData;
 
-	//	increment when send QUERYBUFFER, decrement when receive USEDDATA
+	// increment when send QUERYBUFFER, decrement when receive USEDDATA
 	UINT32 queryBufferMsgsUnaccountedFor;
 };
 
+/*
+ * A global sleep function. Compiles using differing system code on
+ * differing platforms. Wraps usleep() on Unix, Sleep() on Windows.
+ */
 void os_msleep(UINT32 ms);
 
-// FIXME: Put this in a singleton to avoid multiple definitions when
-// #including channel.h. Also, separate code sensibly in
-// channel.h/cpp. Work for tomorrow!
+// compress function, if available. typedeffed in
+// compress/compress.h. Initialise to 0 in object code.
+extern CompressFunction* compressFunction;
 
-//	compress function, if available
-CompressFunction* compressFunction = NULL;
+//	safe IPM holder
+struct SAFE_IPM
+{
+    SAFE_IPM();
+    ~SAFE_IPM();
+
+    IPM*& ipm();
+    void release();
+    IPM* retrieve();
+
+    IPM* m_ipm;
+};
+
+UINT32 unitIndex(UINT32 i);
+
+void ipm_dump(IPM* ipm, brahms::output::Source& tout, const char* name);
 
 namespace brahms
 {
 	namespace channel
 	{
-
-
-
-////////////////	PROTOCOL
-
-		//	enum protocol
 		enum Protocol
 		{
 			PROTOCOL_NULL = 0,
@@ -116,7 +125,6 @@ namespace brahms
 			PROTOCOL_MPI = 1,
 			PROTOCOL_SOCKETS = 2
 		};
-
 
 
 ////////////////	INITIALISATION DATA
@@ -167,9 +175,6 @@ namespace brahms
 		};
 
 
-
-////////////////	MISCELLANEOUS
-
 		//	use default timeout rather than anything specific
 		const UINT32 COMMS_TIMEOUT_DEFAULT = 0x80000001;
 
@@ -177,15 +182,9 @@ namespace brahms
 		typedef Symbol (*PushDataHandler)(void* arg, BYTE* stream, UINT32 count);
 
 
-
-////////////////	CHANNEL CLASS
-
-		//	channel class
 		class Channel
 		{
-
 		public:
-
 			virtual ~Channel();
 
 			virtual Symbol open(brahms::output::Source& fout) = 0;
@@ -225,7 +224,6 @@ namespace brahms
 			//	audit the state of the channel, to give feedback to the user
 			//	return true if the data has been filled in for all channels
 			virtual bool audit(ChannelAuditData& data) = 0;
-
 		};
 
 		//	export prototypes
@@ -235,12 +233,7 @@ namespace brahms
 		//	export declarations
 		BRAHMS_CHANNEL_VIS CommsInitData commsInit(brahms::base::Core& core, CompressFunction* p_compressFunction);
 		BRAHMS_CHANNEL_VIS Channel* createChannel(brahms::base::Core& core, ChannelInitData channelInitData);
-
-
-
 	}
 }
 
-////////////////	INCLUSION GUARD
-
-#endif
+#endif // INCLUDED_BRAHMS_CHANNEL
