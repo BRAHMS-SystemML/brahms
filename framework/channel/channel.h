@@ -151,13 +151,7 @@ namespace brahms
 		//	channel simplex data
 		struct ChannelSimplexData
 		{
-			ChannelSimplexData()
-			{
-				uncompressed = 0;
-				compressed = 0;
-				queue = 0;
-			}
-
+			ChannelSimplexData();
 			UINT64 uncompressed;
 			UINT64 compressed;
 			UINT32 queue;

@@ -563,3 +563,10 @@ namespace brahms
         }
     }
 }
+
+ChannelSimplexData::ChannelSimplexData()
+{
+    uncompressed = 0;
+    compressed = 0;
+    queue = 0;
+}
