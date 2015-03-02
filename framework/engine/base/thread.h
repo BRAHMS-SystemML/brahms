@@ -35,9 +35,9 @@ ________________________________________________________________
 #ifndef INCLUDED_BRAHMS_FRAMEWORK_BASE_THREAD
 #define INCLUDED_BRAHMS_FRAMEWORK_BASE_THREAD
 
-//#include "base/brahms_error.h"
-//#include "base/output.h"
-//#include "base/brahms_time.h"
+#include "base/brahms_error.h"
+#include "base/output.h"
+#include "base/brahms_time.h"
 
 ////////////////	NAMESPACE
 

@@ -112,17 +112,13 @@ namespace brahms
 			string path;
 
 	#ifdef __WIN__
-
 			WIN32_FIND_DATA FindData;
 			HANDLE hFind;
-
 	#endif
 
 	#ifdef __NIX__
-
 			void* dir;
 			void* ent;
-
 	#endif
 
 		};

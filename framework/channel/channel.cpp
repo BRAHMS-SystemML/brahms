@@ -107,22 +107,6 @@ UINT32 unitIndex(UINT32 i)
 	return i + 1;
 }
 
-struct QueueAuditDataX
-{
-	QueueAuditDataX()
-	{
-		queueAuditData.clear();
-		queryBufferMsgsUnaccountedFor = 0;
-	}
-
-	QueueAuditData queueAuditData;
-
-	//	increment when send QUERYBUFFER, decrement when receive USEDDATA
-	UINT32 queryBufferMsgsUnaccountedFor;
-};
-
-
-
 ////////////////	IPM DUMP
 
 void ipm_dump(IPM* ipm, brahms::output::Source& tout, const char* name)
@@ -141,34 +125,24 @@ void ipm_dump(IPM* ipm, brahms::output::Source& tout, const char* name)
 	tout << "xxx IPM " << name << " xxx" << D_INFO;
 }
 
-
-
 ////////////////	INCLUDE COMMON STUFF & COMMS PROTOCOL
 
 #ifdef __WIN__
-
 	void os_msleep(UINT32 ms)
 	{
 		Sleep(ms);
 	}
-
 #endif
 
 #ifdef __NIX__
-
 	void os_msleep(UINT32 ms)
 	{
 		usleep(ms * 1000);
 	}
-
 #endif
 
-//	compress function, if available
-CompressFunction* compressFunction = NULL;
-
-//#include "compress.cpp"
 #include "fifo.cpp"
-#include "deliverer.cpp"
+#include "deliverer.h"
 
 #ifdef __MPI__
 #include "mpi.cpp"

@@ -38,12 +38,21 @@ ________________________________________________________________
 #ifndef INCLUDED_BRAHMS_CHANNEL
 #define INCLUDED_BRAHMS_CHANNEL
 
+// Ensure __NIX__ and __WIN__ etc are set up
+#ifndef BRAHMS_BUILDING_ENGINE
+#define BRAHMS_BUILDING_ENGINE
+#endif
+#include "brahms-client.h"
+
 #include "compress.h"
 #include "base/ipm.h"
+using brahms::base::QueueAuditData;
 #include "base/core.h"
 #include <string>
-
 using std::string;
+#ifdef __NIX__
+#include <unistd.h>
+#endif
 
 #ifdef BRAHMS_BUILDING_CHANNEL
 #define BRAHMS_CHANNEL_VIS BRAHMS_DLL_EXPORT
@@ -60,6 +69,29 @@ using std::string;
 #define REPORT_THREAD_WAIT_STATE_IN(w) ;
 #define REPORT_THREAD_WAIT_STATE_OUT(w) ;
 #endif
+
+struct QueueAuditDataX
+{
+	QueueAuditDataX()
+	{
+		queueAuditData.clear();
+		queryBufferMsgsUnaccountedFor = 0;
+	}
+
+	QueueAuditData queueAuditData;
+
+	//	increment when send QUERYBUFFER, decrement when receive USEDDATA
+	UINT32 queryBufferMsgsUnaccountedFor;
+};
+
+void os_msleep(UINT32 ms);
+
+// FIXME: Put this in a singleton to avoid multiple definitions when
+// #including channel.h. Also, separate code sensibly in
+// channel.h/cpp. Work for tomorrow!
+
+//	compress function, if available
+CompressFunction* compressFunction = NULL;
 
 namespace brahms
 {

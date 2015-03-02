@@ -45,7 +45,7 @@ using std::ostringstream;
 using std::vector;
 #include <fstream>
 using std::ofstream;
-//#include "base/os.h"
+#include "base/os.h"
 
 ////////////////	NAMESPACE
 

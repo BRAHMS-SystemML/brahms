@@ -36,6 +36,9 @@ ________________________________________________________________
 #include <queue>
 using std::queue;
 #include "base/os.h"
+#include "base/ipm.h"
+using brahms::base::IPM;
+using brahms::base::QueueAuditData;
 
 ////////////////	THREAD-SAFE FIRST-IN-FIRST-OUT QUEUE CLASS
 

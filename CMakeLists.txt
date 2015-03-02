@@ -11,19 +11,19 @@ set(VERSION_BRAHMS_REV 0)
 # From CMAKE_SYSTEM #define __OSX__ or __GLN__ etc
 if(CMAKE_SYSTEM MATCHES Linux.*)
   message(STATUS "CMAKE_SYSTEM: " ${CMAKE_SYSTEM})
-  set(BRAHMS_HOST_DEFINITION __GLN__)
+  set(BRAHMS_HOST_DEFINITION "-D__GLN__")
 elseif(CMAKE_SYSTEM MATCHES BSD.*)
-  set(BRAHMS_HOST_DEFINITION __NIX__)
+  set(BRAHMS_HOST_DEFINITION "-D__NIX__")
 elseif(CMAKE_SYSTEM MATCHES Mac.*)
-  set(BRAHMS_HOST_DEFINITION __OSX__)
+  set(BRAHMS_HOST_DEFINITION "-D__OSX__")
 elseif(CMAKE_SYSTEM MATCHES Win.*)
-  set(BRAHMS_HOST_DEFINITION __WIN__)
+  set(BRAHMS_HOST_DEFINITION "-D__WIN__")
 else()
   message(ERROR "Platform not supported: " ${CMAKE_SYSTEM})
 endif()
 
 # CFLAGS
-set(CMAKE_CXX_FLAGS -D${BRAHMS_HOST_DEFINITION})
+set(CMAKE_CXX_FLAGS ${BRAHMS_HOST_DEFINITION})
 message(STATUS "Flags " ${CMAKE_CXX_FLAGS})
 
 # This needs work - it's too simplistic and I've no idea if it would

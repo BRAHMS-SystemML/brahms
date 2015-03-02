@@ -30,41 +30,38 @@ ________________________________________________________________
 
 */
 
+// Ensure __NIX__ and __WIN__ etc are set up
+#ifndef BRAHMS_BUILDING_ENGINE
+#define BRAHMS_BUILDING_ENGINE
+#endif
+#include "brahms-client.h"
 
-
-#include "sockets-support.cpp"
-
-
-
-
-
+#include "sockets-support.h"
+#include <string>
+using std::string;
+#include <sstream>
+using std::stringstream;
+#include "deliverer.h"
+#include "base/brahms_math.h"
+using brahms::math::unitIndex;
+#include "compress.h"
 
 ////////////////	THREAD PROCEDURE DECLARATIONS
-
 /*
-
 	These static thread procedures take one argument, the
 	ProtocolChannel object, and simply call the member
 	function thread procedure on that object.
-
 */
 
 void SenderThreadProc(void* arg);
 void ReceiverThreadProc(void* arg);
 
-
-
 ////////////////	COMMS PROTOCOL
-
 const UINT32 CONNECTION_ATTEMPT_INTERVAL_MS = 25;
 
-
-
 ////////	PROTOCOL CHANNEL
-
 struct ProtocolChannel
 {
-
 	//	sockets
 	OS_SOCKET				dataSocket;			//	all send/recv goes on this one
 	OS_SOCKET				serverListenSocket;	//	this one is the local socket used by the server only
@@ -127,11 +124,11 @@ struct ProtocolChannel
 		UINT32 SocketsBasePort = core.execPars.getu("SocketsBasePort");
 		localPort = listenPort(SocketsBasePort, core.getVoiceCount(), core.getVoiceIndex(), channelInitData.remoteVoiceIndex);
 		remotePort = listenPort(SocketsBasePort, core.getVoiceCount(), channelInitData.remoteVoiceIndex, core.getVoiceIndex());
-		
+
 		//	misc
 		sender.flushed = false;
 	}
-	
+
 	void flush(brahms::output::Source& tout)
 	{
 		//	flush send queue (basically, of PUSHDATA msgs that may generate late callbacks)
@@ -141,7 +138,7 @@ struct ProtocolChannel
 		IPM* ipms = channelSlushPool.get(IPMTAG_FLUSH, channelInitData.remoteVoiceIndex);
 		ipms->header().from = core.getVoiceIndex();
 		sender.q.push(ipms);
-		
+
 		//	wait for that to be registered
 		while(!sender.flushed)
 			os_msleep(1);
@@ -189,7 +186,7 @@ struct ProtocolChannel
 		//	ok
 		core.caller.tout << "listening!" << D_FULL;
 	}
-	
+
 	void open(brahms::output::Source& fout)
 	{
 		//	connect() watchdog timer
@@ -271,7 +268,7 @@ struct ProtocolChannel
 						connected = true;
 					}
 				}
-				
+
 				//	if connected, report and break infinite loop
 				if (connected)
 				{
@@ -567,7 +564,7 @@ struct ProtocolChannel
 
 		//	message queue
 		IPM_FIFO q;
-	
+
 		//	receiver thread
 		brahms::thread::Thread thread;
 
@@ -650,13 +647,3 @@ struct ProtocolChannel
 	}
 
 };
-
-
-
-
-
-
-#include "sockets-sender.cpp"
-#include "sockets-receiver.cpp"
-
-

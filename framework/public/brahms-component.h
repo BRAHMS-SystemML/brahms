@@ -119,10 +119,14 @@ ________________________________________________________________
 
 	//	define __NIX__ for those platforms
 	#ifdef __GLN__
-	#define __NIX__
+        # ifndef __NIX__
+	#  define __NIX__
+        # endif
 	#endif
 	#ifdef __OSX__
-	#define __NIX__
+        # ifndef __NIX__
+	#  define __NIX__
+	# endif
 	#endif
 
 	//	check success

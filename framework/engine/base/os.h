@@ -30,12 +30,14 @@ ________________________________________________________________
 
 */
 
-
-
 #ifndef INCLUDED_BRAHMS_FRAMEWORK_BASE_OS
 #define INCLUDED_BRAHMS_FRAMEWORK_BASE_OS
 
-
+// Ensure __NIX__ and __WIN__ etc are set up
+#ifndef BRAHMS_BUILDING_ENGINE
+#define BRAHMS_BUILDING_ENGINE
+#endif
+#include "brahms-client.h"
 
 #ifdef __WIN__
 #define _WIN32_IE 0x0500
@@ -46,19 +48,20 @@ ________________________________________________________________
 
 #ifdef __NIX__
 #include <pthread.h>
+#else
+#warning "NOT Including pthread"
 #endif
 
-////////////////	NAMESPACE
+//	public interface
+#ifndef BRAHMS_BUILDING_ENGINE
+#define BRAHMS_BUILDING_ENGINE
+#endif
+#include "brahms-client.h"
 
 namespace brahms
 {
 	namespace os
 	{
-
-
-
-	////////////////	MUTEX
-
 		struct Mutex
 		{
 			//	tors
@@ -70,19 +73,14 @@ namespace brahms
 			void release();
 
 		private:
-
 	#ifdef __WIN__
-
 			//	native state
 			CRITICAL_SECTION cs;
-
 	#endif
 
 	#ifdef __NIX__
-
 			//	native mutex
 			pthread_mutex_t mutex;
-
 	#endif
 
 		};
@@ -103,10 +101,6 @@ namespace brahms
 
 			Mutex& mutex;
 		};
-
-
-
-	////////////////	SIGNAL
 
 		const UINT32 SIGNAL_INFINITE_WAIT = 0;
 		const UINT32 SIGNAL_WAIT_STEP = 100;
@@ -129,32 +123,21 @@ namespace brahms
 			const bool* cancel;
 
 	#ifdef __WIN__
-
 			//	state
 			HANDLE				hSignal;
-
 	#endif
 
 	#ifdef __NIX__
-
 			//	state
 			pthread_mutex_t		mutex;
 			pthread_cond_t		cond;
 			bool				state;
-
 	#endif
-
 		};
-
-
-
-	////////////////	TIMER
 
 		class Timer
 		{
-
 		public:
-
 			Timer();
 			~Timer();
 
@@ -166,22 +149,12 @@ namespace brahms
 		private:
 
 			INT64			t_start;					//	time timer was reset
-
 		};
 
 
-
-	////////////////	FUNCTIONS
-
-		void msleep(UINT32 msec);
-
-
-
+            // Additional functions
+            void msleep(UINT32 msec);
 	}
 }
 
-
-
-////////////////	INCLUSION GUARD
-
-#endif
+#endif // INCLUDED_BRAHMS_FRAMEWORK_BASE_OS

@@ -30,15 +30,10 @@ ________________________________________________________________
 
 */
 
-
-
-
 ////////////////	INTER-PROCESS DATA COMPRESSION (CONCERTO ONLY)
 
 #ifndef INCLUDED_BRAHMS_COMPRESS
 #define INCLUDED_BRAHMS_COMPRESS
-
-
 
 #ifdef BRAHMS_BUILDING_COMPRESS
 #define BRAHMS_COMPRESS_VIS BRAHMS_DLL_EXPORT
@@ -46,20 +41,10 @@ ________________________________________________________________
 #define BRAHMS_COMPRESS_VIS BRAHMS_DLL_IMPORT
 #endif
 
-
-
 //	function prototypes
 typedef const char* (CompressFunction)(void* src, UINT32 srcBytes, void* dst, UINT32* dstBytes, INT32 compress);
 
 //	export declaration
 BRAHMS_COMPRESS_VIS const char* Compress(void* src, UINT32 srcBytes, void* dst, UINT32* dstBytes, INT32 compress);
 
-
-
-////////////////	INCLUSION GUARD
-
-#endif
-
-
-
-
+#endif // INCLUDED_BRAHMS_COMPRESS
