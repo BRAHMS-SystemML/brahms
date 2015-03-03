@@ -1,3 +1,5 @@
+set(CMAKE_CXX_FLAGS "${BRAHMS_HOST_DEFINITION} -fPIC -Werror -pthread -O3")
+message(STATUS "Flags for components" ${CMAKE_CXX_FLAGS})
 add_subdirectory(std)
 add_subdirectory(sets)
 add_subdirectory(bench)
