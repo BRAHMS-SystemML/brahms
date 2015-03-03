@@ -30,31 +30,21 @@ ________________________________________________________________
 
 */
 
-//	component information
-#define COMPONENT_RELEASE __REL__
-#define COMPONENT_REVISION __REV__
+#include "BrahmsConfig.h"
+
+// component information
+#define COMPONENT_RELEASE VERSION_BRAHMS_REL
+#define COMPONENT_REVISION VERSION_BRAHMS_REV
 #define COMPONENT_ADDITIONAL "Author=Ben Mitch\n" "URL=http://brahms.sourceforge.net\n"
 
-//	avoid warning
+// avoid warning
 #ifdef _MSC_VER
 #define _CRT_SECURE_NO_DEPRECATE
 #endif
 
-//	include the component interface overlay
+// include the component interface overlay
 #define COMPONENT_DATA
 #include "brahms-1199.h"
-using namespace brahms;
 
-//	STL
-//#include <fstream>
-//#include <limits>
-//#include <algorithm>
-//#include <iterator>
-#include <string>
-#include <vector>
-using namespace std;
-
-//	data
-const struct ComponentVersion COMPONENT_VERSION = {__REL__, __REV__};
-
-
+// data
+const struct ComponentVersion COMPONENT_VERSION = {COMPONENT_RELEASE, COMPONENT_REVISION};

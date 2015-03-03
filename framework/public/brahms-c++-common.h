@@ -45,45 +45,8 @@ ________________________________________________________________
 
 */
 
-
-
-
-////////////////////////////////////////////////////////////////
-//
-//	Half of this file gets processed the first time it is
-//	included, and half the second time. On subsequent includes,
-//	nothing is processed.
-//
-////////////////////////////////////////////////////////////////
-
-
-
-
-
-////////////////////////////////////////////////////////////////
-//
-//	The first section, the H section, gets processed the
-//	*first* time this file is included.
-//
-
-#ifndef INCLUDED_OVERLAY_1
-#define INCLUDED_OVERLAY_1
-
-//
-////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
 #ifndef BRAHMS_BUILD_TARGET
-#define BRAHMS_BUILD_TARGET __BINDING__
+# define BRAHMS_BUILD_TARGET __BINDING__
 #endif
 
 #define BRAHMS_BINDING_NAME __BINDING__
@@ -91,38 +54,22 @@ ________________________________________________________________
 
 #define ____CLEAR(what) memset(&what, 0, sizeof(what))
 
-
-
-
-
-
-
-
-
-
-
-
-
 //  legacy define __LINUX__ means __GLN__
 #ifdef __LINUX__
-#ifndef __GLN__
-#define __GLN__
-#endif
+# ifndef __GLN__
+#  define __GLN__
+# endif
 #endif
 
 //  legacy define __WINDOWS__ means __WIN__
 #ifdef __WINDOWS__
-#ifndef __WIN__
-#define __WIN__
-#endif
+# ifndef __WIN__
+#  define __WIN__
+# endif
 #endif
 
 //  BRAHMS C Component Interface
 #include "brahms-component.h"
-
-
-
-
 
 ////////////////////////////////////////////////////////////////
 //
@@ -299,7 +246,7 @@ namespace brahms
 			std::string msg = src.msg.str();
 			data.msg = msg.c_str();
 			data.flags = 0;
-			
+
 			EngineEvent event;
 			event.hCaller = 0;
 			event.flags = 0;
@@ -932,7 +879,7 @@ namespace brahms
 			event.flags = 0;
 			event.type = ENGINE_EVENT_GET_PORT_ON_SET;
 			event.data = &data;
-			
+
 			Symbol handle = ____SUCCESS(brahms::brahms_engineEvent(&event));
 
 #if __BINDING__ != 1065
@@ -1043,7 +990,7 @@ namespace brahms
 			event.flags = 0;
 			event.type = ENGINE_EVENT_GET_PORT;
 			event.data = &data;
-			
+
 			return ____SUCCESS(brahms::brahms_engineEvent(&event));
 		}
 
@@ -1068,7 +1015,7 @@ namespace brahms
 			event.flags = 0;
 			event.type = ENGINE_EVENT_GET_PORT;
 			event.data = &data;
-			
+
 			Symbol handle = ____SUCCESS(brahms::brahms_engineEvent(&event));
 
 #if __BINDING__ != 1065
@@ -1110,13 +1057,13 @@ namespace brahms
 			data.handledEvent = NULL;
 			data.name = name.c_str();
 			data.index = INDEX_UNDEFINED;
-			
+
 			EngineEvent event;
 			event.hCaller = hObject;
 			event.flags = 0;
 			event.type = ENGINE_EVENT_GET_PORT;
 			event.data = &data;
-			
+
 			return ____SUCCESS(brahms::brahms_engineEvent(&event));
 		}
 
@@ -1138,7 +1085,7 @@ namespace brahms
 			event.flags = 0;
 			event.type = ENGINE_EVENT_SET_PORT_NAME;
 			event.data = (void*) portName;
-			
+
 			____SUCCESS(brahms::brahms_engineEvent(&event));
 		}
 
@@ -1168,7 +1115,7 @@ namespace brahms
 			event.flags = 0;
 			event.type = ENGINE_EVENT_DATA_FROM_PORT;
 			event.data = (void*) &hData;
-			
+
 			____SUCCESS(brahms::brahms_engineEvent(&event));
 
 			//	throw if empty
@@ -1185,7 +1132,7 @@ namespace brahms
 			event.flags = 0;
 			event.type = ENGINE_EVENT_DATA_FROM_PORT;
 			event.data = (void*) &hData;
-			
+
 			____SUCCESS(brahms::brahms_engineEvent(&event));
 
 			//	ok even if empty
@@ -1202,7 +1149,7 @@ namespace brahms
 			event.flags = 0;
 			event.type = ENGINE_EVENT_SET_PORT_SAMPLE_RATE;
 			event.data = (void*) &sampleRate;
-			
+
 			____SUCCESS(brahms::brahms_engineEvent(&event));
 		}
 
@@ -1465,7 +1412,7 @@ namespace brahms
 		{
 			//	call assign
 			assign(&xmlNode);
-			
+
 			//	ok
 			return *this;
 		}
@@ -2620,7 +2567,7 @@ namespace brahms
 				case TYPE_BOOL8 : return "l";
 				default: berr << E_DATAML << "invalid DataML type \"" << std::hex << type << "\"";
 			}
-			
+
 			return NULL;
 		}
 
@@ -3386,7 +3333,7 @@ namespace brahms
 			//	just write out the relative path name, for ease of moving the report data around
 			XMLNode pars(executionInfo->executionParameters);
 			std::string reportpath = pars.getChild("SupplementaryFilePath")->nodeText();
-			
+
 			std::string sfilename = filename;
 			if (sfilename.length() > reportpath.length() && sfilename.substr(0, reportpath.length()) == reportpath)
 			{
@@ -3412,28 +3359,17 @@ namespace brahms
 }
 
 
-
-
-
-
-
-
 /* In order to provide legacy support for these interfaces,
 we have to include the headers, here. This does no harm if
 they are not used (except to slow compilation marginally). */
-
 #ifndef BRAHMS_NO_LEGACY_SUPPORT
-
 //	import brahms namespace
 using namespace brahms;
-
 //	include interfaces for standard data/util components
-#include "std/2009/data/numeric/brahms/0/data.h"
-#include "std/2009/data/spikes/brahms/0/data.h"
-#include "std/2009/util/rng/brahms/0/utility.h"
-
+#include "data_numeric.h"
+#include "data_spikes.h"
+#include "util_rng.h"
 #endif
-
 
 
 ////////////////////////////////////////////////////////////////
@@ -3455,6 +3391,3 @@ const struct ComponentVersion COMPONENT_VERSION =
 
 //
 ////////////////////////////////////////////////////////////////
-
-
-

@@ -1,3 +1,6 @@
+#ifndef _BRAHMS_CONFIG_H_
+#define _BRAHMS_CONFIG_H_
+
 // the configured options and settings for Tutorial
 #define VERSION_BRAHMS_MAJ   @VERSION_BRAHMS_MAJ@
 #define VERSION_BRAHMS_MIN   @VERSION_BRAHMS_MIN@
@@ -13,3 +16,5 @@
 #define ARCH_BITS @ARCH_BITS@
 
 #define BUILD_PLATFORM "Some computer"
+
+#endif // _BRAHMS_CONFIG_H_

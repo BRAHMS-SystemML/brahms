@@ -49,6 +49,6 @@ silent:
 	$(EMPTY_LINE)
 	$(HEADER_LINE) std.h
 	$(EMPTY_LINE)
-	make -s -f makefile.h NAME=data_numeric SUBPATH=$(BASEPATH)/data/numeric TGT=data.h
-	make -s -f makefile.h NAME=data_spikes SUBPATH=$(BASEPATH)/data/spikes TGT=data.h
-	make -s -f makefile.h NAME=util_rng SUBPATH=$(BASEPATH)/util/rng TGT=utility.h
+	make -s -f __makefile.h NAME=data_numeric SUBPATH=$(BASEPATH)/data/numeric TGT=data.h
+	make -s -f __makefile.h NAME=data_spikes SUBPATH=$(BASEPATH)/data/spikes TGT=data.h
+	make -s -f __makefile.h NAME=util_rng SUBPATH=$(BASEPATH)/util/rng TGT=utility.h

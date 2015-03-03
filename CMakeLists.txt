@@ -41,6 +41,9 @@ configure_file (
   "${PROJECT_BINARY_DIR}/BrahmsConfig.h"
 )
 
+# for BrahmsConfig.h
+include_directories ("${CMAKE_BINARY_DIR}")
+
 # Framework include directories
 include_directories ("${PROJECT_SOURCE_DIR}/framework/engine")
 include_directories ("${PROJECT_SOURCE_DIR}/framework/public")
@@ -48,13 +51,14 @@ include_directories ("${PROJECT_SOURCE_DIR}/framework/channel")
 include_directories ("${PROJECT_SOURCE_DIR}/framework/compress")
 include_directories ("${PROJECT_SOURCE_DIR}/framework/public")
 
-include_directories ("${CMAKE_BINARY_DIR}") # for BrahmsConfig.h
+# In the component directory, we'll refer to #include
+# "components/data.h" and "components/process.h" so include the base
+# project source directory.
+include_directories ("${PROJECT_SOURCE_DIR}")
+# These includes provide a path to the legacy component interface header files
+include_directories ("${PROJECT_SOURCE_DIR}/components/std/data/numeric")
+include_directories ("${PROJECT_SOURCE_DIR}/components/std/data/spikes")
+include_directories ("${PROJECT_SOURCE_DIR}/components/std/util/rng")
 
 add_subdirectory(framework)
-
-#add_executable(brahms-execute2
-#  framework/execute/main.cpp framework/execute/info.cpp framework/execute/os.cpp
-#  framework/execute/tfs.cpp framework/execute/version.cpp
-#  )
-#target_link_libraries(brahms-execute2 brahms-engine)
-
+add_subdirectory(components)

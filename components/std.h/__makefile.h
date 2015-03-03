@@ -1,6 +1,6 @@
 
 # include makefile.brahms
-include ../../makefile.brahms
+include ../../__makefile.brahms
 
 # get version data
 REL=0
@@ -18,4 +18,3 @@ $(BINPATH)/$(TGT) : $(NAME).h makefile.h
 	$(call MKDIR, $(BINPATH))
 	$(SHOW_MAKING) $<
 	cat $(NAME).h | sed s/____CLASS_US____/$(USPATH)_$(REL)/ > ${call ONEARG,$(BINPATH)/$(TGT)}
-

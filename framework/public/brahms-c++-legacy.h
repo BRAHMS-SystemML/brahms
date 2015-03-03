@@ -30,565 +30,549 @@ ________________________________________________________________
 
 */
 
-
 /*
-
-	Legacy material from data and util interfaces in Standard Library
-
+  Legacy material from data and util interfaces in Standard Library
 */
-
-
 
 #ifndef BRAHMS_NO_LEGACY_SUPPORT
 
 #define TYPE_DATA_MASK (TYPE_ELEMENT_MASK | TYPE_COMPLEX_MASK)
 
-////////////////	CONSTANTS
-
+//////////////// CONSTANTS
 const Symbol C_STILL_ACTIVE = ENGINE_EVENT_STILL_ACTIVE;
 
-////////////////	DATA/NUMERIC
-
+//////////////// DATA/NUMERIC
 namespace std_2009_data_numeric_0
 {
+    Structure* get_structure(brahms::Symbol hCaller, brahms::Symbol hData)
+    {
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_DATA_STRUCTURE_GET;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = 0;
 
-	Structure* get_structure(brahms::Symbol hCaller, brahms::Symbol hData)
-	{
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_DATA_STRUCTURE_GET;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = 0;
+        // use legacy interface
+        EngineEvent event;
+        event.hCaller = hData;
+        event.flags = 0;
+        event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
+        event.data = (void*) &hev;
+        Symbol result = brahms_engineEvent(&event);
+        if(S_ERROR(result)) throw result;
 
-		//	use legacy interface
-		EngineEvent event;
-		event.hCaller = hData;
-		event.flags = 0;
-		event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
-		event.data = (void*) &hev;
-		Symbol result = brahms_engineEvent(&event);
-		if(S_ERROR(result)) throw result;
+        // structure
+        return (Structure*) hev.event.data;
+    }
 
-		//	structure
-		return (Structure*) hev.event.data;
-	}
+    void set_structure(brahms::Symbol hCaller, brahms::Symbol hData, brahms::TYPE type, const brahms::Dimensions& dims)
+    {
+        // structure
+        Structure structure;
+        structure.type = type;
+        structure.dims = dims;
 
-	void set_structure(brahms::Symbol hCaller, brahms::Symbol hData, brahms::TYPE type, const brahms::Dimensions& dims)
-	{
-		//	structure
-		Structure structure;
-		structure.type = type;
-		structure.dims = dims;
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_DATA_STRUCTURE_SET;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = (void*)&structure;
 
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_DATA_STRUCTURE_SET;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = (void*)&structure;
+        // use legacy interface
+        EngineEvent event;
+        event.hCaller = hData;
+        event.flags = 0;
+        event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
+        event.data = (void*) &hev;
+        Symbol result = brahms_engineEvent(&event);
+        if(S_ERROR(result)) throw result;
+    }
 
-		//	use legacy interface
-		EngineEvent event;
-		event.hCaller = hData;
-		event.flags = 0;
-		event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
-		event.data = (void*) &hev;
-		Symbol result = brahms_engineEvent(&event);
-		if(S_ERROR(result)) throw result;
-	}
+    void set_structure(brahms::Symbol hCaller, brahms::Symbol hData, const Structure& structure)
+    {
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_DATA_STRUCTURE_SET;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = (void*)&structure;
 
-	void set_structure(brahms::Symbol hCaller, brahms::Symbol hData, const Structure& structure)
-	{
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_DATA_STRUCTURE_SET;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = (void*)&structure;
+        // use legacy interface
+        EngineEvent event;
+        event.hCaller = hData;
+        event.flags = 0;
+        event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
+        event.data = (void*) &hev;
+        Symbol result = brahms_engineEvent(&event);
+        if(S_ERROR(result)) throw result;
+    }
 
-		//	use legacy interface
-		EngineEvent event;
-		event.hCaller = hData;
-		event.flags = 0;
-		event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
-		event.data = (void*) &hev;
-		Symbol result = brahms_engineEvent(&event);
-		if(S_ERROR(result)) throw result;
-	}
+    void validate(brahms::Symbol hCaller, brahms::Symbol hData, brahms::TYPE type)
+    {
+        // structure
+        Structure structure;
+        structure.type = type;
 
-	void validate(brahms::Symbol hCaller, brahms::Symbol hData, brahms::TYPE type)
-	{
-		//	structure
-		Structure structure;
-		structure.type = type;
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_DATA_VALIDATE_TYPE;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = (void*)&structure;
 
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_DATA_VALIDATE_TYPE;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = (void*)&structure;
+        // use legacy interface
+        EngineEvent event;
+        event.hCaller = hData;
+        event.flags = 0;
+        event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
+        event.data = (void*) &hev;
+        Symbol result = brahms_engineEvent(&event);
+        if(S_ERROR(result)) throw result;
+    }
 
-		//	use legacy interface
-		EngineEvent event;
-		event.hCaller = hData;
-		event.flags = 0;
-		event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
-		event.data = (void*) &hev;
-		Symbol result = brahms_engineEvent(&event);
-		if(S_ERROR(result)) throw result;
-	}
+    void validate(brahms::Symbol hCaller, brahms::Symbol hData, brahms::TYPE type, const brahms::Dimensions& dims)
+    {
+        // structure
+        Structure structure;
+        structure.type = type;
+        structure.dims = dims;
 
-	void validate(brahms::Symbol hCaller, brahms::Symbol hData, brahms::TYPE type, const brahms::Dimensions& dims)
-	{
-		//	structure
-		Structure structure;
-		structure.type = type;
-		structure.dims = dims;
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_DATA_VALIDATE_STRUCTURE;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = (void*)&structure;
 
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_DATA_VALIDATE_STRUCTURE;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = (void*)&structure;
+        // use legacy interface
+        EngineEvent event;
+        event.hCaller = hData;
+        event.flags = 0;
+        event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
+        event.data = (void*) &hev;
+        Symbol result = brahms_engineEvent(&event);
+        if(S_ERROR(result)) throw result;
+    }
 
-		//	use legacy interface
-		EngineEvent event;
-		event.hCaller = hData;
-		event.flags = 0;
-		event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
-		event.data = (void*) &hev;
-		Symbol result = brahms_engineEvent(&event);
-		if(S_ERROR(result)) throw result;
-	}
+    void validate(brahms::Symbol hCaller, brahms::Symbol hData, const Structure& structure)
+    {
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_DATA_VALIDATE_STRUCTURE;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = (void*)&structure;
 
-	void validate(brahms::Symbol hCaller, brahms::Symbol hData, const Structure& structure)
-	{
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_DATA_VALIDATE_STRUCTURE;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = (void*)&structure;
+        // use legacy interface
+        EngineEvent event;
+        event.hCaller = hData;
+        event.flags = 0;
+        event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
+        event.data = (void*) &hev;
+        Symbol result = brahms_engineEvent(&event);
+        if(S_ERROR(result)) throw result;
+    }
 
-		//	use legacy interface
-		EngineEvent event;
-		event.hCaller = hData;
-		event.flags = 0;
-		event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
-		event.data = (void*) &hev;
-		Symbol result = brahms_engineEvent(&event);
-		if(S_ERROR(result)) throw result;
-	}
+    UINT64 get_content(brahms::Symbol hCaller, brahms::Symbol hData, const void*& real, const void*& imag)
+    {
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_DATA_CONTENT_GET;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = 0;
 
-	UINT64 get_content(brahms::Symbol hCaller, brahms::Symbol hData, const void*& real, const void*& imag)
-	{
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_DATA_CONTENT_GET;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = 0;
+        // use legacy interface
+        EngineEvent event;
+        event.hCaller = hData;
+        event.flags = 0;
+        event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
+        event.data = (void*) &hev;
+        Symbol result = brahms_engineEvent(&event);
+        if(S_ERROR(result)) throw result;
 
-		//	use legacy interface
-		EngineEvent event;
-		event.hCaller = hData;
-		event.flags = 0;
-		event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
-		event.data = (void*) &hev;
-		Symbol result = brahms_engineEvent(&event);
-		if(S_ERROR(result)) throw result;
+        // content
+        Content* eac = (Content*) hev.event.data;
+        real = eac->real;
+        imag = eac->imag;
+        return eac->bytes;
+    }
 
-		//	content
-		Content* eac = (Content*) hev.event.data;
-		real = eac->real;
-		imag = eac->imag;
-		return eac->bytes;
-	}
+    const void* get_content(brahms::Symbol hCaller, brahms::Symbol hData)
+    {
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_DATA_CONTENT_GET;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = 0;
 
-	const void* get_content(brahms::Symbol hCaller, brahms::Symbol hData)
-	{
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_DATA_CONTENT_GET;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = 0;
+        // use legacy interface
+        EngineEvent event;
+        event.hCaller = hData;
+        event.flags = 0;
+        event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
+        event.data = (void*) &hev;
+        Symbol result = brahms_engineEvent(&event);
+        if(S_ERROR(result)) throw result;
 
-		//	use legacy interface
-		EngineEvent event;
-		event.hCaller = hData;
-		event.flags = 0;
-		event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
-		event.data = (void*) &hev;
-		Symbol result = brahms_engineEvent(&event);
-		if(S_ERROR(result)) throw result;
+        // content
+        Content* eac = (Content*) hev.event.data;
+        return (const void*) eac->real;
+    }
 
-		//	content
-		Content* eac = (Content*) hev.event.data;
-		return (const void*) eac->real;
-	}
+    void set_content(brahms::Symbol hCaller, brahms::Symbol hData, const void* real, const void* imag = 0, UINT32 bytes = 0)
+    {
+        // content
+        Content eac;
+        eac.real = (void*)real;
+        eac.imag = (void*)imag;
+        eac.bytes = bytes;
 
-	void set_content(brahms::Symbol hCaller, brahms::Symbol hData, const void* real, const void* imag = 0, UINT32 bytes = 0)
-	{
-		//	content
-		Content eac;
-		eac.real = (void*)real;
-		eac.imag = (void*)imag;
-		eac.bytes = bytes;
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_DATA_CONTENT_SET;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = &eac;
 
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_DATA_CONTENT_SET;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = &eac;
-
-		//	use legacy interface
-		EngineEvent event;
-		event.hCaller = hData;
-		event.flags = 0;
-		event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
-		event.data = (void*) &hev;
-		Symbol result = brahms_engineEvent(&event);
-		if(S_ERROR(result)) throw result;
-	}
+        // use legacy interface
+        EngineEvent event;
+        event.hCaller = hData;
+        event.flags = 0;
+        event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
+        event.data = (void*) &hev;
+        Symbol result = brahms_engineEvent(&event);
+        if(S_ERROR(result)) throw result;
+    }
 
 }
 
 
 
-////////////////	DIRECT INTERFACE
+//////////////// DIRECT INTERFACE
 
 namespace std_2009_data_spikes_0
 {
 
-	brahms::Dimensions* get_dimensions(brahms::Symbol hCaller, brahms::Symbol hData)
-	{
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_DATA_STRUCTURE_GET;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = 0;
+    brahms::Dimensions* get_dimensions(brahms::Symbol hCaller, brahms::Symbol hData)
+    {
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_DATA_STRUCTURE_GET;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = 0;
 
-		//	use legacy interface
-		EngineEvent event;
-		event.hCaller = hData;
-		event.flags = 0;
-		event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
-		event.data = (void*) &hev;
-		Symbol result = brahms_engineEvent(&event);
-		if(S_ERROR(result)) throw result;
+        // use legacy interface
+        EngineEvent event;
+        event.hCaller = hData;
+        event.flags = 0;
+        event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
+        event.data = (void*) &hev;
+        Symbol result = brahms_engineEvent(&event);
+        if(S_ERROR(result)) throw result;
 
-		//	dimensions
-		return (brahms::Dimensions*) hev.event.data;
-	}
+        // dimensions
+        return (brahms::Dimensions*) hev.event.data;
+    }
 
-	void set_dimensions(brahms::Symbol hCaller, brahms::Symbol hData, brahms::Dimensions* dims)
-	{
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_DATA_STRUCTURE_SET;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = (void*)dims;
+    void set_dimensions(brahms::Symbol hCaller, brahms::Symbol hData, brahms::Dimensions* dims)
+    {
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_DATA_STRUCTURE_SET;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = (void*)dims;
 
-		//	use legacy interface
-		EngineEvent event;
-		event.hCaller = hData;
-		event.flags = 0;
-		event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
-		event.data = (void*) &hev;
-		Symbol result = brahms_engineEvent(&event);
-		if(S_ERROR(result)) throw result;
-	}
+        // use legacy interface
+        EngineEvent event;
+        event.hCaller = hData;
+        event.flags = 0;
+        event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
+        event.data = (void*) &hev;
+        Symbol result = brahms_engineEvent(&event);
+        if(S_ERROR(result)) throw result;
+    }
 
-	UINT32 get_capacity(brahms::Symbol hCaller, brahms::Symbol hData)
-	{
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_DATA_STRUCTURE_GET;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = 0;
+    UINT32 get_capacity(brahms::Symbol hCaller, brahms::Symbol hData)
+    {
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_DATA_STRUCTURE_GET;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = 0;
 
-		//	use legacy interface
-		EngineEvent event;
-		event.hCaller = hData;
-		event.flags = 0;
-		event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
-		event.data = (void*) &hev;
-		Symbol result = brahms_engineEvent(&event);
-		if(S_ERROR(result)) throw result;
+        // use legacy interface
+        EngineEvent event;
+        event.hCaller = hData;
+        event.flags = 0;
+        event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
+        event.data = (void*) &hev;
+        Symbol result = brahms_engineEvent(&event);
+        if(S_ERROR(result)) throw result;
 
-		//	dimensions
-		brahms::Dimensions dims = *((brahms::Dimensions*) hev.event.data);
-		if (dims.count == 0) return 0;
-		if (dims.count == 1) return dims.dims[0];
-		UINT32 capacity = 1;
-		for (UINT32 d=0; d<dims.count; d++) capacity *= dims.dims[d];
-		return capacity;
-	}
+        // dimensions
+        brahms::Dimensions dims = *((brahms::Dimensions*) hev.event.data);
+        if (dims.count == 0) return 0;
+        if (dims.count == 1) return dims.dims[0];
+        UINT32 capacity = 1;
+        for (UINT32 d=0; d<dims.count; d++) capacity *= dims.dims[d];
+        return capacity;
+    }
 
-	void set_capacity(brahms::Symbol hCaller, brahms::Symbol hData, UINT32 capacity)
-	{
-		//	dimensions
-		INT64 dim0 = capacity;
-		brahms::Dimensions dims = {&dim0, 1};
+    void set_capacity(brahms::Symbol hCaller, brahms::Symbol hData, UINT32 capacity)
+    {
+        // dimensions
+        INT64 dim0 = capacity;
+        brahms::Dimensions dims = {&dim0, 1};
 
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_DATA_STRUCTURE_SET;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = (void*)&dims;
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_DATA_STRUCTURE_SET;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = (void*)&dims;
 
-		//	use legacy interface
-		EngineEvent event;
-		event.hCaller = hData;
-		event.flags = 0;
-		event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
-		event.data = (void*) &hev;
-		Symbol result = brahms_engineEvent(&event);
-		if(S_ERROR(result)) throw result;
-	}
+        // use legacy interface
+        EngineEvent event;
+        event.hCaller = hData;
+        event.flags = 0;
+        event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
+        event.data = (void*) &hev;
+        Symbol result = brahms_engineEvent(&event);
+        if(S_ERROR(result)) throw result;
+    }
 
-	UINT32 get_content(brahms::Symbol hCaller, brahms::Symbol hData, INT32*& state)
-	{
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_DATA_CONTENT_GET;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = 0;
+    UINT32 get_content(brahms::Symbol hCaller, brahms::Symbol hData, INT32*& state)
+    {
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_DATA_CONTENT_GET;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = 0;
 
-		//	use legacy interface
-		EngineEvent event;
-		event.hCaller = hData;
-		event.flags = 0;
-		event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
-		event.data = (void*) &hev;
-		Symbol result = brahms_engineEvent(&event);
-		if(S_ERROR(result)) throw result;
+        // use legacy interface
+        EngineEvent event;
+        event.hCaller = hData;
+        event.flags = 0;
+        event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
+        event.data = (void*) &hev;
+        Symbol result = brahms_engineEvent(&event);
+        if(S_ERROR(result)) throw result;
 
-		//	content
-		Spikes* spikes = (Spikes*) hev.event.data;
-		state = spikes->spikes;
-		return spikes->count;
-	}
+        // content
+        Spikes* spikes = (Spikes*) hev.event.data;
+        state = spikes->spikes;
+        return spikes->count;
+    }
 
-	void set_content(brahms::Symbol hCaller, brahms::Symbol hData, INT32* state, UINT32 count)
-	{
-		//	content
-		Spikes spikes;
-		spikes.spikes = state;
-		spikes.count = count;
+    void set_content(brahms::Symbol hCaller, brahms::Symbol hData, INT32* state, UINT32 count)
+    {
+        // content
+        Spikes spikes;
+        spikes.spikes = state;
+        spikes.count = count;
 
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_DATA_CONTENT_SET;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = &spikes;
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_DATA_CONTENT_SET;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = &spikes;
 
-		//	use legacy interface
-		EngineEvent event;
-		event.hCaller = hData;
-		event.flags = 0;
-		event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
-		event.data = (void*) &hev;
-		Symbol result = brahms_engineEvent(&event);
-		if(S_ERROR(result)) throw result;
-	}
-
+        // use legacy interface
+        EngineEvent event;
+        event.hCaller = hData;
+        event.flags = 0;
+        event.type = ENGINE_EVENT_FIRE_EVENT_ON_DATA;
+        event.data = (void*) &hev;
+        Symbol result = brahms_engineEvent(&event);
+        if(S_ERROR(result)) throw result;
+    }
 }
 
-
-
-////////////////	DIRECT INTERFACE
-
+//////////////// DIRECT INTERFACE
 namespace std_2009_util_rng_0
 {
+    inline Symbol brahms_getHandledEventForUtility(Symbol hCaller, struct EventCreateUtility* data)
+    {
+        struct EngineEvent event;
+        event.hCaller = hCaller;
+        event.flags = 0;
+        event.type = ENGINE_EVENT_HANDLE_UTILITY_EVENT;
+        event.data = (void*) data;
+        return brahms_engineEvent(&event);
+    }
 
-	inline Symbol brahms_getHandledEventForUtility(Symbol hCaller, struct EventCreateUtility* data)
-	{
-		struct EngineEvent event;
-		event.hCaller = hCaller;
-		event.flags = 0;
-		event.type = ENGINE_EVENT_HANDLE_UTILITY_EVENT;
-		event.data = (void*) data;
-		return brahms_engineEvent(&event);
-	}
+    void select(brahms::Symbol hCaller, brahms::Symbol hUtility, const char* generator)
+    {
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_UTILITY_SELECT;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = (void*)generator;
 
-	void select(brahms::Symbol hCaller, brahms::Symbol hUtility, const char* generator)
-	{
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_UTILITY_SELECT;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = (void*)generator;
+        // prepare handled event
+        EventCreateUtility data;
+        data.flags = 0;
+        data.hUtility = hUtility;
+        data.spec.cls = NULL;
+        data.spec.release = 0;
+        data.name = 0;
+        data.handledEvent = &hev;
+        brahms::Symbol result = brahms_getHandledEventForUtility(hCaller, &data);
+        if(S_ERROR(result)) throw result;
 
-		//	prepare handled event
-		EventCreateUtility data;
-		data.flags = 0;
-		data.hUtility = hUtility;
-		data.spec.cls = NULL;
-		data.spec.release = 0;
-		data.name = 0;
-		data.handledEvent = &hev;
-		brahms::Symbol result = brahms_getHandledEventForUtility(hCaller, &data);
-		if(S_ERROR(result)) throw result;
+        // fire event
+        std_2009_util_rng_0::fireHandledEvent(&hev);
+    }
 
-		//	fire event
-		std_2009_util_rng_0::fireHandledEvent(&hev);
-	}
+    void seed(brahms::Symbol hCaller, brahms::Symbol hUtility, const UINT32* seed, UINT32 count)
+    {
+        // seed
+        Seed cseed;
+        cseed.count = count;
+        cseed.seed = seed;
 
-	void seed(brahms::Symbol hCaller, brahms::Symbol hUtility, const UINT32* seed, UINT32 count)
-	{
-		//	seed
-		Seed cseed;
-		cseed.count = count;
-		cseed.seed = seed;
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_UTILITY_SEED;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = (void*)&cseed;
 
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_UTILITY_SEED;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = (void*)&cseed;
+        // prepare handled event
+        EventCreateUtility data;
+        data.flags = 0;
+        data.hUtility = hUtility;
+        data.spec.cls = NULL;
+        data.spec.release = 0;
+        data.name = 0;
+        data.handledEvent = &hev;
+        brahms::Symbol result = brahms_getHandledEventForUtility(hCaller, &data);
+        if(S_ERROR(result)) throw result;
 
-		//	prepare handled event
-		EventCreateUtility data;
-		data.flags = 0;
-		data.hUtility = hUtility;
-		data.spec.cls = NULL;
-		data.spec.release = 0;
-		data.name = 0;
-		data.handledEvent = &hev;
-		brahms::Symbol result = brahms_getHandledEventForUtility(hCaller, &data);
-		if(S_ERROR(result)) throw result;
+        // fire event
+        std_2009_util_rng_0::fireHandledEvent(&hev);
+    }
 
-		//	fire event
-		std_2009_util_rng_0::fireHandledEvent(&hev);
-	}
+    void fill(brahms::Symbol hCaller, brahms::Symbol hUtility, DOUBLE* dst, UINT64 count, DOUBLE gain = 1.0, DOUBLE offset = 0.0)
+    {
+        // fill
+        Fill fill;
+        fill.dst = dst;
+        fill.count = count;
+        fill.type = TYPE_FLOAT64;
+        fill.gain = gain;
+        fill.offset = offset;
 
-	void fill(brahms::Symbol hCaller, brahms::Symbol hUtility, DOUBLE* dst, UINT64 count, DOUBLE gain = 1.0, DOUBLE offset = 0.0)
-	{
-		//	fill
-		Fill fill;
-		fill.dst = dst;
-		fill.count = count;
-		fill.type = TYPE_FLOAT64;
-		fill.gain = gain;
-		fill.offset = offset;
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_UTILITY_FILL;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = (void*)&fill;
 
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_UTILITY_FILL;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = (void*)&fill;
+        // prepare handled event
+        EventCreateUtility data;
+        data.flags = 0;
+        data.hUtility = hUtility;
+        data.spec.cls = NULL;
+        data.spec.release = 0;
+        data.name = 0;
+        data.handledEvent = &hev;
+        brahms::Symbol result = brahms_getHandledEventForUtility(hCaller, &data);
+        if(S_ERROR(result)) throw result;
 
-		//	prepare handled event
-		EventCreateUtility data;
-		data.flags = 0;
-		data.hUtility = hUtility;
-		data.spec.cls = NULL;
-		data.spec.release = 0;
-		data.name = 0;
-		data.handledEvent = &hev;
-		brahms::Symbol result = brahms_getHandledEventForUtility(hCaller, &data);
-		if(S_ERROR(result)) throw result;
+        // fire event
+        std_2009_util_rng_0::fireHandledEvent(&hev);
+    }
 
-		//	fire event
-		std_2009_util_rng_0::fireHandledEvent(&hev);
-	}
+    void fill(brahms::Symbol hCaller, brahms::Symbol hUtility, FLOAT32* dst, UINT64 count, FLOAT32 gain = 1.0, FLOAT32 offset = 0.0)
+    {
+        // fill
+        Fill fill;
+        fill.dst = dst;
+        fill.count = count;
+        fill.type = TYPE_FLOAT32;
+        fill.gain = gain;
+        fill.offset = offset;
 
-	void fill(brahms::Symbol hCaller, brahms::Symbol hUtility, FLOAT32* dst, UINT64 count, FLOAT32 gain = 1.0, FLOAT32 offset = 0.0)
-	{
-		//	fill
-		Fill fill;
-		fill.dst = dst;
-		fill.count = count;
-		fill.type = TYPE_FLOAT32;
-		fill.gain = gain;
-		fill.offset = offset;
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_UTILITY_FILL;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = (void*)&fill;
 
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_UTILITY_FILL;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = (void*)&fill;
+        // prepare handled event
+        EventCreateUtility data;
+        data.flags = 0;
+        data.hUtility = hUtility;
+        data.spec.cls = NULL;
+        data.spec.release = 0;
+        data.name = 0;
+        data.handledEvent = &hev;
+        brahms::Symbol result = brahms_getHandledEventForUtility(hCaller, &data);
+        if(S_ERROR(result)) throw result;
 
-		//	prepare handled event
-		EventCreateUtility data;
-		data.flags = 0;
-		data.hUtility = hUtility;
-		data.spec.cls = NULL;
-		data.spec.release = 0;
-		data.name = 0;
-		data.handledEvent = &hev;
-		brahms::Symbol result = brahms_getHandledEventForUtility(hCaller, &data);
-		if(S_ERROR(result)) throw result;
+        // fire event
+        std_2009_util_rng_0::fireHandledEvent(&hev);
+    }
 
-		//	fire event
-		std_2009_util_rng_0::fireHandledEvent(&hev);
-	}
+    DOUBLE get(brahms::Symbol hCaller, brahms::Symbol hUtility)
+    {
+        // handled event
+        brahms::HandledEvent hev;
+        hev.handler = 0;
+        hev.event.type = EVENT_UTILITY_GET;
+        hev.event.flags = 0;
+        hev.event.object = 0;
+        hev.event.data = 0;
 
-	DOUBLE get(brahms::Symbol hCaller, brahms::Symbol hUtility)
-	{
-		//	handled event
-		brahms::HandledEvent hev;
-		hev.handler = 0;
-		hev.event.type = EVENT_UTILITY_GET;
-		hev.event.flags = 0;
-		hev.event.object = 0;
-		hev.event.data = 0;
+        // prepare handled event
+        EventCreateUtility data;
+        data.flags = 0;
+        data.hUtility = hUtility;
+        data.spec.cls = NULL;
+        data.spec.release = 0;
+        data.name = 0;
+        data.handledEvent = &hev;
+        brahms::Symbol result = brahms_getHandledEventForUtility(hCaller, &data);
+        if(S_ERROR(result)) throw result;
 
-		//	prepare handled event
-		EventCreateUtility data;
-		data.flags = 0;
-		data.hUtility = hUtility;
-		data.spec.cls = NULL;
-		data.spec.release = 0;
-		data.name = 0;
-		data.handledEvent = &hev;
-		brahms::Symbol result = brahms_getHandledEventForUtility(hCaller, &data);
-		if(S_ERROR(result)) throw result;
+        // fire event
+        std_2009_util_rng_0::fireHandledEvent(&hev);
 
-		//	fire event
-		std_2009_util_rng_0::fireHandledEvent(&hev);
-
-		//	get
-		return *((DOUBLE*)hev.event.data);
-	}
-
+        // get
+        return *((DOUBLE*)hev.event.data);
+    }
 }
 
-#endif
-
-
+#endif // not defined BRAHMS_NO_LEGACY_SUPPORT
