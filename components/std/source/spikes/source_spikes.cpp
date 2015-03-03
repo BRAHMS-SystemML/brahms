@@ -40,7 +40,7 @@ ________________________________________________________________
 #define COMPONENT_FLAGS F_NOT_RATE_CHANGER
 
 //	include common header
-#include "../process.h"
+#include "components/process.h"
 
 
 

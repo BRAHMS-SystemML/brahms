@@ -30,9 +30,11 @@ ________________________________________________________________
 
 */
 
+#include "BrahmsConfig.h"
+
 //	component information
-#define COMPONENT_RELEASE __REL__
-#define COMPONENT_REVISION __REV__
+#define COMPONENT_RELEASE VERSION_BRAHMS_REL
+#define COMPONENT_REVISION VERSION_BRAHMS_REV
 #define COMPONENT_ADDITIONAL "Author=Ben Mitch\n" "URL=http://brahms.sourceforge.net\n"
 
 //	include the component interface overlay
@@ -40,12 +42,5 @@ ________________________________________________________________
 #include "brahms-1199.h"
 using namespace brahms;
 
-//	STL
-#include <string>
-#include <vector>
-using namespace std;
-
 //	data
-const struct ComponentVersion COMPONENT_VERSION = {__REL__, __REV__};
-
-
+const struct ComponentVersion COMPONENT_VERSION = {COMPONENT_RELEASE, COMPONENT_REVISION};

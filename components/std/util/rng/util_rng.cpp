@@ -43,10 +43,10 @@ ________________________________________________________________
 #define COMPONENT_FLAGS (0)
 
 //	include
-#include "../utility.h"
+#include "components/utility.h"
 
 //	include header
-#include "std/2009/util/rng/brahms/0/utility.h"
+#include "util_rng.h"
 namespace rng = std_2009_util_rng_0;
 
 //	include STL
@@ -251,7 +251,7 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 			return C_OK;
 		}
 
-		
+
 
 		case rng::EVENT_UTILITY_FILL:
 		{

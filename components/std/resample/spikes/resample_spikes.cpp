@@ -40,7 +40,7 @@ ________________________________________________________________
 #define COMPONENT_FLAGS (0)
 
 //	include common header
-#include "../process.h"
+#include "components/process.h"
 
 
 
@@ -224,5 +224,3 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 
 
 #include "brahms-1199.h"
-
-

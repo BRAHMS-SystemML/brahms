@@ -40,7 +40,7 @@ ________________________________________________________________
 #define COMPONENT_FLAGS F_NOT_RATE_CHANGER
 
 //	include common header
-#include "../process.h"
+#include "components/process.h"
 
 
 
@@ -82,7 +82,7 @@ private:
 			realBytesPerSample = 0;
 			totalBytesPerSample = 0;
 		}
-				
+
 		//	measured...
 		TYPE				numericType;			//	numeric type
 		bool				complexity;				//	true if source data is complex
@@ -617,5 +617,3 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 
 
 #include "brahms-1199.h"
-
-
