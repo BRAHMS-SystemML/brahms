@@ -30,9 +30,12 @@ ________________________________________________________________
 
 */
 
+// Configure-time configuration:
+#include "BrahmsConfig.h"
+
 //	component information
-#define COMPONENT_RELEASE __REL__
-#define COMPONENT_REVISION __REV__
+#define COMPONENT_RELEASE VERSION_BRAHMS_REL
+#define COMPONENT_REVISION VERSION_BRAHMS_REV
 #define COMPONENT_ADDITIONAL "Author=Ben Mitch\n" "URL=http://brahms.sourceforge.net\n"
 
 //	include the component interface overlay, quick process mode
@@ -46,9 +49,9 @@ ________________________________________________________________
 using namespace std;
 
 //	add data/utility
-#include "std/2009/data/numeric/brahms/0/data.h"
-#include "std/2009/data/spikes/brahms/0/data.h"
-#include "std/2009/util/rng/brahms/0/utility.h"
+#include "data_numeric.h"
+#include "data_spikes.h"
+#include "util_rng.h"
 
 //	import namespaces
 namespace numeric = std_2009_data_numeric_0;
