@@ -41,7 +41,7 @@ ________________________________________________________________
 #define COMPONENT_FLAGS (F_NOT_RATE_CHANGER | F_NEEDS_ALL_INPUTS)
 
 //	include common header
-#include "../process.h"
+#include "components/process.h"
 
 
 
@@ -195,7 +195,7 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 							index[d].push_back(i);
 						dims[d] = inputDims[d];
 						break;
-						
+
 					default:
 					{
 						//	no action
@@ -353,4 +353,3 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 
 //	include overlay (a second time)
 #include "brahms-1199.h"
-
