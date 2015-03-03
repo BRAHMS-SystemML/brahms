@@ -30,15 +30,15 @@ ________________________________________________________________
 
 */
 
-
+#include "BrahmsConfig.h"
 
 ////////////////	COMPONENT INFO
 
 //	component information
 #define COMPONENT_CLASS_STRING "client/brahms/test/sets"
 #define COMPONENT_CLASS_CPP client_brahms_test_sets_0
-#define COMPONENT_RELEASE __REL__
-#define COMPONENT_REVISION __REV__
+#define COMPONENT_RELEASE VERSION_BRAHMS_REL
+#define COMPONENT_REVISION VERSION_BRAHMS_REV
 #define COMPONENT_ADDITIONAL "Author=Ben Mitch\n" "URL=http://brahms.sourceforge.net\n"
 #define COMPONENT_FLAGS (0)
 
@@ -59,11 +59,11 @@ const struct brahms::ComponentVersion COMPONENT_VERSION =
 };
 
 //	manually import namespaces
-#include "std/2009/data/numeric/brahms/0/data.h"
+#include "data_numeric.h"
 namespace numeric = std_2009_data_numeric_0;
-#include "std/2009/data/spikes/brahms/0/data.h"
+#include "data_spikes.h"
 namespace spikes = std_2009_data_spikes_0;
-#include "std/2009/util/rng/brahms/0/utility.h"
+#include "util_rng.h"
 namespace rng = std_2009_util_rng_0;
 
 //	now, we may as well import namespaces, since we got through the above OK
@@ -160,7 +160,7 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 							q[n] = -p[n];
 						break;
 					}
-					
+
 					default:
 					{
 						berr << E_INTERNAL;
@@ -194,7 +194,7 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 		case EVENT_INIT_PRECONNECT:
 		{
 			//	create streams
-			UINT32 count = 
+			UINT32 count =
 				iif.getNumberOfPorts(hSetDoubleIn)
 				+
 				iif.getNumberOfPorts(hSetRoundIn)
@@ -288,4 +288,3 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 
 
 #include "brahms-1199.h"
-
