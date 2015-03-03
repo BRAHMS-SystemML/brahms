@@ -1,7 +1,35 @@
-Note: These are OUT OF DATE build notes. Now, you build BRAHMS with cmake.
+Building BRAHMS
+---------------
 
-Build Notes
------------
+This project uses cmake for cross-platform friendly building.
+
+You'll need to obtain the correct dependencies. On Linux that means a
+compiler, libXv and libXaw. For example, on (current 2015) Ubuntu or
+Debian systems you'll want to do:
+
+sudo apt-get install build-essential libxaw7-dev libxv-dev
+
+These libraries are used to draw the progress box which shows while
+BRAHMS is running.
+
+For Windows, you'll reportedly need GnuWin32, but this build has not
+yet been tested.
+
+The recommended method for building is to create a separate build
+folder as follows:
+
+mkdir build
+cd build
+cmake ..
+make -j4 # or however many processor cores you have
+sudo make install
+
+---------------
+
+
+
+OLD Build Notes for reference
+-----------------------------
 
 To build each part, enter each project directory and
 run "make". On Windows, you will have to have GnuWin32
