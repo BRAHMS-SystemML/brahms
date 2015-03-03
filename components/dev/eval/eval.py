@@ -71,7 +71,7 @@ def brahms_process(persist, input):
 		# provide component information
 		output['info'] = {}
 		output['info']['flags'] = F_NEEDS_ALL_INPUTS + F_NOT_RATE_CHANGER
-		output['info']['component'] = (__REL__, __REV__)
+		output['info']['component'] = (0, 0)
 		output['info']['additional'] = 'Author=Ben Mitch\nURL=http://brahms.sourceforge.net\n'
 		
 		# ok

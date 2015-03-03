@@ -1,3 +1,1 @@
-# Do something pythony
-#add_library(sets SHARED sets.cpp)
-#set_target_properties(sets PROPERTIES OUTPUT_NAME "component" PREFIX "")
+# Just install the eval.py script
