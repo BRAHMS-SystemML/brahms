@@ -40,7 +40,7 @@ ________________________________________________________________
 #define COMPONENT_ADDITIONAL "Author=Ben Mitch\n" "URL=http://brahms.sourceforge.net\n"
 
 //	include common header
-#include "../process.h"
+#include "components/process.h"
 
 
 
@@ -208,5 +208,3 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 
 
 #include "brahms-1199.h"
-
-
