@@ -22,50 +22,59 @@ ________________________________________________________________
 
 	Subversion Repository Information (automatically updated on commit)
 
-	$Id:: overhead.cpp 2316 2009-11-07 20:38:30Z benjmitch     $
-	$Rev:: 2316                                                $
+	$Id:: elements.cpp 2333 2009-11-09 12:52:11Z benjmitch     $
+	$Rev:: 2333                                                $
 	$Author:: benjmitch                                        $
-	$Date:: 2009-11-07 20:38:30 +0000 (Sat, 07 Nov 2009)       $
+	$Date:: 2009-11-09 12:52:11 +0000 (Mon, 09 Nov 2009)       $
 ________________________________________________________________
 
 */
 
 
 
-
-
 ////////////////	COMPONENT INFO
 
-#define COMPONENT_CLASS_STRING "client/brahms/bench/overhead"
-#define COMPONENT_CLASS_CPP client_brahms_bench_overhead_0
-#define COMPONENT_FLAGS F_NOT_RATE_CHANGER
+//	component information
+#define COMPONENT_CLASS_CPP client_brahms_bench_elements_0
+#define COMPONENT_CLASS_STRING "client/brahms/bench/elements"
+#define COMPONENT_FLAGS (F_NOT_RATE_CHANGER)
 
 //	include common header
-#include "../process.h"
+#include "components/process.h"
+
+//	STL
+#include <algorithm>
+using namespace std;
+
+#include "scalable.h"
 
 
+#ifdef USE_FLOAT
+const TYPE TYPE_STATE = TYPE_DOUBLE;
+#else
+const TYPE TYPE_STATE = TYPE_UINT32;
+#endif
 
-////////////////	COMPONENT CLASS (DERIVES FROM Process)
 
+//	process
 class COMPONENT_CLASS_CPP : public Process
 {
-
 public:
-
-	//	framework event function
 	Symbol event(Event* event);
 
 private:
 
+	//	pars
+	PARS					pars;
+
+	//	state
+	STATE					state;
+	bool					listened;
+
 	//	ports
-	vector<numeric::Input> inputs;
+	numeric::Input input;
 	numeric::Output output;
-
 };
-
-
-
-////////////////	EVENT
 
 Symbol COMPONENT_CLASS_CPP::event(Event* event)
 {
@@ -73,72 +82,80 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 	{
 		case EVENT_STATE_SET:
 		{
-			//	extract DataML
 			EventStateSet* data = (EventStateSet*) event->data;
 			XMLNode xmlNode(data->state);
 			DataMLNode nodeState(&xmlNode);
 
-			//	ok
+			//	get pars
+			pars.P = nodeState.getField("P").getUINT32();
+			pars.E = nodeState.getField("E").getUINT32();
+			pars.O = nodeState.getField("O").getUINT32();
+			pars.N = nodeState.getField("N").getUINT32();
+
+
+/*
+			if (pars.E%(WRAP))
+				berr << "E%WRAP != 0";
+				*/
+
+			//	init state
+			UINT32 p = nodeState.getField("p").getUINT32();
+			state.init(pars, p);
+			return C_OK;
+		}
+
+		case EVENT_INIT_PRECONNECT:
+		{
+			//	validate connectivity
+			if (iif.getNumberOfPorts() != 1) berr << "expected 1 inputs";
 			return C_OK;
 		}
 
 		case EVENT_INIT_CONNECT:
 		{
-			//	on first call
+			if (event->flags & F_LAST_CALL)
+			{
+				//	validate input
+				input.attach(hComponent, 0);
+				input.validateStructure(TYPE_STATE | TYPE_REAL, Dims(1).cdims());
+			}
+
 			if (event->flags & F_FIRST_CALL)
 			{
 				//	create output
 				output.setName("out");
 				output.create(hComponent);
-				output.setStructure(TYPE_DOUBLE | TYPE_REAL, Dims(1).cdims());
+				output.setStructure(TYPE_STATE | TYPE_REAL, Dims(1).cdims());
 			}
 
-			//	on last call
-			if (event->flags & F_LAST_CALL)
-			{
-				//	validate input
-				inputs.resize(iif.getNumberOfPorts());
-				for (UINT32 i=0; i<inputs.size(); i++)
-				{
-					inputs[i].attach(hComponent, i);
-					inputs[i].validateStructure(TYPE_DOUBLE | TYPE_REAL, Dims(1).cdims());
-				}
-			}
+			return C_OK;
+		}
 
-			//	ok
+		case EVENT_INIT_POSTCONNECT:
+		{
+			//	check if port is listened
+			listened = oif.getPortFlags(output.getPort()) & F_LISTENED;
 			return C_OK;
 		}
 
 		case EVENT_RUN_SERVICE:
 		{
-			//	access output
-			DOUBLE* out = (DOUBLE*) output.getContent();
-			*out = 0.0;
+			//	access input
+			STATE_TYPE in = *((STATE_TYPE*) input.getContent());
 
-			//	access inputs
-			for (UINT32 i=0; i<inputs.size(); i++)
-			{
-				DOUBLE* in = (DOUBLE*) inputs[i].getContent();
-				*out += *in;
-			}
+			//	step state
+			STATE_TYPE out = *state.step(in);
+
+			//	access output
+			*((STATE_TYPE*) output.getContent()) = out;
 
 			//	ok
 			return C_OK;
 		}
-
 	}
 
-	//	if we service the event, we return C_OK
-	//	if we don't, we should return S_NULL to indicate that
+	//	not processed
 	return S_NULL;
 }
 
-
-
-
-
-
-
-//	include overlay (a second time)
 #include "brahms-1199.h"
-

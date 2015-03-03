@@ -1,7 +1,7 @@
 
 //	compile with g++ -O3 or equivalent
 
-#include "timing.cpp"
+#include "timing.h"
 #include "scalable.h"
 
 
