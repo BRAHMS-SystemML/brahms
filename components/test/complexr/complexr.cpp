@@ -34,9 +34,11 @@ ________________________________________________________________
 
 /*
 
-	this test process produces complex data in both adjacent and
+	this test process receives complex data in both adjacent and
 	interleaved form, for testing automatic translation in
-	std/data/numeric
+	std/data/numeric. whatever form it receives in, it generates
+	output in the form specified in its state, and it asks
+	data/numeric to do the conversion automagically.
 
 */
 
@@ -44,12 +46,14 @@ ________________________________________________________________
 ////////////////	COMPONENT INFO
 
 //	component information
-#define COMPONENT_CLASS_STRING "client/brahms/test/complex"
-#define COMPONENT_CLASS_CPP client_brahms_test_complex_0
+#define COMPONENT_CLASS_STRING "client/brahms/test/complexr"
+#define COMPONENT_CLASS_CPP client_brahms_test_complexr_0
 #define COMPONENT_FLAGS F_NOT_RATE_CHANGER
 
 //	include common header
-#include "../process.h"
+#include "components/process.h"
+#include <iostream>
+using namespace std;
 
 
 
@@ -66,7 +70,14 @@ public:
 private:
 
 	//	output
-	numeric::Output outputA, outputI;
+	numeric::Input input;
+	numeric::Output output;
+
+	//	mode
+	bool interleaved;
+
+	UINT64 bytes;
+	TYPE typeComplexity;
 
 };
 
@@ -85,6 +96,9 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 			XMLNode xmlNode(data->state);
 			DataMLNode nodeState(&xmlNode);
 
+			interleaved = nodeState.getField("interleaved").getBOOL();
+			typeComplexity = TYPE_COMPLEX | (interleaved ? TYPE_CPXFMT_INTERLEAVED : TYPE_CPXFMT_ADJACENT);
+
 			//	ok
 			return C_OK;
 		}
@@ -92,14 +106,20 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 		case EVENT_INIT_CONNECT:
 		{
 			//	create output
-			outputA.setName("adjacent");
-			outputA.create(hComponent);
-			outputA.setStructure(TYPE_DOUBLE | TYPE_COMPLEX | TYPE_CPXFMT_ADJACENT, Dims(2, 3).cdims());
+			output.setName("out");
+			output.create(hComponent);
+			output.setStructure(TYPE_DOUBLE | typeComplexity, Dims(2, 3).cdims());
 
-			//	create output
-			outputI.setName("interleaved");
-			outputI.create(hComponent);
-			outputI.setStructure(TYPE_DOUBLE | TYPE_COMPLEX | TYPE_CPXFMT_INTERLEAVED, Dims(2, 3).cdims());
+			//	attach input
+			input.attach(hComponent, 0);
+
+			//	check format
+			const numeric::Structure* s = input.getStructure();
+			bytes = s->numberOfBytesTotal;
+//			cout << bytes << endl;
+
+			//	set content format
+			input.setReadFormat(typeComplexity | TYPE_ORDER_COLUMN_MAJOR);
 
 			//	ok
 			return C_OK;
@@ -107,23 +127,10 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 
 		case EVENT_RUN_SERVICE:
 		{
-			//	access output
-			DOUBLE* pA = (DOUBLE*) outputA.getContent();
-			DOUBLE* pI = (DOUBLE*) outputI.getContent();
+			const DOUBLE* pi = (const DOUBLE*) input.getContent();
+			DOUBLE* po = (DOUBLE*) output.getContent();
 
-			//	put incrementing numbers in
-			UINT32 sz = 6;
-			for (UINT32 i=0; i<sz; i++)
-			{
-				DOUBLE valR = i;
-				DOUBLE valI = i + sz;
-
-				pA[i] = valR;
-				pA[i+sz] = valI;
-
-				pI[i*2] = valR;
-				pI[i*2+1] = valI;
-			}
+			memcpy(po, pi, bytes);
 
 			//	ok
 			return C_OK;
@@ -143,4 +150,3 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 
 //	include overlay (a second time)
 #include "brahms-1199.h"
-

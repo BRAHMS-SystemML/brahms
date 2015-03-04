@@ -42,7 +42,7 @@ ________________________________________________________________
 #include <unistd.h>
 
 //	include common header
-#include "../process.h"
+#include "components/process.h"
 
 
 
@@ -201,4 +201,3 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 
 
 #include "brahms-1199.h"
-

@@ -22,10 +22,10 @@ ________________________________________________________________
 
 	Subversion Repository Information (automatically updated on commit)
 
-	$Id:: except.cpp 2449 2010-01-25 16:02:52Z benjmitch       $
-	$Rev:: 2449                                                $
+	$Id:: hang.cpp 2378 2009-11-16 00:47:59Z benjmitch         $
+	$Rev:: 2378                                                $
 	$Author:: benjmitch                                        $
-	$Date:: 2010-01-25 16:02:52 +0000 (Mon, 25 Jan 2010)       $
+	$Date:: 2009-11-16 00:47:59 +0000 (Mon, 16 Nov 2009)       $
 ________________________________________________________________
 
 */
@@ -35,12 +35,14 @@ ________________________________________________________________
 ////////////////	COMPONENT INFO
 
 //	component information
-#define COMPONENT_CLASS_STRING "client/brahms/test/except"
-#define COMPONENT_CLASS_CPP client_brahms_test_except_0
+#define COMPONENT_CLASS_STRING "client/brahms/test/hang"
+#define COMPONENT_CLASS_CPP client_brahms_test_hang_0
 #define COMPONENT_FLAGS F_NOT_RATE_CHANGER
 
+#include <unistd.h>
+
 //	include common header
-#include "../process.h"
+#include "components/process.h"
 
 
 
@@ -68,12 +70,35 @@ private:
 	*/
 
 	//	my state variables
-	Symbol			triggerEvent;
-	double			triggerTime;
+	Symbol triggerEvent;
+	bool sendSignals;
 
 };
 
 
+
+
+
+
+////////////////	OS-SPECIFIC
+
+
+#ifdef __WIN__
+
+	#define _WIN32_IE 0x0500
+	#define _WIN32_WINNT 0x0500
+	#define WIN32_LEAN_AND_MEAN
+	#include "windows.h"
+
+	#define os_sleep Sleep
+
+#endif
+
+#ifdef __NIX__
+
+	#define os_sleep(__milliseconds) usleep((__milliseconds) * 1000)
+
+#endif
 
 
 
@@ -82,34 +107,31 @@ private:
 COMPONENT_CLASS_CPP::COMPONENT_CLASS_CPP()
 {
 	triggerEvent = S_NULL;
-	triggerTime = 0;
+	sendSignals = false;
 }
 
 Symbol COMPONENT_CLASS_CPP::event(Event* event)
 {
-	bout << "except received event " << getSymbolString(event->type) << " (" << hex << event->type << " == " << triggerEvent << dec << ")" << D_VERB;
+	bout << "hang received event " << getSymbolString(event->type) << " (" << hex << event->type << " == " << triggerEvent << dec << ")" << D_VERB;
 
 	//	except
-	if (triggerEvent != EVENT_RUN_SERVICE && triggerEvent == event->type)
+	if (triggerEvent == event->type)
 	{
-		bout << "this was my trigger event - excepting now!" << D_VERB;
-		berr << "excepting as requested during " << getSymbolString(event->type);
+		bout << "received trigger event " << getSymbolString(event->type) << " (hanging now...)" << D_INFO;
+
+		//	hang loop
+		while(true)
+		{
+			//	sleep
+			os_sleep(100);
+
+			//	signal
+			if (sendSignals) stillActive();
+		}
 	}
 
 	switch(event->type)
 	{
-		case EVENT_RUN_SERVICE:
-		{
-			if (triggerEvent == EVENT_RUN_SERVICE && (time->now / sampleRateToRate(time->baseSampleRate)) >= triggerTime)
-			{
-				bout << "this was my trigger event/time - excepting now!" << D_VERB;
-				berr << "excepting as requested during " << getSymbolString(event->type) << " (base samples == " << time->now << ")";
-			}
-
-			//	ok
-			return C_OK;
-		}
-
 		case EVENT_STATE_SET:
 		{
 			//	extract DataML
@@ -118,8 +140,8 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 			DataMLNode nodePars(&xmlNode);
 
 			//	extract fields
-			string event = nodePars.getField("event").set(F_STRICT).getSTRING();//, true, 0);
-			triggerTime = nodePars.getField("time").getDOUBLE();//, true, 0.0);
+			string event = nodePars.getField("event").set(F_STRICT).getSTRING();
+			sendSignals = nodePars.getField("signals").getBOOL();
 
 			//	event
 			triggerEvent = S_NULL;
@@ -129,11 +151,21 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 			if (event == "") triggerEvent = C_OK; // don't throw
 			if (triggerEvent == S_NULL) berr << "unrecognised event";
 
+			//	report
+			if (sendSignals) bout << "hang sending signals" << D_VERB;
+			else bout << "hang not sending signals" << D_VERB;
+
 			//	ok
 			return C_OK;
 		}
 
 		case EVENT_INIT_CONNECT:
+		{
+			//	ok
+			return C_OK;
+		}
+
+		case EVENT_RUN_SERVICE:
 		{
 			//	ok
 			return C_OK;

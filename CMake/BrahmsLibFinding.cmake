@@ -48,7 +48,7 @@ endif()
 # end of lib finding.
 
 # For debugging, you can list variables like this:
-get_cmake_property(_variableNames VARIABLES)
-foreach (_variableName ${_variableNames})
-  message(STATUS "${_variableName}=${${_variableName}}")
-endforeach()
+#get_cmake_property(_variableNames VARIABLES)
+#foreach (_variableName ${_variableNames})
+#  message(STATUS "${_variableName}=${${_variableName}}")
+#endforeach()

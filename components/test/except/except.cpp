@@ -22,10 +22,10 @@ ________________________________________________________________
 
 	Subversion Repository Information (automatically updated on commit)
 
-	$Id:: except.cpp 2378 2009-11-16 00:47:59Z benjmitch       $
-	$Rev:: 2378                                                $
+	$Id:: except.cpp 2449 2010-01-25 16:02:52Z benjmitch       $
+	$Rev:: 2449                                                $
 	$Author:: benjmitch                                        $
-	$Date:: 2009-11-16 00:47:59 +0000 (Mon, 16 Nov 2009)       $
+	$Date:: 2010-01-25 16:02:52 +0000 (Mon, 25 Jan 2010)       $
 ________________________________________________________________
 
 */
@@ -35,12 +35,12 @@ ________________________________________________________________
 ////////////////	COMPONENT INFO
 
 //	component information
-#define COMPONENT_CLASS_STRING "client/brahms/test/abort"
-#define COMPONENT_CLASS_CPP client_brahms_test_abort_0
+#define COMPONENT_CLASS_STRING "client/brahms/test/except"
+#define COMPONENT_CLASS_CPP client_brahms_test_except_0
 #define COMPONENT_FLAGS F_NOT_RATE_CHANGER
 
 //	include common header
-#include "../process.h"
+#include "components/process.h"
 
 
 
@@ -87,16 +87,13 @@ COMPONENT_CLASS_CPP::COMPONENT_CLASS_CPP()
 
 Symbol COMPONENT_CLASS_CPP::event(Event* event)
 {
-	bout << "abort received event " << getSymbolString(event->type) << " (" << hex << event->type << " == " << triggerEvent << dec << ")" << D_VERB;
+	bout << "except received event " << getSymbolString(event->type) << " (" << hex << event->type << " == " << triggerEvent << dec << ")" << D_VERB;
 
-	//	abort
+	//	except
 	if (triggerEvent != EVENT_RUN_SERVICE && triggerEvent == event->type)
 	{
-		bout << "this was my trigger event - aborting now!" << D_VERB;
-		UINT32* pu = NULL;
-		UINT32 u = 42;
-		pu = (123 > 456) ? &u : NULL;
-		bout << "value is " << *pu << D_INFO;
+		bout << "this was my trigger event - excepting now!" << D_VERB;
+		berr << "excepting as requested during " << getSymbolString(event->type);
 	}
 
 	switch(event->type)
@@ -105,11 +102,8 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 		{
 			if (triggerEvent == EVENT_RUN_SERVICE && (time->now / sampleRateToRate(time->baseSampleRate)) >= triggerTime)
 			{
-				bout << "this was my trigger event/time - aborting now!" << D_VERB;
-				UINT32* pu = NULL;
-				UINT32 u = 42;
-				pu = (123 > 456) ? &u : NULL;
-				bout << "value is " << *pu << D_INFO;
+				bout << "this was my trigger event/time - excepting now!" << D_VERB;
+				berr << "excepting as requested during " << getSymbolString(event->type) << " (base samples == " << time->now << ")";
 			}
 
 			//	ok
