@@ -36,6 +36,9 @@ else()
 endif()
 message(STATUS "Processor " ${CMAKE_SYSTEM_PROCESSOR} " Arch bits: " ${ARCH_BITS})
 
+# Lib finding.
+include (CMake/BrahmsLibFinding.cmake)
+
 # CMake configuration header
 configure_file (
   "${PROJECT_SOURCE_DIR}/BrahmsConfig.h.in"

@@ -40,7 +40,7 @@ ________________________________________________________________
 #define COMPONENT_FLAGS F_NOT_RATE_CHANGER
 
 //	include common header
-#include "../process.h"
+#include "components/process.h"
 
 //	wx widgets
 //#define WXUSINGDLL // define this if linking to a shared library (DLL) build of wx widgets
@@ -430,7 +430,7 @@ public:
 		    	{
 		    		//	this avoids g++'s warning/error "callOnExit not used"
 		    	}
-		    
+
 		        ~CallOnExit()
 		        {
 		        	wxGetApp().OnExit();
@@ -1244,4 +1244,3 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 
 //	include overlay (a second time)
 #include "brahms-1199.h"
-

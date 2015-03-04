@@ -1,0 +1,4 @@
+set(CMAKE_CXX_FLAGS "${BRAHMS_HOST_DEFINITION} ${BRAHMS_WX_CXXFLAGS}")
+set(CMAKE_C_FLAGS "${BRAHMS_HOST_DEFINITION} ${BRAHMS_WX_CFLAGS}")
+add_library(image SHARED image.cpp)
+set_target_properties(image PROPERTIES OUTPUT_NAME "component" PREFIX "")
