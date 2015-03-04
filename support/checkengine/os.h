@@ -44,7 +44,8 @@ ________________________________________________________________
 #include "windows.h"
 #endif
 
-
+#include "base/thread.h"
+using brahms::thread::ThreadProcRet;
 
 ////////////////	NAMESPACE
 
@@ -199,5 +200,3 @@ ________________________________________________________________
 ////////////////	INCLUSION GUARD
 
 #endif
-
-

@@ -36,8 +36,12 @@ else()
 endif()
 message(STATUS "Processor " ${CMAKE_SYSTEM_PROCESSOR} " Arch bits: " ${ARCH_BITS})
 
+# Optional stuff.
+option(COMPILE_MATLAB_BINDING "Compile the matlab binding" ON)
+option(COMPILE_PYTHON_BINDING "Compile the Python binding" ON)
+
 # Lib finding.
-include (CMake/BrahmsLibFinding.cmake)
+include (BrahmsLibFind.cmake)
 
 # CMake configuration header
 configure_file (
@@ -64,5 +68,21 @@ include_directories ("${PROJECT_SOURCE_DIR}/components/std/data/numeric")
 include_directories ("${PROJECT_SOURCE_DIR}/components/std/data/spikes")
 include_directories ("${PROJECT_SOURCE_DIR}/components/std/util/rng")
 
+if(COMPILE_MATLAB_BINDING)
+  message(STATUS "Matlab include path is '${BRAHMS_MATLAB_INCLUDES}'. You may need to alter this in BrahmsLibFind.cmake.")
+  include_directories (${BRAHMS_MATLAB_INCLUDES})
+endif(COMPILE_MATLAB_BINDING)
+
+if(COMPILE_PYTHON_BINDING)
+  include_directories (${BRAHMS_PYTHON_INCLUDES})
+endif(COMPILE_PYTHON_BINDING)
+
 add_subdirectory(framework)
 add_subdirectory(components)
+add_subdirectory(support)
+
+# For debugging, you can list variables like this:
+get_cmake_property(_variableNames VARIABLES)
+foreach (_variableName ${_variableNames})
+  message(STATUS "${_variableName}=${${_variableName}}")
+endforeach()

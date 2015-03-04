@@ -32,13 +32,13 @@ ________________________________________________________________
 
 
 
-#include "engine.h"
+#include "main/engine.h"
 #include <iostream>
 #include <string>
 #include <sstream>
 using namespace std;
 
-#include "os.cpp"
+#include "os.h"
 
 
 const int OUTPUT_BUFFER_SIZE = 16384;
@@ -74,7 +74,7 @@ void execute(int* result)
 	else cout << "OK\n";
 
 	//	attach output buffer
-	engOutputBuffer(engine, outputBuffer, OUTPUT_BUFFER_SIZE - 1);	
+	engOutputBuffer(engine, outputBuffer, OUTPUT_BUFFER_SIZE - 1);
 
 	//	eval something
 	cout << "running \"disp('Hello from Matlab Engine (OK)')\"\n";
@@ -85,7 +85,7 @@ void execute(int* result)
 		return;
 	}
 	else cout << outputBuffer;
-	
+
 	//	eval something
 	cout << "running \"a = uint64(now*1e6)\"\n";
 	if (engEvalString(engine, "a = uint64(now*1e6)"))
@@ -116,9 +116,9 @@ void execute(int* result)
 		engEvalString(engine, ss.str().c_str());
 		cout << outputBuffer;
 	}
-	
+
 	//	close
-	if (flag_close) 
+	if (flag_close)
 	{
 		cout << "closing engine...\n";
 		engClose(engine);
@@ -171,4 +171,3 @@ int main(int argc, char* argv[])
 	else execute(&ret);
 	return ret;
 }
-

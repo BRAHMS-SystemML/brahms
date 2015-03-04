@@ -41,7 +41,7 @@ ________________________________________________________________
 
 
 //	matlab engine
-#include "engine.h"
+#include "extern/include/engine.h"
 
 //	common
 #define ENGINE_OBJECT mxArray*
@@ -104,20 +104,20 @@ struct Port
 	Symbol hPort;
 
 	HandledEvent hev;
-	
+
 	void give(mxArray* p_mxData)
 	{
 		cleanup();
 		mxData = p_mxData;
 	}
-	
+
 	mxArray* take()
 	{
 		mxArray* ret = mxData;
 		mxData = NULL;
 		return ret;
 	}
-	
+
 	mxArray* borrow()
 	{
 		if (!mxData) throw E_INTERNAL;
@@ -135,9 +135,9 @@ private:
 			mxData = NULL;
 		}
 	}
-	
+
 	ENGINE_OBJECT mxData;
-	
+
 };
 
 #include "common.h"
@@ -162,7 +162,7 @@ typedef vector<MX_DIM> MX_DIMS;
 
 
 /*	ENGINE USE POLICY
-	
+
 	See Documentation for 1258 for details.
 */
 
@@ -1041,7 +1041,7 @@ void COMPONENT_CLASS_CPP::makeAllInputsAvailable()
 						EventGenericContent egc = {0};
 						egc.type = TYPE_PREFERRED_STORAGE_FORMAT;
 						port.fireCheck(EVENT_GENERIC_CONTENT_GET, 0, &egc);
-						
+
 						//	interpret return
 						if (egc.bytes && !egc.real)
 							____NOT_COMPLIANT("EVENT_GENERIC_CONTENT_GET", "no real data came back");
@@ -1049,7 +1049,7 @@ void COMPONENT_CLASS_CPP::makeAllInputsAvailable()
 							____NOT_COMPLIANT("EVENT_GENERIC_CONTENT_GET", "no imaginary data came back");
 						if (egc.bytes != port.bytes)
 							____NOT_COMPLIANT("EVENT_GENERIC_CONTENT_GET", "wrong number of bytes came back, " << egc.bytes << " instead of " << port.bytes);
-		
+
 						if (egc.real) memcpy(mxGetData(port.borrow()), egc.real, port.bytes);
 						if (egc.imag) memcpy(mxGetImagData(port.borrow()), egc.imag, port.bytes);
 
@@ -1326,7 +1326,7 @@ void COMPONENT_CLASS_CPP::fireWrappedFunction(bool stepCall)
 							string setName = mxToString(mxGetCell(mxOp, 1), "OPERATION_OIF_CREATE_SET argument 1");
 							oif.addSet(setName.c_str());
 							bout << "created output set " << setName << D_VERB;
-		
+
 							//	update set structure
 							newOutputSetAdded(setName.c_str());
 
@@ -2235,7 +2235,7 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 
 			//	call matlab
 			fireWrappedFunction(false);
-		
+
 			//	ok
 			return response;
 		}
@@ -2409,10 +2409,10 @@ BRAHMS_DLL_EXPORT Symbol EventHandler(Event* event)
 			case EVENT_MODULE_TERM:
 			{
 				//EventModuleTerm* term = (EventModuleTerm*) event->data;
-				
+
 				//	close matlab engine on platforms that use a module-level engine
 				CloseGlobalEngine();
-				
+
 				return C_OK;
 			}
 
@@ -2481,4 +2481,3 @@ BRAHMS_DLL_EXPORT Symbol EventHandler(Event* event)
 		return E_UNRECOGNISED_EXCEPTION;
 	}
 }
-
