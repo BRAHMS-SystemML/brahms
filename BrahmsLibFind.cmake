@@ -1,6 +1,7 @@
 #
 # Library finding code called from top-level CMakeLists.txt file.
-# This locates WX, Xaw, Xv and possibly zlib.
+# This locates WX, Xaw and Python includes and libs and allows the
+# user to specify paths to their matlab installation
 #
 # It defines a set of variables which are then used in the top level
 # CMakeLists.txt file:
@@ -19,12 +20,15 @@ if (COMPILE_PYTHON_BINDING)
   find_package(PythonLibs)
   if (PYTHONLIBS_FOUND)
     set(BRAHMS_PYTHON_INCLUDES ${PYTHON_INCLUDE_DIRS})
-    set(CMD_ARGS "-c 'from numpy import *; print get_include()'")
-    execute_process(COMMAND /usr/bin/python ${CMD_ARGS}
-      OUTPUT_VARIABLE BRAHMS_NUMPY_INCLUDES ERROR_VARIABLE BRAHMS_NUMPY_TEST_ERR OUTPUT_STRIP_TRAILING_WHITESPACE)
+    set(CMD_ARGS "from numpy import *\; print get_include()")
+    execute_process(COMMAND /usr/bin/python -c ${CMD_ARGS}
+      OUTPUT_VARIABLE BRAHMS_NUMPY_INCLUDES
+      ERROR_VARIABLE BRAHMS_NUMPY_TEST_ERR
+      OUTPUT_STRIP_TRAILING_WHITESPACE)
     string(COMPARE EQUAL "${BRAHMS_NUMPY_INCLUDES}" "" NUMPY_NOT_FOUND)
     if(NUMPY_NOT_FOUND)
       message(ERROR " You need numpy: ${BRAHMS_NUMPY_TEST_ERR} On Debian/Ubuntu try `sudo apt-get install python-numpy`")
+      set(LIB_ERROR TRUE)
     endif(NUMPY_NOT_FOUND)
   endif(PYTHONLIBS_FOUND)
 endif (COMPILE_PYTHON_BINDING)
@@ -43,7 +47,17 @@ string(COMPARE EQUAL "${WX_CONFIG_LIBS}" "" WX_NOT_FOUND)
 if (WX_NOT_FOUND)
   # There's no way to find WX (pkg-config won't find this on my Ubuntu system)
   message(ERROR "You need WX windows. On Debian/Ubuntu try `sudo apt-get install libwxgtk2.8-dev`")
+  set(LIB_ERROR TRUE)
+  return()  
 else()
+  if (WX_CONFIG_LIBS MATCHES .*gtk.*)
+    # all is well, seems to be a graphical wxwindows FIXME: May be different on Windows.
+  else()
+    message(ERROR "You need graphical WX windows. On Debian/Ubuntu try `sudo apt-get install libwxgtk2.8-dev`")
+    set(LIB_ERROR TRUE)
+    return()
+  endif()
+      
   # We know we have WX, so we should be able to exec wx-config to get the compiler flags:
   execute_process(COMMAND wx-config --cxxflags
     OUTPUT_VARIABLE BRAHMS_WX_CXXFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -60,6 +74,8 @@ if (PKG_CONFIG_FOUND)
     set(BRAHMS_XAW_LDFLAGS ${XAW_LDFLAGS})
   else()
     message(ERROR "You need libXaw7. On Debian/Ubuntu try `sudo apt-get install libxaw7-dev`")
+    set(LIB_ERROR TRUE)
+    return()
   endif(XAW_FOUND)
 endif()
 

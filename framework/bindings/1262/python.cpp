@@ -45,8 +45,6 @@ ________________________________________________________________
 #define COMPONENT_CLASS_CPP bindings__python_1262
 #define BRAHMS_BUILDING_BINDINGS
 
-
-
 //	python engine
 #include "Python.h"
 #include "frameobject.h"
@@ -743,7 +741,7 @@ void COMPONENT_CLASS_CPP::makeAllInputsAvailable()
 									genericNumericType2arrayTypes(egf.type)));
 							}
 						}
-						
+
 
 						//	present it on the ports array
 						port.present();
@@ -756,7 +754,7 @@ void COMPONENT_CLASS_CPP::makeAllInputsAvailable()
 						//	interpret return
 						if (egc.bytes && !egc.real)
 							____NOT_COMPLIANT("EVENT_GENERIC_CONTENT_GET", "no real data came back");
-						
+
 						/*
 						storage format is complex interleaved, so imag will be NULL
 
@@ -869,7 +867,7 @@ static PyObject* BrahmsOperations(PyObject* self, PyObject* args)
 			if (Nargs != 3) perr("invalid OPERATION_OIF_CREATE_SET (wrong args)");
 			string setName;
 			if (!pyToString(PyTuple_GET_ITEM(args, 2), setName)) perr("OPERATION_OIF_CREATE_SET argument 1 should have been a string");
-			
+
 			that->oif.addSet(setName.c_str());
 			that->newOutputSetAdded(setName.c_str());
 
@@ -985,7 +983,7 @@ however, i tried the above code, and it didn't work. got the ordering all wrong.
 				}
 				else
 				*/
-					
+
 				eac.real = ((PyArrayObject*)pyContiguousData)->data;
 			}
 
@@ -1130,7 +1128,7 @@ however, i tried the above code, and it didn't work. got the ordering all wrong.
 
 			utility.hUtility = brahms::brahms_engineEvent(&event);
 			if (S_ERROR(utility.hUtility))
-			{			  
+			{
 			  std::ostringstream serr;
 			  serr << utility.hUtility << "[code|msg]failed create utility";
 			  staticErrorBuffer = serr.str();
@@ -1367,7 +1365,7 @@ however, i tried the above code, and it didn't work. got the ordering all wrong.
 				||
 				!PyList_Check(function->mxFunction)
 				||
-				PyList_GET_SIZE(function->mxFunction) != ((INT32)count)	
+				PyList_GET_SIZE(function->mxFunction) != ((INT32)count)
 				)
 				perr("internal error (probably bad response from utility object)");
 
@@ -1585,14 +1583,14 @@ static int brahms_____import_array(void)
 					 (int) NPY_VERSION, (int) PyArray_GetNDArrayCVersion());
 		return -1;
 	}
-	
-	/* 
+
+	/*
 	 * Perform runtime check of endianness and check it matches the one set by
-	 * the headers (npy_endian.h) as a safeguard 
+	 * the headers (npy_endian.h) as a safeguard
 	 */
-	
+
 	/* DONT DO THIS BIT it segfaults
-	 
+
 	int st = PyArray_GetEndianness();
 	if (st == NPY_CPU_UNKNOWN_ENDIAN) {
 		PyErr_Format(PyExc_RuntimeError, "FATAL: module compiled as unknown endian");
@@ -1612,7 +1610,7 @@ static int brahms_____import_array(void)
 	}
 #endif
 	 */
-	
+
 	return 0;
 }
 
@@ -1638,32 +1636,32 @@ COMPONENT_CLASS_CPP::COMPONENT_CLASS_CPP(EventModuleCreateBindings* emc)
 	if (!engine)
 	{
 		/*
-		 
+
 		 WHAT GOES WRONG
-		 
+
 		 on stuart's laptop (python 2.6), import_array() calls PyArray_GetEndianness(),
 		 which is PyArray_API[210]. for reasons unknown, 210 is NULL (as is 209); only
 		 208 and below are non-NULL. thus, we segfault.
-		 
+
 		 see implementation in __multiarray_api.h in the numpy core
-		 
+
 		 CORRECT SOLUTION
-		 
+
 		 find out why PyArray_GetEndianness()
 		 does not get a non-NULL in the call to get the API
-		 
+
 		 WORKAROUND
-		 
+
 		 avoid the call to PyArray_GetEndianness() by recoding the import_array call
 		 (we do this just above this function)
-		 
+
 		 */
-		
+
 		Py_Initialize();
-		
+
 #ifdef __OSX__
 		brahms____import_array();
-		
+
 		//	avoid compiler warning/error
 		if (6 == 7)
 			import_array();
@@ -1935,7 +1933,7 @@ void COMPONENT_CLASS_CPP::fireWrappedFunction()
 
 			//	store
 			if (msg.length()) data.msg = msg.c_str();
-			
+
 			EngineEvent event;
 			event.hCaller = hComponent;
 			event.flags = 0;
@@ -1965,7 +1963,7 @@ void COMPONENT_CLASS_CPP::fireWrappedFunction()
 						int l = tb->tb_lineno;
 						const char* filename = PyString_AsString(tb->tb_frame->f_code->co_filename);
 						const char* modulename = PyString_AsString(tb->tb_frame->f_code->co_name);
-						
+
 						//	construct trace
 						stringstream ss;
 						ss << "at line " << l << " of " << modulename << " [[ " << filename << " :: " << l << " ]]";
@@ -1975,7 +1973,7 @@ void COMPONENT_CLASS_CPP::fireWrappedFunction()
 						data.error = err;
 						data.flags = F_TRACE;
 						data.msg = s.c_str();
-						
+
 						EngineEvent event;
 						event.hCaller = hComponent;
 						event.flags = 0;
@@ -2465,7 +2463,7 @@ BRAHMS_DLL_EXPORT Symbol EventHandler(Event* event)
 
 				COMPONENT_CLASS_CPP* newObject = new COMPONENT_CLASS_CPP(emc);
 				event->object = newObject;
-                           
+
 				newObject->initialize(emc->hComponent, emc->data);
 				emc->info = newObject->getThisComponentInfo();
 
@@ -2510,4 +2508,3 @@ BRAHMS_DLL_EXPORT Symbol EventHandler(Event* event)
 	}
 
 }
-

@@ -1,1 +1,7 @@
-add_library (binding_1258 SHARED matlab.cpp)
+if(COMPILE_MATLAB_BINDING)
+  message(STATUS "Matlab include path is:")
+  message(STATUS "  ${BRAHMS_MATLAB_INCLUDES}")
+  message(STATUS "  (You may need to change it in BrahmsLibFind.cmake)")
+  include_directories (${BRAHMS_MATLAB_INCLUDES})
+  add_library (binding_1258 SHARED matlab.cpp)
+endif(COMPILE_MATLAB_BINDING)
