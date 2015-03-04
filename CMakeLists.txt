@@ -76,7 +76,7 @@ add_subdirectory(components)
 add_subdirectory(support)
 
 # For debugging, you can list variables like this:
-set(DEBUG_VARIABLES ON)
+set(DEBUG_VARIABLES OFF)
 if(DEBUG_VARIABLES)
   get_cmake_property(_variableNames VARIABLES)
   foreach (_variableName ${_variableNames})
