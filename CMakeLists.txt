@@ -38,7 +38,7 @@ message(STATUS "Processor " ${CMAKE_SYSTEM_PROCESSOR} " Arch bits: " ${ARCH_BITS
 
 # Optional stuff.
 option(COMPILE_MATLAB_BINDING "Compile the matlab binding" OFF)
-option(COMPILE_PYTHON_BINDING "Compile the Python binding" OFF)
+option(COMPILE_PYTHON_BINDING "Compile the Python binding" ON)
 option(COMPILE_WITH_MPICH2 "Compile the mpich2 channel communications layer" ON)
 
 # Lib finding.

@@ -24,5 +24,7 @@ target_link_libraries(
   brahms-execute brahms-engine brahms-channel-common
   brahms-gui pthread Xaw
   )
+install(TARGETS brahms-execute DESTINATION bin)
+install(FILES brahms DESTINATION bin)
 # Compile the gui library:
 add_subdirectory(gui)
