@@ -31,14 +31,14 @@ ________________________________________________________________
 */
 
 
-
+#include "BrahmsConfig.h"
 
 ////////////////	COMPONENT INFO
 
 #define COMPONENT_CLASS_STRING "client/brahms/language/1266"
 #define COMPONENT_CLASS_CPP client_brahms_language_1266_0
-#define COMPONENT_RELEASE __REL__
-#define COMPONENT_REVISION __REV__
+#define COMPONENT_RELEASE VERSION_BRAHMS_REL
+#define COMPONENT_REVISION VERSION_BRAHMS_REV
 #define COMPONENT_ADDITIONAL "Author=Ben Mitch\n" "URL=http://brahms.sourceforge.net\n"
 #define COMPONENT_FLAGS ( F_NOT_RATE_CHANGER | F_NEEDS_ALL_INPUTS )
 
@@ -134,7 +134,7 @@ Symbol quick_errorMessage(Symbol hComponent, Symbol error, const char* msg, UINT
 	data.error = error;
 	data.msg = msg;
 	data.flags = flags;
-	
+
 	event.hCaller = hComponent;
 	event.flags = 0;
 	event.type = ENGINE_EVENT_ERROR_MESSAGE;
@@ -241,7 +241,7 @@ Symbol EventHandler(struct Event* event)
 			struct EventGetSet data;
 			struct EngineEvent engineEvent;
 			struct EventOutputMessage msg;
-			
+
 
 
 ////////////////	SAY HELLO
@@ -410,7 +410,7 @@ Symbol EventHandler(struct Event* event)
 			gpdata.handledEvent = &object->input;
 			gpdata.spec.cls = "std/2009/data/numeric";
 			gpdata.spec.release = 0;
-			
+
 			engineEvent.hCaller = object->hProcess;
 			engineEvent.flags = 0;
 			engineEvent.type = ENGINE_EVENT_GET_PORT;
@@ -536,5 +536,3 @@ Symbol EventHandler(struct Event* event)
 
 //	include the overlay (yes, again!)
 #include "brahms-1266.h"
-
-

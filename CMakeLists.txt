@@ -24,6 +24,7 @@ endif()
 
 # CFLAGS
 set(CMAKE_CXX_FLAGS ${BRAHMS_HOST_DEFINITION})
+set(CMAKE_C_FLAGS ${BRAHMS_HOST_DEFINITION})
 message(STATUS "Flags " ${CMAKE_CXX_FLAGS})
 
 # This needs work - it's too simplistic and I've no idea if it would

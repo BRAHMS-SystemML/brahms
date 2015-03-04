@@ -31,12 +31,10 @@ ________________________________________________________________
 */
 
 
-
-
 /*
 
 	This is a C overlay interface for the BRAHMS Component Interface.
-	
+
 	Revision: __REV__
 
 	The BRAHMS Component Interface is a set of C structures and functions.
@@ -84,9 +82,9 @@ ________________________________________________________________
 
 
 
-
-
-
+#include "BrahmsConfig.h"
+#define __BINDING__ 1266
+#define __REV__ VERSION_BRAHMS_REV
 
 #define BRAHMS_BUILD_TARGET __BINDING__
 #define BRAHMS_BINDING_NAME __BINDING__
@@ -130,9 +128,9 @@ ________________________________________________________________
 #ifdef OVERLAY_QUICKSTART_PROCESS
 
 //	include interfaces for other components we use
-#include "std/2009/data/numeric/brahms/0/data.h"
-#include "std/2009/data/spikes/brahms/0/data.h"
-#include "std/2009/util/rng/brahms/0/utility.h"
+#include "data_numeric.h"
+#include "data_spikes.h"
+#include "util_rng.h"
 
 #endif
 
@@ -190,6 +188,3 @@ ________________________________________________________________
 
 //
 ////////////////////////////////////////////////////////////////
-
-
-
