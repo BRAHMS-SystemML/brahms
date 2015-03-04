@@ -27,11 +27,22 @@ if (COMPILE_PYTHON_BINDING)
       OUTPUT_STRIP_TRAILING_WHITESPACE)
     string(COMPARE EQUAL "${BRAHMS_NUMPY_INCLUDES}" "" NUMPY_NOT_FOUND)
     if(NUMPY_NOT_FOUND)
-      message(ERROR " You need numpy: ${BRAHMS_NUMPY_TEST_ERR} On Debian/Ubuntu try `sudo apt-get install python-numpy`")
-      set(LIB_ERROR TRUE)
+      message(FATAL_ERROR " You need numpy. On Debian/Ubuntu try `sudo apt-get install python-numpy`")
     endif(NUMPY_NOT_FOUND)
   endif(PYTHONLIBS_FOUND)
 endif (COMPILE_PYTHON_BINDING)
+
+if(COMPILE_WITH_MPICH2)
+  # Test for mpicxx
+  execute_process(COMMAND which mpicxx
+    OUTPUT_VARIABLE BRAHMS_MPICXX_PATH
+    ERROR_VARIABLE BRAHMS_MPICXX_TEST_ERR
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+  string(COMPARE EQUAL "${BRAHMS_MPICXX_PATH}" "" MPICXX_NOT_FOUND)
+  if(MPICXX_NOT_FOUND)
+    message(FATAL_ERROR " You need mpicxx to compile brahms-channel-mpich2. Try `sudo apt-get install mpich2`")
+  endif(MPICXX_NOT_FOUND)
+endif(COMPILE_WITH_MPICH2)
 
 # Could use X11_Xt_FOUND X11_Xmu_FOUND etc from find_package(X11). It
 # may be that find_package(X11) will much up on Windows.
@@ -46,16 +57,12 @@ find_package(wxWindows)
 string(COMPARE EQUAL "${WX_CONFIG_LIBS}" "" WX_NOT_FOUND)
 if (WX_NOT_FOUND)
   # There's no way to find WX (pkg-config won't find this on my Ubuntu system)
-  message(ERROR "You need WX windows. On Debian/Ubuntu try `sudo apt-get install libwxgtk2.8-dev`")
-  set(LIB_ERROR TRUE)
-  return()  
+  message(FATAL_ERROR "You need WX windows. On Debian/Ubuntu try `sudo apt-get install libwxgtk2.8-dev`")
 else()
   if (WX_CONFIG_LIBS MATCHES .*gtk.*)
     # all is well, seems to be a graphical wxwindows FIXME: May be different on Windows.
   else()
-    message(ERROR "You need graphical WX windows. On Debian/Ubuntu try `sudo apt-get install libwxgtk2.8-dev`")
-    set(LIB_ERROR TRUE)
-    return()
+    message(FATAL_ERROR "You need graphical WX windows. On Debian/Ubuntu try `sudo apt-get install libwxgtk2.8-dev`")
   endif()
       
   # We know we have WX, so we should be able to exec wx-config to get the compiler flags:
@@ -73,9 +80,7 @@ if (PKG_CONFIG_FOUND)
     find_path(BRAHMS_XAW_INCLUDE_DIR Xaw/XawInit.h HINTS ${XAW_INCLUDEDIR} ${XAW_INCLUDE_DIRS})
     set(BRAHMS_XAW_LDFLAGS ${XAW_LDFLAGS})
   else()
-    message(ERROR "You need libXaw7. On Debian/Ubuntu try `sudo apt-get install libxaw7-dev`")
-    set(LIB_ERROR TRUE)
-    return()
+    message(FATAL_ERROR "You need libXaw7. On Debian/Ubuntu try `sudo apt-get install libxaw7-dev`")
   endif(XAW_FOUND)
 endif()
 
