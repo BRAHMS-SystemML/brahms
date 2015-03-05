@@ -33,11 +33,13 @@ if (COMPILE_PYTHON_BINDING)
 endif (COMPILE_PYTHON_BINDING)
 
 if(COMPILE_WITH_MPICH2)
-  # Test for mpicxx
-  execute_process(COMMAND which mpicxx
-    OUTPUT_VARIABLE BRAHMS_MPICXX_PATH
-    ERROR_VARIABLE BRAHMS_MPICXX_TEST_ERR
-    OUTPUT_STRIP_TRAILING_WHITESPACE)
+  # Test for mpicxx. FIXME: `which` is unix-specific.
+  find_path(BRAHMS_MPICXX_PATH NAMES mpicxx HINTS /usr/bin /usr/local/bin)
+  find_path(BRAHMS_MPICXX_PATH NAMES mpicxx)
+  #execute_process(COMMAND which mpicxx
+  #  OUTPUT_VARIABLE BRAHMS_MPICXX_PATH
+  #  ERROR_VARIABLE BRAHMS_MPICXX_TEST_ERR
+  #  OUTPUT_STRIP_TRAILING_WHITESPACE)
   string(COMPARE EQUAL "${BRAHMS_MPICXX_PATH}" "" MPICXX_NOT_FOUND)
   if(MPICXX_NOT_FOUND)
     message(FATAL_ERROR " You need mpicxx to compile brahms-channel-mpich2. Try `sudo apt-get install mpich2`")
@@ -65,7 +67,8 @@ else()
     message(FATAL_ERROR "You need graphical WX windows. On Debian/Ubuntu try `sudo apt-get install libwxgtk2.8-dev`")
   endif()
       
-  # We know we have WX, so we should be able to exec wx-config to get the compiler flags:
+  # We know we have WX, so we should be able to exec wx-config to get
+  # the compiler flags: FIXME: Windows invocation will be different here.
   execute_process(COMMAND wx-config --cxxflags
     OUTPUT_VARIABLE BRAHMS_WX_CXXFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
   execute_process(COMMAND wx-config --cflags
