@@ -10,6 +10,7 @@ if(COMPILE_WITH_MPICH2)
     ../channel.cpp ../deliverer.cpp
     mpi.cpp mpi-receiver.cpp mpi-sender.cpp
     )
+  install(TARGETS brahms-channel-mpich2 DESTINATION lib)
 else()
   message(STATUS "Omitting brahms-channel-mpich2")
 endif(COMPILE_WITH_MPICH2)

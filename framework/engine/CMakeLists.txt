@@ -14,3 +14,4 @@ add_library(brahms-engine SHARED
   main/engine-open.cpp  main/engine-execute.cpp  main/engine-close.cpp
   main/engine-walk.cpp main/engine-monitor.cpp 
   )
+install(TARGETS brahms-engine DESTINATION lib)
