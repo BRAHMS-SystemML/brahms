@@ -73,6 +73,9 @@ add_subdirectory(framework)
 add_subdirectory(components)
 add_subdirectory(support)
 
+# Ensure the BrahmsConfig.h header gets installed
+install(FILES ${CMAKE_BINARY_DIR}/BrahmsConfig.h DESTINATION include)
+
 # For debugging, you can list variables like this:
 set(DEBUG_VARIABLES OFF)
 if(DEBUG_VARIABLES)
