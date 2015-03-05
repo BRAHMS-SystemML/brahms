@@ -25,6 +25,6 @@ target_link_libraries(
   brahms-gui pthread Xaw
   )
 install(TARGETS brahms-execute DESTINATION bin)
-install(FILES brahms DESTINATION bin)
+install(PROGRAMS brahms DESTINATION bin)
 # Compile the gui library:
 add_subdirectory(gui)
