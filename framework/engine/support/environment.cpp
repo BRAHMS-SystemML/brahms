@@ -312,7 +312,11 @@ namespace brahms
 
 			//	construct list of namespace roots
 			string NamespaceRoots = brahms::os::getenv("SYSTEMML_INSTALL_PATH");
-			if (!NamespaceRoots.length()) ferr << E_INSTALLATION << "env var SYSTEMML_INSTALL_PATH not set";
+
+			if (!NamespaceRoots.length()) {
+                            ferr << E_INSTALLATION << "env var SYSTEMML_INSTALL_PATH not set";
+                        }
+
 			NamespaceRoots += brahms::os::PATH_SEPARATOR;
 			NamespaceRoots += "Namespace";
 			string s = gets("NamespaceRoots");
@@ -321,7 +325,7 @@ namespace brahms
 				NamespaceRoots += brahms::os::ENV_SEPARATOR + s;
 				if (s.substr(s.length()-1, 1) == brahms::os::ENV_SEPARATOR) NamespaceRoots = NamespaceRoots.substr(s.length()-1);
 			}
-	//		fout << "NamespaceRoots=" << NamespaceRoots << D_VERB;
+			fout << "NamespaceRoots=" << NamespaceRoots << D_VERB;
 
 			set("NamespaceRoots", NamespaceRoots, fout);
 
@@ -354,5 +358,3 @@ namespace brahms
 ////////////////	NAMESPACE
 
 }
-
-
