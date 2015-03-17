@@ -1466,6 +1466,8 @@ dst = [fileparts(file) '/log.xslt'];
 
 if ~exist(dst, 'file')
     s = 0;
+    % FIXME: Have the build system install a BrahmsConfig.m file
+    % containing the INSTALL_PREFIX and read that in.
     sip = getenv('SYSTEMML_INSTALL_PATH');
     if ~isempty(sip)
         src = [sip '/BRAHMS/media/log.xslt'];
