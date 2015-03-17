@@ -33,6 +33,7 @@ ________________________________________________________________
 #ifndef _ENGINE_MAIN_COMM_H_
 #define _ENGINE_MAIN_COMM_H_
 
+#include "BrahmsConfig.h"
 #include "main/enginedata.h"
 #include "channel.h"
 
@@ -65,7 +66,7 @@ namespace brahms
 			CompressFunction* compressFunction = NULL;
 
 			//	map compress module
-			string path = brahms::os::getenv("SYSTEMML_INSTALL_PATH");
+			string path(INSTALL_PREFIX);
 			path += brahms::os::COMPRESS_MODULE_FORM;
 
 			//	allow fail
@@ -91,7 +92,7 @@ namespace brahms
 			}
 
 			//	map channel module
-			path = brahms::os::getenv("SYSTEMML_INSTALL_PATH");
+			path = INSTALL_PREFIX;
 			path += brahms::os::CHANNEL_MODULE_FORM;
 			switch (protocol)
 			{

@@ -44,6 +44,7 @@ using std::string;
 using std::ifstream;
 #include "tfs.h"
 #include "os.h"
+#include "support/os.h"
 
 ////////////////	INFORMATION OPERATIONS
 #define INFO_OUT cout
@@ -59,7 +60,7 @@ void brahms::info::version(bool simple)
     INFO_OUT << "and you are welcome to redistribute it under certain conditions.\n";
     INFO_OUT << "For details, type \"brahms --license\", and/or visit us at\n";
     INFO_OUT << "http://brahms.sourceforge.net\n\n";
-    if (simple) return;
+    if (simple) { return; }
 
     INFO_OUT << "    built at " __TIME__ " on " __DATE__ "\n";
     INFO_OUT << "    built on " << BUILD_PLATFORM << "\n";
@@ -145,8 +146,6 @@ brahms::info::usage()
         ;
 
     INFO_OUT << endl;
-    //tfs();
-    //INFO_OUT << endl;
 }
 
 void
@@ -180,28 +179,30 @@ brahms::info::license()
 
 
     //	just pass through license file
-    string filename = os::getenv("SYSTEMML_INSTALL_PATH") + "/BRAHMS/LICENSE";
+    string filename(INSTALL_PREFIX);
+    filename += brahms::os::PATH_SEPARATOR;
+    filename += "share";
+    filename += brahms::os::PATH_SEPARATOR;
+    filename += "brahms";
+    filename += brahms::os::PATH_SEPARATOR;
+    filename += "LICENSE";
     ifstream file(filename.c_str());
-    if (file)
-    {
+    if (file) {
         string s;
-        while (getline(file, s))
+        while (getline(file, s)) {
             INFO_OUT << s << "\n";
+        }
         file.close();
+    } else {
+        INFO_OUT <<
+            "License file \"LICENSE\" not found - you should be able to find a\n"
+            "copy on the web (GNU General Public License version 2), probably at:\n"
+            "\n"
+            "http://www.gnu.org/licenses/gpl.txt\n"
+            "\n"
+            "or, alternatively, from the author of this software.\n"
+            "\n";
     }
-    else INFO_OUT <<
-
-             "License file \"LICENSE\" not found - you should be able to find a\n"
-             "copy on the web (GNU General Public License version 2), probably at:\n"
-             "\n"
-
-             "http://www.gnu.org/licenses/gpl.txt\n"
-             "\n"
-
-             "or, alternatively, from the author of this software.\n"
-             "\n"
-
-             ;
 }
 
 void
@@ -213,7 +214,8 @@ brahms::info::credits()
         "BRAHMS is primarily the work of Ben Mitch [1], with substantive\n"
         "contributions from Tak-Shing Chan [1], and discursive\n"
         "contributions from others at the ABRG [1] and from Martin\n"
-        "Pearson at BRL [2]. Specific inclusions of third-party code are\n"
+        "Pearson at BRL [2]. Seb James re-engineered the build system (using cmake).\n"
+        "Specific inclusions of third-party code are\n"
         "Marsaglia's & Tsang's Ziggurat RNG [3] and Edward Falk's Gauge\n"
         "widget for X Windows [4]. BRAHMS also uses zlib [5] as an\n"
         "external library.\n\n"

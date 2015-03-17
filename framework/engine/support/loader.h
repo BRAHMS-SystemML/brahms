@@ -85,7 +85,7 @@ namespace brahms
 		void terminate(brahms::thread::ThreadBase& thread);
 
 		//	other data
-		string systemMLInstallPath;
+                string installPrefix;
 		VSTRING namespaceRoots;
 
 		//	list of modules in-memory

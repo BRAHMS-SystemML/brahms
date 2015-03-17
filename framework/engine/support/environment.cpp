@@ -30,11 +30,7 @@ ________________________________________________________________
 
 */
 
-// BrahmsConfig.h gives us the equivalent of SYSTEMML_INSTALL_PATH -
-// the location of the "core" Namespace; the one installed with
-// BRAHMS.
 #include "BrahmsConfig.h"
-
 #include "support.h"
 
 using namespace brahms::output; // for D_INFO, etc.
@@ -42,38 +38,38 @@ using namespace brahms::output; // for D_INFO, etc.
 namespace brahms
 {
 
-		Environment::Environment(brahms::base::Core& p_core)
-			:
-			core(p_core)
-		{
-			nodeExecPars.nodeName("ExecutionParameters");
-			nodeExecPars.setControl(&controlExecPars);
-		}
+    Environment::Environment(brahms::base::Core& p_core)
+        :
+        core(p_core)
+    {
+        nodeExecPars.nodeName("ExecutionParameters");
+        nodeExecPars.setControl(&controlExecPars);
+    }
 
-		Environment::~Environment()
-		{
-		}
+    Environment::~Environment()
+    {
+    }
 
-		void Environment::add(string key)
-		{
-			//	since set() falls over if we try to add a par
-			//	that doesn't exist, we need this function so
-			//	we can add pars that aren't specified in a
-			//	file (i.e. run-time allocated, or dynamic, pars)
-                    const brahms::xml::XMLNodeList* nodes = nodeExecPars.childNodes();
-                    for(UINT32 n=0; n<nodes->size(); n++)
-                    {
-                        if (nodes->at(n)->nodeName() == key)
-                            ferr << E_EXECUTION_PARAMETERS << "Execution Parameter \""
-                                 << key << "\" already exists during add()";
-                    }
+    void Environment::add(string key)
+    {
+        //	since set() falls over if we try to add a par
+        //	that doesn't exist, we need this function so
+        //	we can add pars that aren't specified in a
+        //	file (i.e. run-time allocated, or dynamic, pars)
+        const brahms::xml::XMLNodeList* nodes = nodeExecPars.childNodes();
+        for(UINT32 n=0; n<nodes->size(); n++)
+        {
+            if (nodes->at(n)->nodeName() == key)
+                ferr << E_EXECUTION_PARAMETERS << "Execution Parameter \""
+                     << key << "\" already exists during add()";
+        }
 
-                    //	modify the tree
-                    controlExecPars.readonly = false;
-                    nodeExecPars.appendChild(new brahms::xml::XMLNode(key.c_str()));
-                    core.execPars.set(key.c_str(), "");
-                    controlExecPars.readonly = true;
-		}
+        //	modify the tree
+        controlExecPars.readonly = false;
+        nodeExecPars.appendChild(new brahms::xml::XMLNode(key.c_str()));
+        core.execPars.set(key.c_str(), "");
+        controlExecPars.readonly = true;
+    }
 
     void Environment::set(string key, string value, brahms::output::Source& fout)
     {
@@ -336,7 +332,7 @@ namespace brahms
         set("HostName", brahms::os::gethostname(), fout);
 
         //	construct the "installed" namespace
-        string NamespaceRoots = CMAKE_INSTALL_PREFIX;
+        string NamespaceRoots = INSTALL_PREFIX;
         NamespaceRoots += brahms::os::PATH_SEPARATOR;
         NamespaceRoots += "var";
         NamespaceRoots += brahms::os::PATH_SEPARATOR;

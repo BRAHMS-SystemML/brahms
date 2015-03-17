@@ -58,8 +58,8 @@ namespace brahms
 
 	void Loader::init(const brahms::Environment& environment)
 	{
-		//	SYSTEMML_INSTALL_PATH must be set
-		systemMLInstallPath = brahms::os::getenv("SYSTEMML_INSTALL_PATH");
+		//	The bindings are accessed via the INSTALL_PREFIX.
+		installPrefix = INSTALL_PREFIX;
 
 		//	get path from Execution Parameters
 		string sNamespaceRoots = environment.gets("NamespaceRoots");
@@ -224,7 +224,7 @@ namespace brahms
 						if (releaseFile.hasChild("Filename"))
 							componentCreateS.moduleFilename = releaseFile.getChild("Filename")->nodeText();
 
-						string bindingFilename = systemMLInstallPath + brahms::os::M_BINDING_MODULE_FORM;
+						string bindingFilename = installPrefix + brahms::os::M_BINDING_MODULE_FORM;
 
 						componentCreateS.isBinding = true; // do send extra info to EVENT_MODULE_CREATE
 
@@ -237,7 +237,7 @@ namespace brahms
 						if (releaseFile.hasChild("Filename"))
 							componentCreateS.moduleFilename = releaseFile.getChild("Filename")->nodeText();
 
-						string bindingFilename = systemMLInstallPath + brahms::os::PY_BINDING_MODULE_FORM;
+						string bindingFilename = installPrefix + brahms::os::PY_BINDING_MODULE_FORM;
 
 						componentCreateS.isBinding = true; // do send extra info to EVENT_MODULE_CREATE
 
