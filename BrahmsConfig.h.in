@@ -11,7 +11,7 @@
 
 #define ARCH_BITS @ARCH_BITS@
 
-#define BUILD_PLATFORM "Some computer"
+#define BUILD_PLATFORM "@CMAKE_HOST_SYSTEM@"
 
 #define INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@"
 
