@@ -77,7 +77,7 @@ add_subdirectory(support)
 install(FILES ${CMAKE_BINARY_DIR}/BrahmsConfig.h DESTINATION include)
 
 # For debugging, you can list variables like this:
-set(DEBUG_VARIABLES ON)
+set(DEBUG_VARIABLES OFF)
 if(DEBUG_VARIABLES)
   get_cmake_property(_variableNames VARIABLES)
   foreach (_variableName ${_variableNames})
