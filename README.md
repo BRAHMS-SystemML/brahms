@@ -23,6 +23,24 @@ http://brahms.sourceforge.net/docs/What%20is%20BRAHMS.html
 
 The original code is also available at that site.
 
+## What changed in this version?
+
+The major change between this version and BRAHMS 0.7.3 is that the
+requirement to set `SYSTEMML_INSTALL_PATH` has been removed. Instead, when
+the software is compiled, a directory for the "installed SystemML Namespace"
+is set - that might be `/usr/local/var/SystemML/Namespace`. That becomes
+the default BRAHMS Namespace. It's in a `var` directory as you may decide
+to install your own components in there.
+
+## What may change in future?
+
+I may re-instate `SYSTEMML_INSTALL_PATH` such that you can have a second
+installed Namespace, perhaps at `$HOME/SystemML/Namespace` which is referred
+to with `SYSTEMML_INSTALL_PATH`.
+
+I may implement a scheme for saving the delayed values stored in connections
+which have some specified lag.
+
 # Building BRAHMS
 
 This project uses cmake for cross-platform friendly building.
