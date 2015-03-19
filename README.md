@@ -59,9 +59,6 @@ cmake .. # or cmake-gui ..
 make -j4 # or however many processor cores you have
 sudo make install
 ~~~
----------------
-
-
 
 OLD Build Notes for reference
 -----------------------------
