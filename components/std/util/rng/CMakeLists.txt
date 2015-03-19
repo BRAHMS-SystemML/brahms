@@ -5,3 +5,6 @@ install(FILES ${CMAKE_SOURCE_DIR}/shared/1199/release.xml
   DESTINATION var/SystemML/Namespace/std/2009/util/rng/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/utility/node.xml
   DESTINATION var/SystemML/Namespace/std/2009/util/rng)
+
+# We need util_rng.h for legacy (see brahms-c++-common.h around line 3365)
+install(FILES util_rng.h DESTINATION include)

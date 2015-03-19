@@ -5,3 +5,6 @@ install(FILES ${CMAKE_SOURCE_DIR}/shared/1199/release.xml
   DESTINATION var/SystemML/Namespace/std/2009/data/numeric/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/data/node.xml
   DESTINATION var/SystemML/Namespace/std/2009/data/numeric)
+
+# We need the data_numeric.h file installed for legacy support
+install(FILES data_numeric.h DESTINATION include)
