@@ -31,7 +31,9 @@ You'll need to obtain the correct dependencies. On Linux that means a
 compiler, libXv, libXaw and WX windows. For example, on (current 2015)
 Ubuntu or Debian systems you'll want to do:
 
+~~~ {.bash}
 sudo apt-get install build-essential libxaw7-dev libxv-dev libwxgtk2.8-dev
+~~~
 
 These libraries are used to draw the progress box which shows while
 BRAHMS is running.
@@ -43,17 +45,20 @@ For optional features (MPI channel, Python and MATLAB bindings) you'll
 need mpich2, python development libraries and a MATLAB
 installation. The first two can be obtained via apt-get:
 
+~~~ {.bash}
 sudo apt-get install mpich2 python-dev
+~~~
 
 The recommended method for building is to create a separate build
 folder as follows:
 
+~~~ {.bash}
 mkdir build
 cd build
-cmake .. (or cmake-gui ..)
+cmake .. # or cmake-gui ..
 make -j4 # or however many processor cores you have
 sudo make install
-
+~~~
 ---------------
 
 
