@@ -78,6 +78,30 @@ make -j4 # or however many processor cores you have
 sudo make install
 ~~~
 
+## Options for cmake
+
+Here are the options you can set. Shown here are the defaults (at time of writing):
+
+Adding/removing bindings:
+~~~ {.bash}
+cmake -DCOMPILE_MATLAB_BINDING=OFF -DCOMPILE_PYTHON_BINDING=ON ..
+~~~
+
+MPICH2:
+~~~ {.bash}
+cmake -DCOMPILE_WITH_MPICH2=ON ..
+~~~
+
+Compiling a component which requires WX windows:
+~~~ {.bash}
+cmake -DCOMPILE_WX_COMPONENT=OFF ..
+~~~
+
+Compiling with a specific installation prefix:
+~~~ {.bash}
+cmake -DCMAKE_INSTALL_PREFIX=/usr/local ..
+~~~
+
 OLD Build Notes for reference
 -----------------------------
 
