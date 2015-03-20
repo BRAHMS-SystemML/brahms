@@ -1,6 +1,6 @@
 # AUTOMOC requires 2.8.6. Per-target include directories would require 2.8.8
 cmake_minimum_required(VERSION 2.8.6)
-PROJECT(BRAHMS)
+project(BRAHMS)
 
 # BRAHMS version info
 set(VERSION_BRAHMS_MAJ 0)
@@ -36,10 +36,11 @@ else()
 endif()
 message(STATUS "Processor " ${CMAKE_SYSTEM_PROCESSOR} " Arch bits: " ${ARCH_BITS})
 
-# Optional stuff.
+# Optional features for the user to choose.
 option(COMPILE_MATLAB_BINDING "Compile the matlab binding" OFF)
 option(COMPILE_PYTHON_BINDING "Compile the Python binding" ON)
 option(COMPILE_WITH_MPICH2 "Compile the mpich2 channel communications layer" ON)
+option(COMPILE_WX_COMPONENT "Compile the image numeric component which requires WX" OFF)
 
 # Lib finding.
 include (BrahmsLibFind.cmake)

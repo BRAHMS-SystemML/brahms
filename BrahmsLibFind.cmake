@@ -13,10 +13,12 @@
 #
 
 # If you're going to use matlab bindings, then set the paths here.
-set(BRAHMS_MATLAB_INCLUDES "/usr/local/MATLAB/R2014b" "/usr/local/MATLAB/R2014b/extern/include")
+if(COMPILE_MATLAB_BINDING)
+  set(BRAHMS_MATLAB_INCLUDES "/usr/local/MATLAB/R2014b" "/usr/local/MATLAB/R2014b/extern/include")
+endif(COMPILE_MATLAB_BINDING)
 
 # Python stuff.
-if (COMPILE_PYTHON_BINDING)
+if(COMPILE_PYTHON_BINDING)
   find_package(PythonLibs)
   if (PYTHONLIBS_FOUND)
     set(BRAHMS_PYTHON_INCLUDES ${PYTHON_INCLUDE_DIRS})
@@ -53,31 +55,33 @@ find_package(X11)
 # If we have pkg-config then we can use it:
 find_package(PkgConfig)
 
-# Use find_package as first attempt, then pkg-config as fallback on this system.
-# Try sudo apt-get install libwxgtk2.8-dev  find_package(wxWindows) # This does work if you have libwxgtk2.8-dev
-find_package(wxWindows)
-string(COMPARE EQUAL "${WX_CONFIG_LIBS}" "" WX_NOT_FOUND)
-if (WX_NOT_FOUND)
-  # There's no way to find WX (pkg-config won't find this on my Ubuntu system)
-  message(FATAL_ERROR "You need WX windows. On Debian/Ubuntu try `sudo apt-get install libwxgtk2.8-dev`")
-else()
-  if (WX_CONFIG_LIBS MATCHES .*gtk.*)
-    # all is well, seems to be a graphical wxwindows FIXME: May be different on Windows.
+if(COMPILE_WX_COMPONENT)
+  # Use find_package as first attempt, then pkg-config as fallback on this system.
+  # Try sudo apt-get install libwxgtk2.8-dev
+  find_package(wxWindows)
+  string(COMPARE EQUAL "${WX_CONFIG_LIBS}" "" WX_NOT_FOUND)
+  if (WX_NOT_FOUND)
+    # There's no way to find WX (pkg-config won't find this on my Ubuntu system)
+    message(FATAL_ERROR "You need WX windows. On Debian/Ubuntu try `sudo apt-get install libwxgtk2.8-dev`")
   else()
-    message(FATAL_ERROR "You need graphical WX windows. On Debian/Ubuntu try `sudo apt-get install libwxgtk2.8-dev`")
-  endif()
-      
-  # We know we have WX, so we should be able to exec wx-config to get
-  # the compiler flags: FIXME: Windows invocation will be different here.
-  execute_process(COMMAND wx-config --cxxflags
-    OUTPUT_VARIABLE BRAHMS_WX_CXXFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
-  execute_process(COMMAND wx-config --cflags
-    OUTPUT_VARIABLE BRAHMS_WX_CFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
-endif(WX_NOT_FOUND)
+    if (WX_CONFIG_LIBS MATCHES .*gtk.*)
+      # all is well, seems to be a graphical wxwindows FIXME: May be different on Windows.
+    else()
+      message(FATAL_ERROR "You need graphical WX windows. On Debian/Ubuntu try `sudo apt-get install libwxgtk2.8-dev`")
+    endif()
 
-if (PKG_CONFIG_FOUND)
+    # We know we have WX, so we should be able to exec wx-config to get
+    # the compiler flags: FIXME: Windows invocation will be different here.
+    execute_process(COMMAND wx-config --cxxflags
+      OUTPUT_VARIABLE BRAHMS_WX_CXXFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
+    execute_process(COMMAND wx-config --cflags
+      OUTPUT_VARIABLE BRAHMS_WX_CFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
+  endif(WX_NOT_FOUND)
+endif(COMPILE_WX_COMPONENT)
+
+if(PKG_CONFIG_FOUND)
   # There's no FindXaw script on my Ubuntu system. Can use pkg-config to check it's present:
-  pkg_check_modules (XAW REQUIRED xaw7)
+  pkg_check_modules(XAW REQUIRED xaw7)
   if (XAW_FOUND)
     # We have XAW_LDFLAGS XAW_INCLUDEDIR
     find_path(BRAHMS_XAW_INCLUDE_DIR Xaw/XawInit.h HINTS ${XAW_INCLUDEDIR} ${XAW_INCLUDE_DIRS})
@@ -88,9 +92,3 @@ if (PKG_CONFIG_FOUND)
 endif()
 
 # end of lib finding.
-
-# For debugging, you can list variables like this:
-#get_cmake_property(_variableNames VARIABLES)
-#foreach (_variableName ${_variableNames})
-#  message(STATUS "${_variableName}=${${_variableName}}")
-#endforeach()
