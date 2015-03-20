@@ -14,14 +14,14 @@
 
 # We need threads
 find_package (Threads)
-string(COMPARE EQUAL "${CMAKE_THREAD_LIBS_INIT}" "" THREADS_NOT_FOUND)
-if(THREADS_NOT_FOUND)
+if(NOT THREADS_FOUND)
+  # This is a fallback for Mac:
   include (CheckIncludeFiles)
   CHECK_INCLUDE_FILES("pthread.h" CMAKE_HAVE_PTHREAD_H) 
   if(NOT CMAKE_HAVE_PTHREAD_H)
     message(FATAL_ERROR " You need a threading library")
-  endif(CMAKE_HAVE_PTHREAD_H)
-endif(THREADS_NOT_FOUND)
+  endif(NOT CMAKE_HAVE_PTHREAD_H)
+endif(NOT THREADS_FOUND)
 
 # We need -lrt on some platforms for clock_gettime (on others, clock_gettime is in libc)
 if (UNIX AND NOT APPLE)
