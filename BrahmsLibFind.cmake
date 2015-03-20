@@ -20,8 +20,20 @@ if(THREADS_NOT_FOUND)
 endif(THREADS_NOT_FOUND)
 
 # We need -lrt on some platforms for clock_gettime (on others, clock_gettime is in libc)
-include(CheckLibraryExists)
-CHECK_LIBRARY_EXISTS(rt clock_gettime "time.h" HAVE_CLOCK_GETTIME_IN_RT)
+if (UNIX)
+  include(CheckFunctionExists)
+  set(CMAKE_EXTRA_INCLUDE_FILES time.h)
+  CHECK_FUNCTION_EXISTS(clock_gettime HAVE_CLOCK_GETTIME)
+  if(NOT HAVE_CLOCK_GETTIME)
+    include(CheckLibraryExists)
+    # On systems with glibc < 2.16 clock_gettime is in rt library
+    find_library(LIBRT_LIBRARIES rt)
+    check_library_exists(${LIBRT_LIBRARIES} clock_gettime "time.h" HAVE_CLOCK_GETTIME_IN_RT )
+    if(NOT HAVE_CLOCK_GETTIME_IN_LIBRT)
+      message(FATAL_ERROR "clock_gettime not found")
+    endif(NOT HAVE_CLOCK_GETTIME_IN_LIBRT)
+  endif(NOT HAVE_CLOCK_GETTIME)
+endif(UNIX)
 
 # If you're going to use matlab bindings, then set the paths here.
 if(COMPILE_MATLAB_BINDING)
