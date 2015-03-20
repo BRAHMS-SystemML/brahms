@@ -12,6 +12,17 @@
 # BRAHMS_XAW_LDFLAGS
 #
 
+# We need threads
+find_package (Threads)
+string(COMPARE EQUAL "${CMAKE_THREAD_LIBS_INIT}" "" THREADS_NOT_FOUND)
+if(THREADS_NOT_FOUND)
+  message(FATAL_ERROR " You need a threading library")
+endif(THREADS_NOT_FOUND)
+
+# We need -lrt on some platforms for clock_gettime (on others, clock_gettime is in libc)
+include(CheckLibraryExists)
+CHECK_LIBRARY_EXISTS(rt clock_gettime "time.h" HAVE_CLOCK_GETTIME_IN_RT)
+
 # If you're going to use matlab bindings, then set the paths here.
 if(COMPILE_MATLAB_BINDING)
   set(BRAHMS_MATLAB_INCLUDES "/usr/local/MATLAB/R2014b" "/usr/local/MATLAB/R2014b/extern/include")

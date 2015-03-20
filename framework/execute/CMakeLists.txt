@@ -1,4 +1,8 @@
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${XAW_CFLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${XAW_CFLAGS}")
+message(STATUS "Flags for brahms-execute: " ${CMAKE_CXX_FLAGS})
 add_executable(brahms-execute main.cpp info.cpp os.cpp tfs.cpp version.cpp)
+
 # Xaw pulls in the rest of the X11 libs required here. However, the
 # full list of linked 3rd party libs on my Ubuntu system includes:
 #        libpthread.so.0 => /lib/x86_64-linux-gnu/libpthread.so.0 (0x00007f76c8d7a000)
@@ -20,10 +24,16 @@ add_executable(brahms-execute main.cpp info.cpp os.cpp tfs.cpp version.cpp)
 #        libuuid.so.1 => /lib/x86_64-linux-gnu/libuuid.so.1 (0x00007f76c68fa000)
 #        libXau.so.6 => /usr/lib/x86_64-linux-gnu/libXau.so.6 (0x00007f76c66f6000)
 #        libXdmcp.so.6 => /usr/lib/x86_64-linux-gnu/libXdmcp.so.6 (0x00007f76c64f0000)
+
+if(HAVE_CLOCK_GETTIME_IN_RT)
+  set(LIB_RT rt)
+endif(HAVE_CLOCK_GETTIME_IN_RT)
+
 target_link_libraries(
   brahms-execute brahms-engine brahms-channel-common
-  brahms-gui pthread Xaw
+  brahms-gui ${CMAKE_THREAD_LIBS_INIT} ${LIB_RT} ${XAW_LDFLAGS}
   )
+
 install(TARGETS brahms-execute DESTINATION bin)
 install(PROGRAMS brahms DESTINATION bin)
 # Compile the gui library:
