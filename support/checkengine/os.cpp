@@ -427,7 +427,7 @@ ________________________________________________________________
 			if (pthread_create(&osThread, &attr, &OSThreadProc, this))
 			{
 				pthread_attr_destroy(&attr);
-				throw "failed to create thread";
+				throw "Thread::Thread(): failed to create thread";
 			}
 
 			//	destroy thread attribute

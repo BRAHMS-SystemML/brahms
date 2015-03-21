@@ -30,28 +30,16 @@ ________________________________________________________________
 
 */
 
-
 #include "base.h"
+#include "support/os.h"
 
 #ifdef __NIX__
-
-//#include <sys/types.h>
-//#include <sys/stat.h>
-//include <unistd.h>
-//#include <dirent.h>
-//#include <pwd.h>
-#include <pthread.h>
-//#include <errno.h>
-
+# include <pthread.h>
 #endif
 
 #ifdef __OSX__
-
-#include <mach/mach.h>
-
+# include <mach/mach.h>
 #endif
-
-
 
 inline string f2s(DOUBLE n)
 {
@@ -252,7 +240,7 @@ namespace brahms
 			{
 				//	change start
 				state = TS_START_FAILED;
-				ferr << E_OS << "failed to create thread";// (" + brahms::os::getlasterror() + ")";
+				ferr << E_OS << "Thread::start(): failed to create thread (" + brahms::os::getlasterror() + ")";
 			}
 
 			/*
@@ -376,10 +364,10 @@ namespace brahms
 			//	create thread (use default priority)
 			if (pthread_create(&osThread, &attr, &osThreadProc, this))
 			{
-				//	change state
+                            //	change state
 				state = TS_START_FAILED;
 				pthread_attr_destroy(&attr);
-					ferr << E_OS << "failed to create thread"; // (" << brahms::os::getlasterror() << ")";
+                                ferr << E_OS << "Thread::start(): failed to create thread using default priority (" << brahms::os::getlasterror() << ")";
 			}
 
 			//	destroy thread attribute
