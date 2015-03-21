@@ -35,6 +35,7 @@ ________________________________________________________________
 
 #ifdef __NIX__
 # include <pthread.h>
+# include <errno.h>
 #endif
 
 #ifdef __OSX__
@@ -59,9 +60,9 @@ namespace brahms
 {
     namespace thread
     {
-        ThreadBase::ThreadBase(ThreadClass threadClass, UINT32 threadIndex, brahms::base::Core& p_core)
-            :
-            core(p_core)
+        ThreadBase::ThreadBase(ThreadClass threadClass, UINT32 threadIndex,
+                               brahms::base::Core& p_core)
+            : core(p_core)
         {
             // defaults
             flags = 0;
@@ -80,8 +81,9 @@ namespace brahms
             case TC_DELIVERER: threadIdentifier = 'D'; break;
             default: ferr << E_INTERNAL << "unknown thread class";
             }
-            if (threadClass != TC_CALLER)
+            if (threadClass != TC_CALLER) {
                 threadIdentifier += u2s(threadIndex+1);
+            }
         }
 
         const char* ThreadBase::getThreadIdentifier()
@@ -103,7 +105,9 @@ namespace brahms
         {
             setFlag(F_THREAD_ERROR);
             core.condition.set(brahms::base::COND_LOCAL_ERROR);
-            tout << "STORING \"" << brahms::base::symbol2string(error.code) << ": " << error.msg << "\" IN THREAD \"" << threadIdentifier << "\"" << brahms::output::D_VERB_ERROR;
+            tout << "STORING \"" << brahms::base::symbol2string(error.code)
+                 << ": " << error.msg << "\" IN THREAD \"" << threadIdentifier
+                 << "\"" << brahms::output::D_VERB_ERROR;
             error.debugtrace("caught in thread \"" + threadIdentifier + "\"");
             error.debugtrace("caught after " + f2s(threadTimer.elapsed()) + " secs (thread time)");
             core.errorStack.push(error);
@@ -145,28 +149,27 @@ namespace brahms
             try
             {
                 // initial message
-                thread->tout << "THREAD ENTER" /* (0x" << hex << thread << ")" */ << brahms::output::D_VERB_HILITE;
+                thread->tout << "THREAD ENTER" << brahms::output::D_VERB_HILITE;
                 thread->threadProc(thread->threadProcArg);
             }
             catch(brahms::error::Error& e)
             {
-                thread->tout << e.format(brahms::FMT_TEXT, true) << "\n\n" <<
-                    "the client thread procedure raised an exception (above) "
-                    "(this is illegal: it should handle its own exceptions)"
+                thread->tout << e.format(brahms::FMT_TEXT, true) << "\n\n"
+                             << "the client thread procedure raised an exception (above) "
+                             << "(this is illegal: it should handle its own exceptions)"
                              << brahms::output::D_WARN;
             }
             catch(exception e)
             {
-                thread->tout << "E_STD: " << e.what() << "\n\n" <<
-                    "the client thread procedure raised an exception (above) "
-                    "(this is illegal: it should handle its own exceptions)"
+                thread->tout << "E_STD: " << e.what() << "\n\n"
+                             << "client thread procedure raised an exception (above) "
+                             << "(this is illegal: it should handle its own exceptions)"
                              << brahms::output::D_WARN;
             }
             catch(...)
             {
-                thread->tout <<
-                    "the client thread procedure raised an exception (...) "
-                    "(this is illegal: it should handle its own exceptions)"
+                thread->tout << "the client thread procedure raised an exception (...) "
+                             << "(this is illegal: it should handle its own exceptions)"
                              << brahms::output::D_WARN;
             }
 
@@ -178,7 +181,7 @@ namespace brahms
                 thread->threadCPUTime.finalize();
 
                 // final message
-                thread->tout << "THREAD EXIT" /* (0x" << hex << thread << ")" */ << brahms::output::D_VERB_HILITE;
+                thread->tout << "THREAD EXIT" << brahms::output::D_VERB_HILITE;
 
                 // change state
                 thread->state = TS_FINISHED;
@@ -189,8 +192,7 @@ namespace brahms
         }
 
         Thread::Thread(ThreadClass threadClass, UINT32 threadIndex, brahms::base::Core& core)
-            :
-            ThreadBase(threadClass, threadIndex, core)
+            : ThreadBase(threadClass, threadIndex, core)
         {
             // set state
             state = TS_VIRGIN;
@@ -214,7 +216,9 @@ namespace brahms
                 brahms::os::MutexLocker locker(threadMutex);
 
                 // check state
-                if (state != TS_VIRGIN) ferr << E_INTERNAL << "can only start() from TS_VIRGIN";
+                if (state != TS_VIRGIN) {
+                    ferr << E_INTERNAL << "can only start() from TS_VIRGIN";
+                }
 
                 // change state
                 state = TS_ACTIVE;
@@ -223,11 +227,14 @@ namespace brahms
 #ifdef __WIN__
 
             // create thread and set priority
-            if (!(osThread = CreateThread( NULL, 0, (LPTHREAD_START_ROUTINE)&osThreadProc, this, 0, 0 )))
-            {
+            if (!(osThread = CreateThread(NULL, 0,
+                                          (LPTHREAD_START_ROUTINE)&osThreadProc,
+                                          this, 0, 0 ))) {
                 // change start
                 state = TS_START_FAILED;
-                ferr << E_OS << "Thread::start(): failed to create thread (" + brahms::os::getlasterror() + ")";
+                ferr << E_OS
+                     << "Thread::start(): failed to create Windows thread ("
+                     << brahms::os::getlasterror() << ")";
             }
 
             /*
@@ -257,48 +264,47 @@ namespace brahms
             case TC_RECEIVER:
             {
                 if (!SetThreadPriority(osThread, THREAD_PRIORITY_IDLE))
-                    ferr << E_OS << "failed to set thread priority"; // (" + brahms::os::getlasterror() + ")";
+                    ferr << E_OS << "failed to set thread priority";
                 break;
             }
 
             case TC_DELIVERER:
             {
                 if (!SetThreadPriority(osThread, THREAD_PRIORITY_LOWEST))
-                    ferr << E_OS << "failed to set thread priority"; // (" + brahms::os::getlasterror() + ")";
+                    ferr << E_OS << "failed to set thread priority";
                 break;
             }
 
             case TC_WORKER:
             {
                 if (!SetThreadPriority(osThread, THREAD_PRIORITY_BELOW_NORMAL))
-                    ferr << E_OS << "failed to set thread priority"; // (" + brahms::os::getlasterror() + ")";
+                    ferr << E_OS << "failed to set thread priority";
                 break;
             }
 
             case TC_SENDER:
             {
                 if (!SetThreadPriority(osThread, THREAD_PRIORITY_NORMAL))
-                    ferr << E_OS << "failed to set thread priority"; // (" + brahms::os::getlasterror() + ")";
+                    ferr << E_OS << "failed to set thread priority";
                 break;
             }
             }
 #endif
 
 #ifdef __NIX__
-
             // create thread attribute
             pthread_attr_t attr;
-            if (pthread_attr_init(&attr)) ferr << E_OS << "failed to create thread attribute";
+            if (pthread_attr_init(&attr)) {
+                ferr << E_OS << "failed to create thread attribute";
+            }
 
             // set up attribute
-            if (pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE))
-            {
+            if (pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE)) {
                 pthread_attr_destroy(&attr);
                 ferr << E_OS << "failed to set thread attribute";
             }
 
-            /*
-
+# ifdef UNUSED_SCHEDULING_PRIORITY_CODE
             // set thread priority
             sched_param param;
             int mn = sched_get_priority_min(SCHED_FIFO);
@@ -306,57 +312,60 @@ namespace brahms
             //fout << "mn/mx " << mn << "/" << mx << D_INFO;
             if (pthread_attr_getschedparam (&attr, &param))
             {
-            pthread_attr_destroy(&attr);
-            ferr << E_OS << "failed to get thread sched param";
+                pthread_attr_destroy(&attr);
+                ferr << E_OS << "failed to get thread sched param";
             }
 
             switch(cls)
             {
             case TC_COMMS:
             {
-            param.sched_priority = mn + 1;
-            break;
+                param.sched_priority = mn + 1;
+                break;
             }
 
             case TC_DELIVERY:
             {
-            param.sched_priority = mn + 2;
-            break;
+                param.sched_priority = mn + 2;
+                break;
             }
 
             case TC_WORKER:
             {
-            param.sched_priority = mn + 3;
-            break;
+                param.sched_priority = mn + 3;
+                break;
             }
             }
 
             if (pthread_attr_setschedparam (&attr, &param))
             {
-            pthread_attr_destroy(&attr);
-            ferr << E_OS << "failed to set thread sched param";
+                pthread_attr_destroy(&attr);
+                ferr << E_OS << "failed to set thread sched param";
             }
             if (pthread_attr_getschedparam (&attr, &param))
             {
-            pthread_attr_destroy(&attr);
-            ferr << E_OS << "failed to get thread sched param";
+                pthread_attr_destroy(&attr);
+                ferr << E_OS << "failed to get thread sched param";
             }
             fout << "set pri " << param.sched_priority << D_INFO;
-
-            */
+# endif // UNUSED_SCHEDULING_PRIORITY_CODE
 
             // create thread (use default priority)
-            if (pthread_create(&osThread, &attr, &osThreadProc, this))
-            {
+            if (pthread_create(&osThread, &attr, &osThreadProc, this)) {
                 // change state
+                int theError = errno;
                 state = TS_START_FAILED;
                 pthread_attr_destroy(&attr);
-                ferr << E_OS << "Thread::start(): failed to create thread using default priority (" << brahms::os::getlasterror() << ")";
+                ferr << E_OS
+                     << "Thread::start(): failed to create (posix) thread using "
+                     << "default priority (" << brahms::os::getlasterror()
+                     << ")  errno: " << theError;
             }
 
             // destroy thread attribute
-            if (pthread_attr_destroy(&attr))
+            if (pthread_attr_destroy(&attr)) {
                 ferr << E_OS << "failed to destroy thread attribute";
+            }
 
             // Cannot set priority because the default scheduler only supports priority 0.
             // Of course the superuser can use SCHED_FIFO/SCHED_RR but running BRAHMS with
@@ -442,6 +451,7 @@ namespace brahms
 #ifdef __NIX__
                 // BUG FOUND BY valgrind!
                 // must detach pthread after it's completed
+                fout << "pthread_detach osThread..." << brahms::output::D_VERB;
                 pthread_detach(osThread);
 #endif
                 return;
