@@ -24,7 +24,7 @@ else()
   if(NOT CMAKE_HAVE_PTHREAD_H)
     message(FATAL_ERROR " You need a threading library")
   endif(NOT CMAKE_HAVE_PTHREAD_H)
-endif(NOT THREADS_FOUND)
+endif(THREADS_FOUND)
 
 # We need -lrt on some platforms for clock_gettime (on others, clock_gettime is in libc)
 if (UNIX AND NOT APPLE)
