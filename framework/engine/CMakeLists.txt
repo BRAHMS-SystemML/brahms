@@ -14,4 +14,13 @@ add_library(brahms-engine SHARED
   main/engine-open.cpp  main/engine-execute.cpp  main/engine-close.cpp
   main/engine-walk.cpp main/engine-monitor.cpp 
   )
+
+# Mac wants to be able to see libbrahms-channel-common in the above.
+if(APPLE)
+  target_link_libraries(
+    brahms-engine brahms-channel-common brahms-gui
+    ${CMAKE_THREAD_LIBS_INIT} ${LIB_RT} ${XAW_LDFLAGS}
+    )
+endif(APPLE)
+
 install(TARGETS brahms-engine DESTINATION lib)
