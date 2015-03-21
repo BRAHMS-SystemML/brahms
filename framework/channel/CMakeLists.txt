@@ -7,7 +7,7 @@ if(COMPILE_WITH_MPICH2)
     )
 else()
   target_link_libraries(
-    brahms-channel-common brahms-channel-sockets
+    brahms-channel-common brahms-channel-sockets brahms-engine-base
     )
 endif(COMPILE_WITH_MPICH2)
 endif(APPLE)
