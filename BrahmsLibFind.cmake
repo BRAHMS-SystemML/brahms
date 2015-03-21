@@ -14,10 +14,13 @@
 
 # We need threads
 find_package (Threads)
-if(NOT THREADS_FOUND)
+if(THREADS_FOUND)
+  message(STATUS "Found Threads with find_package :)")
+else()
+  message(STATUS "Didn't find Threads with find_package, fallback to check_include_files search for pthread.h.")
   # This is a fallback for Mac:
   include (CheckIncludeFiles)
-  CHECK_INCLUDE_FILES("pthread.h" CMAKE_HAVE_PTHREAD_H) 
+  check_include_files("pthread.h" CMAKE_HAVE_PTHREAD_H) 
   if(NOT CMAKE_HAVE_PTHREAD_H)
     message(FATAL_ERROR " You need a threading library")
   endif(NOT CMAKE_HAVE_PTHREAD_H)
