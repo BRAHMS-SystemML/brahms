@@ -57,7 +57,7 @@ namespace brahms
 			if (p != string::npos) file = file.substr(p+1);
 
 			stringstream ss;
-			ss << "£at " << file << ":" << line;
+			ss << "$at " << file << ":" << line;
 			traces.push_back(ss.str());
 			return (*this);
 		}
@@ -70,7 +70,7 @@ namespace brahms
 
 		Error& Error::debugtrace(const string& msg)
 		{
-			traces.push_back("£" + msg);
+			traces.push_back("$" + msg);
 			return (*this);
 		}
 
@@ -129,7 +129,7 @@ namespace brahms
 					for (unsigned int t=0; t<traces.size(); t++)
 					{
 						string tr = traces[t];
-						bool isdev = tr.length() && tr.substr(0,1) == "£";
+						bool isdev = tr.length() && tr.substr(0,1) == "$";
 						if (isdev) tr = tr.substr(1);
 
 						if (debugtrace || !isdev)
@@ -150,7 +150,7 @@ namespace brahms
 					for (unsigned int t=0; t<traces.size(); t++)
 					{
 						string tr = traces[t];
-						bool isdev = tr.length() && tr.substr(0,1) == "£";
+						bool isdev = tr.length() && tr.substr(0,1) == "$";
 						if (isdev) tr = tr.substr(1);
 
 						if (debugtrace || !isdev)
