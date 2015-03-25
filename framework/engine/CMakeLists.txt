@@ -26,4 +26,4 @@ if(APPLE)
     )
 endif(APPLE)
 
-install(TARGETS brahms-engine DESTINATION lib)
+install(TARGETS brahms-engine brahms-engine-base DESTINATION lib)
