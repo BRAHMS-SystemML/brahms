@@ -1,5 +1,11 @@
-set(CMAKE_CXX_FLAGS "${BRAHMS_HOST_DEFINITION} -fPIC -Werror -pthread -O3")
-set(CMAKE_C_FLAGS "${BRAHMS_HOST_DEFINITION} -fPIC -Werror -pthread -O3")
+if(APPLE)
+# Set any compiler flags for components here.
+#  set(CMAKE_CXX_FLAGS "${BRAHMS_HOST_DEFINITION} -fvisibility=hidden -fvisibility-inlines-hidden -fPIC -O3 -dynamiclib")
+#  set(CMAKE_C_FLAGS "${BRAHMS_HOST_DEFINITION} -fvisibility=hidden -fvisibility-inlines-hidden -fPIC -O3 -dynamiclib")
+else()
+  set(CMAKE_CXX_FLAGS "${BRAHMS_HOST_DEFINITION} -fPIC -Werror -pthread -O3")
+  set(CMAKE_C_FLAGS "${BRAHMS_HOST_DEFINITION} -fPIC -Werror -pthread -O3")
+endif(APPLE)
 message(STATUS "Flags for components: " ${CMAKE_CXX_FLAGS})
 add_subdirectory(std)
 add_subdirectory(sets)

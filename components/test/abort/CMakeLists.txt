@@ -1,2 +1,5 @@
 add_library(abort SHARED abort.cpp)
 set_target_properties(abort PROPERTIES OUTPUT_NAME "component" PREFIX "")
+if(APPLE)
+target_link_libraries(abort brahms-engine brahms-engine-base)
+endif(APPLE)

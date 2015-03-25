@@ -1,3 +1,10 @@
+# Suppress -Wreturn-type for this component.
+if(APPLE)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-return-type")
+endif(APPLE)
 add_library(modlin_leaky SHARED modlin_activation_leaky.cpp)
 set_target_properties(modlin_leaky PROPERTIES OUTPUT_NAME "component" PREFIX "")
+if(APPLE)
+target_link_libraries(modlin_leaky brahms-engine brahms-engine-base)
+endif(APPLE)
 # No install; this component is "only for testing" (according to the old makefile)

@@ -46,6 +46,9 @@ if (UNIX AND NOT APPLE)
   endif(NOT HAVE_CLOCK_GETTIME)
 endif(UNIX AND NOT APPLE)
 
+# brahms-compress requires zlib
+find_package(ZLIB REQUIRED)
+
 # If you're going to use matlab bindings, then set the paths here.
 if(COMPILE_MATLAB_BINDING)
   set(BRAHMS_MATLAB_INCLUDES "/usr/local/MATLAB/R2014b" "/usr/local/MATLAB/R2014b/extern/include")

@@ -975,9 +975,7 @@ MaxLabel(gw,wid,hgt, w0,w1)
  */
 
 static void
-GaugeSize(gw,wid,hgt, min_len)
-	GaugeWidget	gw;
-	Dimension	*wid, *hgt, min_len ;
+GaugeSize(GaugeWidget gw, Dimension* wid, Dimension* hgt, Dimension min_len)
 {
 	int	w,h ;		/* width, height of gauge */
 	int	vmargin ;	/* vertical margin */

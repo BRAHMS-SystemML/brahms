@@ -153,7 +153,6 @@ ________________________________________________________________
 #endif
 
 
-
 ////////////////    ENVIRONMENT DETECTION
 
 // Microsoft Visual C++ defines __int* in all cases

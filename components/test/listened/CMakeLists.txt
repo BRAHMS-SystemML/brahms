@@ -1,2 +1,5 @@
 add_library(listened SHARED listened.cpp)
 set_target_properties(listened PROPERTIES OUTPUT_NAME "component" PREFIX "")
+if(APPLE)
+target_link_libraries(listened brahms-engine brahms-engine-base)
+endif(APPLE)

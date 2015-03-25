@@ -115,6 +115,9 @@ namespace brahms
 
             // otherwise that's an error
             berr << E_INTERNAL;
+	    
+	    // This line never called, but avoids warning.
+	    return *componentData;
         }
 
         // TODO: should be removed in a future binding, since we now use the interface in utility.h to create a utility

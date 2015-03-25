@@ -233,8 +233,7 @@ namespace brahms
                 // change start
                 state = TS_START_FAILED;
                 ferr << E_OS
-                     << "Thread::start(): failed to create Windows thread ("
-                     << brahms::os::getlasterror() << ")";
+                     << "Thread::start(): failed to create Windows thread";
             }
 
             /*
@@ -358,8 +357,7 @@ namespace brahms
                 pthread_attr_destroy(&attr);
                 ferr << E_OS
                      << "Thread::start(): failed to create (posix) thread using "
-                     << "default priority (" << brahms::os::getlasterror()
-                     << ")  errno: " << theError;
+                     << "default priority. errno: " << theError;
             }
 
             // destroy thread attribute
