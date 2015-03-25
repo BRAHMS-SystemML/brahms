@@ -30,7 +30,7 @@ if(HAVE_CLOCK_GETTIME_IN_RT)
 endif(HAVE_CLOCK_GETTIME_IN_RT)
 
 target_link_libraries(
-  brahms-execute brahms-engine brahms-engine-base brahms-channel-common
+  brahms-execute brahms-engine brahms-engine-base
   brahms-gui ${CMAKE_THREAD_LIBS_INIT} ${LIB_RT} ${XAW_LDFLAGS}
   )
 

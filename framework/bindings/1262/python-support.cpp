@@ -30,7 +30,7 @@ ________________________________________________________________
 
 */
 
-
+#include <ctype.h>
 
 ////////////////////////////////////////////////////////////////
 //
@@ -74,12 +74,12 @@ ________________________________________________________________
 	{
 		//	ids returned by the wrapped function must be valid matlab field names...
 		const char* id = pid;
-		if (isalpha(*id))
+		if (::isalpha(*id))
 		{
 			id++;
 			while(*id)
 			{
-				if (!( isalnum(*id) || (*id == '_')))
+			  if (!( ::isalnum(*id) || (*id == '_')))
 					break;
 				id++;
 			}

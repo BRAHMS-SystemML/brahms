@@ -1,2 +1,5 @@
 add_library(busy SHARED busy.cpp)
 set_target_properties(busy PROPERTIES OUTPUT_NAME "component" PREFIX "")
+if(APPLE)
+target_link_libraries(busy brahms-engine brahms-engine-base)
+endif(APPLE)

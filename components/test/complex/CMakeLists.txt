@@ -1,2 +1,5 @@
 add_library(complex SHARED complex.cpp)
 set_target_properties(complex PROPERTIES OUTPUT_NAME "component" PREFIX "")
+if(APPLE)
+target_link_libraries(complex brahms-engine brahms-engine-base)
+endif(APPLE)

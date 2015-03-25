@@ -1,2 +1,5 @@
 add_library(lang_1199 SHARED process.cpp)
 set_target_properties(lang_1199 PROPERTIES OUTPUT_NAME "component" PREFIX "")
+if(APPLE)
+target_link_libraries(lang_1199 brahms-engine brahms-engine-base)
+endif(APPLE)

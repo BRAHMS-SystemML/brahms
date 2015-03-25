@@ -1,3 +1,6 @@
+#ifndef _BRAHMS_CHANNEL_COMMON_H_
+#define _BRAHMS_CHANNEL_COMMON_H_
+
 #ifndef BRAHMS_BUILDING_ENGINE
 #define BRAHMS_BUILDING_ENGINE
 #endif
@@ -69,3 +72,5 @@ namespace brahms
         typedef Symbol (*PushDataHandler)(void* arg, BYTE* stream, UINT32 count);
     }
 }
+
+#endif // _BRAHMS_CHANNEL_COMMON_H_

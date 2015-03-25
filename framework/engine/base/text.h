@@ -37,6 +37,7 @@ ________________________________________________________________
 using std::string;
 #include <vector>
 using std::vector;
+#include <ctype.h>
 
 namespace brahms
 {
@@ -47,12 +48,12 @@ namespace brahms
 
 	inline bool istokenstart(char c)
 	{
-		return isalpha(c) || isunderscore(c);
+	  return ::isalpha((int)c) || isunderscore(c);
 	}
 
 	inline bool istokencontinue(char c)
 	{
-		return isalpha(c) || isunderscore(c) || isdigit(c);
+	  return ::isalpha((int)c) || isunderscore(c) || isdigit(c);
 	}
 
 	inline DOUBLE sampleRateToRate(SampleRate& sr)
