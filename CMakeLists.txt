@@ -8,9 +8,10 @@ set(VERSION_BRAHMS_MIN 8)
 set(VERSION_BRAHMS_REL 0)
 set(VERSION_BRAHMS_REV 0)
 
-# From CMAKE_SYSTEM #define __OSX__ or __GLN__ etc
+# From CMAKE_SYSTEM work out which of __OSX__, __GLN__, __NIX__ or
+# __WIN__ are required
+message(STATUS "Operating system: " ${CMAKE_SYSTEM})
 if(CMAKE_SYSTEM MATCHES Linux.*)
-  message(STATUS "Operating system: " ${CMAKE_SYSTEM})
   set(BRAHMS_HOST_DEFINITION "-D__GLN__")
 elseif(CMAKE_SYSTEM MATCHES BSD.*)
   set(BRAHMS_HOST_DEFINITION "-D__NIX__")
