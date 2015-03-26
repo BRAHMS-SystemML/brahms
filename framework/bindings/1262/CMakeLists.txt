@@ -9,5 +9,6 @@ if(COMPILE_PYTHON_BINDING)
   install(TARGETS brahms-1262 DESTINATION lib/brahms/bindings)
 else()
   message(STATUS "Omitting python binding (1262)")
+  message(STATUS "  (Include python binding with `cmake -DCOMPILE_PYTHON_BINDING=ON`)")
 endif(COMPILE_PYTHON_BINDING)
 

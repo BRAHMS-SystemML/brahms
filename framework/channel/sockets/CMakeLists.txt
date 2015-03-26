@@ -5,8 +5,6 @@ add_library(brahms-channel-sockets SHARED
   sockets.cpp sockets-support.cpp sockets-receiver.cpp sockets-sender.cpp
   )
 if(APPLE)
-    target_link_libraries(
-    brahms-channel-sockets brahms-engine-base
-    )
+  target_link_libraries(brahms-channel-sockets brahms-engine-base)
 endif(APPLE)
 install(TARGETS brahms-channel-sockets DESTINATION lib)

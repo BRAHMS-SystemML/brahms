@@ -1,8 +1,7 @@
 if(APPLE)
-# Set any compiler flags for components here.
-#  set(CMAKE_CXX_FLAGS "${BRAHMS_HOST_DEFINITION} -fvisibility=hidden -fvisibility-inlines-hidden -fPIC -O3 -dynamiclib")
-#  set(CMAKE_C_FLAGS "${BRAHMS_HOST_DEFINITION} -fvisibility=hidden -fvisibility-inlines-hidden -fPIC -O3 -dynamiclib")
+  # Set any Necessary Apple compiler flags for components here.
 else()
+  # Not sure these flags are strictly necessary. -fPIC may be most important.
   set(CMAKE_CXX_FLAGS "${BRAHMS_HOST_DEFINITION} -fPIC -Werror -pthread -O3")
   set(CMAKE_C_FLAGS "${BRAHMS_HOST_DEFINITION} -fPIC -Werror -pthread -O3")
 endif(APPLE)
@@ -13,7 +12,11 @@ add_subdirectory(bench)
 add_subdirectory(dev)
 add_subdirectory(language)
 if(COMPILE_WX_COMPONENT)
+  message(STATUS "Compiling WX-dependent component dev/std/image/numeric")
   add_subdirectory(gui)
+else()
+  message(STATUS "Omitting WX-dependent component dev/std/image/numeric")
+  message(STATUS "  (Include dev/std/image/numeric with `cmake -DCOMPILE_WX_COMPONENT=ON`)")
 endif(COMPILE_WX_COMPONENT)
 add_subdirectory(test)
 add_subdirectory(example)
