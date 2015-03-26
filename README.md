@@ -43,14 +43,15 @@ which have some specified lag.
 
 # Building BRAHMS
 
-This project uses cmake for cross-platform friendly building.
+This project uses cmake for a cross-platform friendly build process. cmake
+is a good choice of build system, because it is familiar to many developers.
 
-You'll need to obtain the correct dependencies. On Linux that means a
+You'll need to obtain the correct dependencies to build BRAHMS. On Linux that means a
 compiler, libXv, libXaw and WX windows. For example, on (current 2015)
 Ubuntu or Debian systems you'll want to do:
 
 ~~~ {.bash}
-sudo apt-get install build-essential libxaw7-dev libxv-dev libwxgtk2.8-dev
+sudo apt-get install build-essential libxaw7-dev libxv-dev
 ~~~
 
 These libraries are used to draw the progress box which shows while
@@ -59,12 +60,13 @@ BRAHMS is running.
 For Windows, you'll reportedly need GnuWin32, but this build has not
 yet been tested.
 
-For optional features (MPI channel, Python and MATLAB bindings) you'll
-need mpich2, python development libraries and a MATLAB
-installation. The first two can be obtained via apt-get:
+For optional features (MPI channel, Python and MATLAB bindings and
+one WXWidgets-dependent component) you'll
+need mpich2, python development libraries, WXwidgets and a MATLAB
+installation. The first three can be obtained via apt-get:
 
 ~~~ {.bash}
-sudo apt-get install mpich2 python-dev
+sudo apt-get install mpich2 python-dev libwxgtk2.8-dev
 ~~~
 
 The recommended method for building is to create a separate build
@@ -73,7 +75,7 @@ folder as follows:
 ~~~ {.bash}
 mkdir build
 cd build
-cmake .. # or cmake-gui ..
+cmake -DCMAKE_INSTALL_PREFIX=/usr/local .. # or cmake-gui ..
 make -j4 # or however many processor cores you have
 sudo make install
 ~~~
