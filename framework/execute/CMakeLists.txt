@@ -13,8 +13,13 @@ target_link_libraries(
   brahms-gui ${CMAKE_THREAD_LIBS_INIT} ${LIB_RT} ${XAW_LDFLAGS}
   )
 
-install(TARGETS brahms-execute DESTINATION bin)
-install(PROGRAMS brahms DESTINATION bin)
+if(STANDALONE_INSTALL)
+  install(TARGETS brahms-execute DESTINATION BRAHMS/bin)
+  install(PROGRAMS brahms DESTINATION BRAHMS/bin)
+else()
+  install(TARGETS brahms-execute DESTINATION bin)
+  install(PROGRAMS brahms DESTINATION bin)
+endif()
 
 # The brahms-gui library lives in a subdirectory:
 add_subdirectory(gui)

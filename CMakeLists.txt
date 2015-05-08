@@ -41,10 +41,17 @@ option(COMPILE_MATLAB_BINDING "Compile the matlab binding" OFF)
 option(COMPILE_PYTHON_BINDING "Compile the Python binding" OFF)
 option(COMPILE_WITH_MPICH2 "Compile the mpich2 channel communications layer" OFF)
 option(COMPILE_WX_COMPONENT "Compile the image numeric component which requires WX" OFF)
+option(STANDALONE_INSTALL "Compile and install for standalone use (SystemML folder)" OFF)
 
-# Inform the user of the install prefix and how to change it.
-message(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
-message(STATUS "  (This can be changed with `cmake -DCMAKE_INSTALL_PREFIX=/some/place`")
+if(STANDALONE_INSTALL)
+  set(STANDALONE 1)
+  message(STATUS "Install location: ${CMAKE_INSTALL_PREFIX}/SystemML")
+else()
+  set(STANDALONE 0)
+  # Inform the user of the install prefix and how to change it.
+  message(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
+  message(STATUS "  (This can be changed with `cmake -DCMAKE_INSTALL_PREFIX=/some/place`")
+endif()
 
 # A section to ensure library linking works on Apple.
 if(APPLE)
@@ -100,9 +107,10 @@ add_subdirectory(support)
 
 # Ensure the BrahmsConfig.h header gets installed
 install(FILES ${CMAKE_BINARY_DIR}/BrahmsConfig.h DESTINATION include)
+#install(FILES README.md DESTINATION "")
 
 # For debugging, you can list variables like this:
-set(DEBUG_VARIABLES OFF)
+set(DEBUG_VARIABLES ON)
 if(DEBUG_VARIABLES)
   get_cmake_property(_variableNames VARIABLES)
   foreach (_variableName ${_variableNames})
