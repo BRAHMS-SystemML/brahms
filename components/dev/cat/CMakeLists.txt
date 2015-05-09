@@ -4,8 +4,8 @@ if(APPLE)
 target_link_libraries(cat_numeric brahms-engine brahms-engine-base)
 endif(APPLE)
 
-install(TARGETS cat_numeric DESTINATION var/SystemML/Namespace/std/2009/cat/numeric/brahms/0)
+install(TARGETS cat_numeric DESTINATION ${DEV_COMP_PATH}/cat/numeric/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/1199/release.xml
-  DESTINATION var/SystemML/Namespace/dev/std/cat/numeric/brahms/0)
+  DESTINATION ${DEV_COMP_PATH}/cat/numeric/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/process/node.xml
-  DESTINATION var/SystemML/Namespace/dev/std/cat/numeric)
+  DESTINATION ${DEV_COMP_PATH}/cat/numeric)

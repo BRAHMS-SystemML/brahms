@@ -5,5 +5,5 @@ install(FILES
   brahms-1266.h
   brahms-client.h brahms-component.h
   brahms-c++-common.h brahms-c++-legacy.h
-  DESTINATION include)
-install(FILES brahms.xml LICENSE DESTINATION share/brahms)
+  DESTINATION ${INCLUDE_INSTALL_PATH})
+install(FILES brahms.xml LICENSE DESTINATION ${SHARE_BRAHMS_INSTALL_PATH})

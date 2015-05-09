@@ -4,8 +4,12 @@ if(APPLE)
 target_link_libraries(math_esum brahms-engine brahms-engine-base)
 endif(APPLE)
 
-install(TARGETS math_esum DESTINATION var/SystemML/Namespace/std/2009/math/esum/brahms/0)
-install(FILES ${CMAKE_SOURCE_DIR}/shared/1199/release.xml
-  DESTINATION var/SystemML/Namespace/std/2009/math/esum/brahms/0)
-install(FILES ${CMAKE_SOURCE_DIR}/shared/process/node.xml
-  DESTINATION var/SystemML/Namespace/std/2009/math/esum)
+if(STANDALONE_INSTALL)
+  set(COMP_PATH SystemML/Namespace/std/2009/math/esum)
+else()
+  set(COMP_PATH var/SystemML/Namespace/std/2009/math/esum)
+endif()
+
+install(TARGETS math_esum DESTINATION ${COMP_PATH}/brahms/0)
+install(FILES ${CMAKE_SOURCE_DIR}/shared/1199/release.xml DESTINATION ${COMP_PATH}/brahms/0)
+install(FILES ${CMAKE_SOURCE_DIR}/shared/process/node.xml DESTINATION ${COMP_PATH})

@@ -45,10 +45,20 @@ option(STANDALONE_INSTALL "Compile and install for standalone use (SystemML fold
 
 if(STANDALONE_INSTALL)
   set(STANDALONE 1)
+  # Set some locally defined installation paths:
+  set(LIB_INSTALL_PATH SystemML/BRAHMS/bin)
+  set(BIN_INSTALL_PATH SystemML/BRAHMS/bin)
+  set(INCLUDE_INSTALL_PATH SystemML/BRAHMS/include)
+  set(SHARE_BRAHMS_INSTALL_PATH SystemML/BRAHMS)
+  # Inform the user of the install prefix and how to change it:
   message(STATUS "Install location: ${CMAKE_INSTALL_PREFIX}/SystemML")
+  message(STATUS "  (This can be changed with `cmake -DCMAKE_INSTALL_PREFIX=/some/place`")
 else()
   set(STANDALONE 0)
-  # Inform the user of the install prefix and how to change it.
+  set(LIB_INSTALL_PATH lib)
+  set(BIN_INSTALL_PATH bin)
+  set(INCLUDE_INSTALL_PATH include)
+  set(SHARE_BRAHMS_INSTALL_PATH share/brahms)
   message(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
   message(STATUS "  (This can be changed with `cmake -DCMAKE_INSTALL_PREFIX=/some/place`")
 endif()
@@ -106,7 +116,7 @@ add_subdirectory(components)
 add_subdirectory(support)
 
 # Ensure the BrahmsConfig.h header gets installed
-install(FILES ${CMAKE_BINARY_DIR}/BrahmsConfig.h DESTINATION include)
+install(FILES ${CMAKE_BINARY_DIR}/BrahmsConfig.h DESTINATION ${INCLUDE_INSTALL_PATH})
 #install(FILES README.md DESTINATION "")
 
 # For debugging, you can list variables like this:

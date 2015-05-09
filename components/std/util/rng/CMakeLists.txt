@@ -4,11 +4,15 @@ if(APPLE)
 target_link_libraries(util_rng brahms-engine brahms-engine-base)
 endif(APPLE)
 
-install(TARGETS util_rng DESTINATION var/SystemML/Namespace/std/2009/util/rng/brahms/0)
-install(FILES ${CMAKE_SOURCE_DIR}/shared/1199/release.xml
-  DESTINATION var/SystemML/Namespace/std/2009/util/rng/brahms/0)
-install(FILES ${CMAKE_SOURCE_DIR}/shared/utility/node.xml
-  DESTINATION var/SystemML/Namespace/std/2009/util/rng)
+if(STANDALONE_INSTALL)
+  set(COMP_PATH SystemML/Namespace/std/2009/util/rng)
+else()
+  set(COMP_PATH var/SystemML/Namespace/std/2009/util/rng)
+endif()
+
+install(TARGETS util_rng DESTINATION ${COMP_PATH}/brahms/0)
+install(FILES ${CMAKE_SOURCE_DIR}/shared/1199/release.xml DESTINATION ${COMP_PATH}/brahms/0)
+install(FILES ${CMAKE_SOURCE_DIR}/shared/utility/node.xml DESTINATION ${COMP_PATH})
 
 # We need util_rng.h for legacy (see brahms-c++-common.h around line 3365)
-install(FILES util_rng.h DESTINATION include)
+install(FILES util_rng.h DESTINATION ${INCLUDE_INSTALL_PATH})

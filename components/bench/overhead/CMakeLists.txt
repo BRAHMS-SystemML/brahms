@@ -4,8 +4,8 @@ if(APPLE)
 target_link_libraries(bench_overhead brahms-engine brahms-engine-base)
 endif(APPLE)
 
-install(TARGETS bench_overhead DESTINATION var/SystemML/Namespace/client/brahms/bench/overhead/brahms/0)
+install(TARGETS bench_overhead DESTINATION ${BENCH_COMP_PATH}/overhead/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/1199/release.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/bench/overhead/brahms/0)
+  DESTINATION ${BENCH_COMP_PATH}/overhead/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/process/node.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/bench/overhead)
+  DESTINATION ${BENCH_COMP_PATH}/overhead)

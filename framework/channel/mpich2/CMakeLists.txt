@@ -9,9 +9,5 @@ if(COMPILE_WITH_MPICH2)
     ../channel.cpp ../deliverer.cpp
     mpi.cpp mpi-receiver.cpp mpi-sender.cpp
     )
-  if(STANDALONE_INSTALL)
-    install(TARGETS brahms-channel-mpich2 DESTINATION BRAHMS/bin)
-  else()
-    install(TARGETS brahms-channel-mpich2 DESTINATION lib)
-  endif()
+  install(TARGETS brahms-channel-mpich2 DESTINATION ${LIB_INSTALL_PATH})
 endif(COMPILE_WITH_MPICH2)

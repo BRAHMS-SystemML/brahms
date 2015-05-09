@@ -1,3 +1,9 @@
+if(STANDALONE_INSTALL)
+  set(DEV_COMP_PATH SystemML/Namespace/dev/std)
+else()
+  set(DEV_COMP_PATH var/SystemML/Namespace/dev/std)
+endif()
+
 add_subdirectory(cat)
 add_subdirectory(eval)
 add_subdirectory(index)

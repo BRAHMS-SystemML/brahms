@@ -4,8 +4,8 @@ if(APPLE)
 target_link_libraries(bench_elements brahms-engine brahms-engine-base)
 endif(APPLE)
 
-install(TARGETS bench_elements DESTINATION var/SystemML/Namespace/client/brahms/bench/elements/brahms/0)
+install(TARGETS bench_elements DESTINATION ${BENCH_COMP_PATH}/elements/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/1199/release.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/bench/elements/brahms/0)
+  DESTINATION ${BENCH_COMP_PATH}/elements/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/process/node.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/bench/elements)
+  DESTINATION ${BENCH_COMP_PATH}/elements)

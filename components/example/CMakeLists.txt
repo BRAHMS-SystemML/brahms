@@ -1,55 +1,61 @@
+if(STANDALONE_INSTALL)
+  set(EXAMPLE_COMP_PATH SystemML/Namespace/client/brahms/example)
+else()
+  set(EXAMPLE_COMP_PATH var/SystemML/Namespace/client/brahms/example)
+endif()
+
 # Python examples go in Namespace/client/brahms/example/1262
-install(FILES head.py DESTINATION var/SystemML/Namespace/client/brahms/example/1262/head/brahms/0)
+install(FILES head.py DESTINATION ${EXAMPLE_COMP_PATH}/1262/head/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/1262/release.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/example/1262/head/brahms/0)
+  DESTINATION ${EXAMPLE_COMP_PATH}/1262/head/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/process/node.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/example/1262/head)
+  DESTINATION ${EXAMPLE_COMP_PATH}/1262/head)
 
-install(FILES brain.py DESTINATION var/SystemML/Namespace/client/brahms/example/1262/brain/brahms/0)
+install(FILES brain.py DESTINATION ${EXAMPLE_COMP_PATH}/1262/brain/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/1262/release.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/example/1262/brain/brahms/0)
+  DESTINATION ${EXAMPLE_COMP_PATH}/1262/brain/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/process/node.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/example/1262/brain)
+  DESTINATION ${EXAMPLE_COMP_PATH}/1262/brain)
 
-install(FILES foxes.py DESTINATION var/SystemML/Namespace/client/brahms/example/1262/foxes/brahms/0)
+install(FILES foxes.py DESTINATION ${EXAMPLE_COMP_PATH}/1262/foxes/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/1262/release.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/example/1262/foxes/brahms/0)
+  DESTINATION ${EXAMPLE_COMP_PATH}/1262/foxes/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/process/node.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/example/1262/foxes)
+  DESTINATION ${EXAMPLE_COMP_PATH}/1262/foxes)
 
-install(FILES rabbits.py DESTINATION var/SystemML/Namespace/client/brahms/example/1262/rabbits/brahms/0)
+install(FILES rabbits.py DESTINATION ${EXAMPLE_COMP_PATH}/1262/rabbits/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/1262/release.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/example/1262/rabbits/brahms/0)
+  DESTINATION ${EXAMPLE_COMP_PATH}/1262/rabbits/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/process/node.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/example/1262/rabbits)
+  DESTINATION ${EXAMPLE_COMP_PATH}/1262/rabbits)
 
 # Matlab examples go in Namespace/client/brahms/example/1258
-install(FILES gui.m DESTINATION var/SystemML/Namespace/client/brahms/example/1258/gui/brahms/0)
+install(FILES gui.m DESTINATION ${EXAMPLE_COMP_PATH}/1258/gui/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/1258/release.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/example/1258/gui/brahms/0)
+  DESTINATION ${EXAMPLE_COMP_PATH}/1258/gui/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/process/node.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/example/1258/gui)
+  DESTINATION ${EXAMPLE_COMP_PATH}/1258/gui)
 
-install(FILES head.m DESTINATION var/SystemML/Namespace/client/brahms/example/1258/head/brahms/0)
+install(FILES head.m DESTINATION ${EXAMPLE_COMP_PATH}/1258/head/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/1258/release.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/example/1258/head/brahms/0)
+  DESTINATION ${EXAMPLE_COMP_PATH}/1258/head/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/process/node.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/example/1258/head)
+  DESTINATION ${EXAMPLE_COMP_PATH}/1258/head)
 
-install(FILES brain.m DESTINATION var/SystemML/Namespace/client/brahms/example/1258/brain/brahms/0)
+install(FILES brain.m DESTINATION ${EXAMPLE_COMP_PATH}/1258/brain/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/1258/release.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/example/1258/brain/brahms/0)
+  DESTINATION ${EXAMPLE_COMP_PATH}/1258/brain/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/process/node.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/example/1258/brain)
+  DESTINATION ${EXAMPLE_COMP_PATH}/1258/brain)
 
-install(FILES foxes.m DESTINATION var/SystemML/Namespace/client/brahms/example/1258/foxes/brahms/0)
+install(FILES foxes.m DESTINATION ${EXAMPLE_COMP_PATH}/1258/foxes/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/1258/release.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/example/1258/foxes/brahms/0)
+  DESTINATION ${EXAMPLE_COMP_PATH}/1258/foxes/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/process/node.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/example/1258/foxes)
+  DESTINATION ${EXAMPLE_COMP_PATH}/1258/foxes)
 
-install(FILES rabbits.m DESTINATION var/SystemML/Namespace/client/brahms/example/1258/rabbits/brahms/0)
+install(FILES rabbits.m DESTINATION ${EXAMPLE_COMP_PATH}/1258/rabbits/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/1258/release.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/example/1258/rabbits/brahms/0)
+  DESTINATION ${EXAMPLE_COMP_PATH}/1258/rabbits/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/process/node.xml
-  DESTINATION var/SystemML/Namespace/client/brahms/example/1258/rabbits)
+  DESTINATION ${EXAMPLE_COMP_PATH}/1258/rabbits)

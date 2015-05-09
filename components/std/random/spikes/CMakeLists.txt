@@ -4,8 +4,12 @@ if(APPLE)
 target_link_libraries(random_spikes brahms-engine brahms-engine-base)
 endif(APPLE)
 
-install(TARGETS random_spikes DESTINATION var/SystemML/Namespace/std/2009/random/spikes/brahms/0)
-install(FILES ${CMAKE_SOURCE_DIR}/shared/1199/release.xml
-  DESTINATION var/SystemML/Namespace/std/2009/random/spikes/brahms/0)
-install(FILES ${CMAKE_SOURCE_DIR}/shared/process/node.xml
-  DESTINATION var/SystemML/Namespace/std/2009/random/spikes)
+if(STANDALONE_INSTALL)
+  set(COMP_PATH SystemML/Namespace/std/2009/random/spikes)
+else()
+  set(COMP_PATH var/SystemML/Namespace/std/2009/random/spikes)
+endif()
+
+install(TARGETS random_spikes DESTINATION ${COMP_PATH}/brahms/0)
+install(FILES ${CMAKE_SOURCE_DIR}/shared/1199/release.xml DESTINATION ${COMP_PATH}/brahms/0)
+install(FILES ${CMAKE_SOURCE_DIR}/shared/process/node.xml DESTINATION ${COMP_PATH})
