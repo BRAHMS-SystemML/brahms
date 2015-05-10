@@ -44,7 +44,7 @@ option(COMPILE_WX_COMPONENT "Compile the image numeric component which requires 
 option(STANDALONE_INSTALL "Compile and install for standalone use (SystemML folder)" ON)
 
 if(STANDALONE_INSTALL)
-  message(STATUS "Standalone install - choose unix style install with `cmake -DSTANDALONE_INSTALL=OFF`"
+  message(STATUS "Standalone install - choose unix style install with `cmake -DSTANDALONE_INSTALL=OFF`")
   set(STANDALONE 1)
   # Set some locally defined installation paths:
   set(LIB_INSTALL_PATH SystemML/BRAHMS/bin)
@@ -59,7 +59,7 @@ if(STANDALONE_INSTALL)
   message(STATUS "Install location: ${CMAKE_INSTALL_PREFIX}/SystemML")
   message(STATUS "  (This can be changed with `cmake -DCMAKE_INSTALL_PREFIX=/some/place`")
 else()
-  message(STATUS "Unix style install - choose standalone install with `cmake -DSTANDALONE_INSTALL=ON`"
+  message(STATUS "Unix style install - choose standalone install with `cmake -DSTANDALONE_INSTALL=ON`")
   set(STANDALONE 0)
 
   set(LIB_INSTALL_PATH lib)
@@ -127,10 +127,9 @@ add_subdirectory(support)
 
 # Ensure the BrahmsConfig.h header gets installed
 install(FILES ${CMAKE_BINARY_DIR}/BrahmsConfig.h DESTINATION ${INCLUDE_INSTALL_PATH})
-#install(FILES README.md DESTINATION "")
 
 # For debugging, you can list variables like this:
-set(DEBUG_VARIABLES ON)
+set(DEBUG_VARIABLES OFF)
 if(DEBUG_VARIABLES)
   get_cmake_property(_variableNames VARIABLES)
   foreach (_variableName ${_variableNames})
