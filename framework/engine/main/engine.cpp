@@ -150,13 +150,26 @@ namespace brahms
 
                     //	load install/machine/user-level environment
                 { FOUT_SECTION("Install-Level")
-                        string brahms_xml(INSTALL_PREFIX);
+#if STANDALONE_INSTALL
+                    string brahms_xml = brahms::os::getenv("SYSTEMML_INSTALL_PATH");
+                    if (brahms_xml.empty()) {
+                        brahms_xml = INSTALL_PREFIX;
+                        brahms_xml += brahms::os::PATH_SEPARATOR;
+                        brahms_xml += "SystemML";
+                    }
+                    brahms_xml += brahms::os::PATH_SEPARATOR;
+                    brahms_xml += "BRAHMS";
+                    brahms_xml += brahms::os::PATH_SEPARATOR;
+                    brahms_xml += "brahms.xml";
+#else
+                    string brahms_xml(INSTALL_PREFIX);
                     brahms_xml += brahms::os::PATH_SEPARATOR;
                     brahms_xml += "share";
                     brahms_xml += brahms::os::PATH_SEPARATOR;
                     brahms_xml += "brahms";
                     brahms_xml += brahms::os::PATH_SEPARATOR;
                     brahms_xml += "brahms.xml";
+#endif
                     engineData.environment.load(brahms_xml, true, fout);
                 }
                 { FOUT_SECTION("Machine-Level")

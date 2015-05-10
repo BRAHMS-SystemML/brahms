@@ -59,8 +59,16 @@ namespace brahms
 	void Loader::init(const brahms::Environment& environment)
 	{
 		//	The bindings are accessed via the INSTALL_PREFIX.
-		installPrefix = INSTALL_PREFIX;
-
+#if STANDALONE_INSTALL
+                installPrefix = brahms::os::getenv("SYSTEMML_INSTALL_PATH");
+                if (installPrefix.empty()) {
+                    installPrefix = INSTALL_PREFIX;
+                    installPrefix += brahms::os::PATH_SEPARATOR;
+                    installPrefix += "SystemML";
+                }
+#else
+                installPrefix = INSTALL_PREFIX;
+#endif
 		//	get path from Execution Parameters
 		string sNamespaceRoots = environment.gets("NamespaceRoots");
 

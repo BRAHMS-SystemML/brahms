@@ -179,6 +179,19 @@ brahms::info::license()
 
 
     //	just pass through license file
+#if STANDALONE_INSTALL
+    string systemml_install_path = os::getenv("SYSTEMML_INSTALL_PATH");
+    if (systemml_install_path.empty()) {
+        systemml_install_path = INSTALL_PREFIX;
+        systemml_install_path += brahms::os::PATH_SEPARATOR;
+        systemml_install_path += "SystemML";
+    }
+    string filename = systemml_install_path;
+    filename += brahms::os::PATH_SEPARATOR;
+    filename += "BRAHMS";
+    filename += brahms::os::PATH_SEPARATOR;
+    filename += "LICENSE";
+#else
     string filename(INSTALL_PREFIX);
     filename += brahms::os::PATH_SEPARATOR;
     filename += "share";
@@ -186,6 +199,7 @@ brahms::info::license()
     filename += "brahms";
     filename += brahms::os::PATH_SEPARATOR;
     filename += "LICENSE";
+#endif
     ifstream file(filename.c_str());
     if (file) {
         string s;

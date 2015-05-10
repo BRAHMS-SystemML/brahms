@@ -332,6 +332,16 @@ namespace brahms
         set("HostName", brahms::os::gethostname(), fout);
 
         //	construct the "installed" namespace
+#if STANDALONE_INSTALL
+        string NamespaceRoots = brahms::os::getenv("SYSTEMML_INSTALL_PATH");
+        if (NamespaceRoots.empty()) {
+            NamespaceRoots = INSTALL_PREFIX;
+            NamespaceRoots += brahms::os::PATH_SEPARATOR;
+            NamespaceRoots += "SystemML";
+        }
+        NamespaceRoots += brahms::os::PATH_SEPARATOR;
+        NamespaceRoots += "Namespace";
+#else
         string NamespaceRoots = INSTALL_PREFIX;
         NamespaceRoots += brahms::os::PATH_SEPARATOR;
         NamespaceRoots += "var";
@@ -339,6 +349,7 @@ namespace brahms
         NamespaceRoots += "SystemML";
         NamespaceRoots += brahms::os::PATH_SEPARATOR;
         NamespaceRoots += "Namespace";
+#endif
         string s = gets("NamespaceRoots");
         if (s.length())
         {

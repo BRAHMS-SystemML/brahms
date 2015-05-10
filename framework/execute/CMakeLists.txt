@@ -10,7 +10,7 @@ endif(HAVE_CLOCK_GETTIME_IN_RT)
 
 target_link_libraries(
   brahms-execute brahms-engine brahms-engine-base
-  brahms-gui ${CMAKE_THREAD_LIBS_INIT} ${LIB_RT} ${XAW_LDFLAGS}
+  brahms-gui ${CMAKE_THREAD_LIBS_INIT} ${LIB_RT} ${XAW_LDFLAGS} ${XMU_LDFLAG} ${CMAKE_DL_LIBS}
   )
 
 install(TARGETS brahms-execute DESTINATION ${BIN_INSTALL_PATH})

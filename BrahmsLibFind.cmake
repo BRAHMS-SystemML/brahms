@@ -128,4 +128,12 @@ if(PKG_CONFIG_FOUND)
   endif(XAW_FOUND)
 endif()
 
+# Apple/Unix require -lXmu, Windows won't. With the Xaw/X11 ldflags
+# above, can do this very simple additional flag:
+if(UNIX)
+  set(XMU_LDFLAG -lXmu)
+else()
+  set(XMU_LDFLAG "")
+endif()
+
 # end of lib finding.

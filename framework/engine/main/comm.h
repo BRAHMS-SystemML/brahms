@@ -66,7 +66,16 @@ namespace brahms
 			CompressFunction* compressFunction = NULL;
 
 			//	map compress module
+#if STANDALONE_INSTALL
+			string path = brahms::os::getenv("SYSTEMML_INSTALL_PATH");
+                        if (path.empty()) {
+                            path = INSTALL_PREFIX;
+                            path += brahms::os::PATH_SEPARATOR;
+                            path += "SystemML";
+                        }
+#else
 			string path(INSTALL_PREFIX);
+#endif
 			path += brahms::os::COMPRESS_MODULE_FORM;
 
 			//	allow fail
@@ -92,7 +101,16 @@ namespace brahms
 			}
 
 			//	map channel module
+#if STANDALONE_INSTALL
+			path = brahms::os::getenv("SYSTEMML_INSTALL_PATH");
+                        if (path.empty()) {
+                            path = INSTALL_PREFIX;
+                            path += brahms::os::PATH_SEPARATOR;
+                            path += "SystemML";
+                        }
+#else
 			path = INSTALL_PREFIX;
+#endif
 			path += brahms::os::CHANNEL_MODULE_FORM;
 			switch (protocol)
 			{

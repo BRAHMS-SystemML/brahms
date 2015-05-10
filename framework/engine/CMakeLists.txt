@@ -1,9 +1,9 @@
-add_library(brahms-engine-base SHARED
+add_library(brahms-engine-base ${BRAHMS_ENGINE_LINK_TYPE}
   ../channel/channel-common.cpp
   base/core.cpp base/ipm.cpp base/os.cpp base/text.cpp base/constants.cpp
   base/brahms_error.cpp base/brahms_math.cpp base/output.cpp base/thread.cpp
 )
-add_library(brahms-engine SHARED
+add_library(brahms-engine ${BRAHMS_ENGINE_LINK_TYPE}
   systemml/component.cpp systemml/event.cpp systemml/interface.cpp
   systemml/loggable.cpp systemml/process.cpp systemml/ systemml/system.cpp
   systemml/thread.cpp systemml/data.cpp systemml/identifier.cpp
@@ -26,4 +26,6 @@ if(APPLE)
     )
 endif(APPLE)
 
-install(TARGETS brahms-engine brahms-engine-base DESTINATION ${LIB_INSTALL_PATH})
+if(NOT STANDALONE_INSTALL)
+  install(TARGETS brahms-engine brahms-engine-base DESTINATION ${LIB_INSTALL_PATH})
+endif()

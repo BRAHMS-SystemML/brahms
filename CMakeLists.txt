@@ -50,15 +50,23 @@ if(STANDALONE_INSTALL)
   set(BIN_INSTALL_PATH SystemML/BRAHMS/bin)
   set(INCLUDE_INSTALL_PATH SystemML/BRAHMS/include)
   set(SHARE_BRAHMS_INSTALL_PATH SystemML/BRAHMS)
+  # Statically link libbrahmsengine etc for a standalone build (could
+  # probably statically link for non-standalone build too, to be
+  # honest).
+  set(BRAHMS_ENGINE_LINK_TYPE STATIC)
   # Inform the user of the install prefix and how to change it:
   message(STATUS "Install location: ${CMAKE_INSTALL_PREFIX}/SystemML")
   message(STATUS "  (This can be changed with `cmake -DCMAKE_INSTALL_PREFIX=/some/place`")
 else()
   set(STANDALONE 0)
+
   set(LIB_INSTALL_PATH lib)
   set(BIN_INSTALL_PATH bin)
   set(INCLUDE_INSTALL_PATH include)
   set(SHARE_BRAHMS_INSTALL_PATH share/brahms)
+
+  set(BRAHMS_ENGINE_LINK_TYPE SHARED)
+
   message(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
   message(STATUS "  (This can be changed with `cmake -DCMAKE_INSTALL_PREFIX=/some/place`")
 endif()
