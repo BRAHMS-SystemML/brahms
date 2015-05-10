@@ -41,9 +41,10 @@ option(COMPILE_MATLAB_BINDING "Compile the matlab binding" OFF)
 option(COMPILE_PYTHON_BINDING "Compile the Python binding" OFF)
 option(COMPILE_WITH_MPICH2 "Compile the mpich2 channel communications layer" OFF)
 option(COMPILE_WX_COMPONENT "Compile the image numeric component which requires WX" OFF)
-option(STANDALONE_INSTALL "Compile and install for standalone use (SystemML folder)" OFF)
+option(STANDALONE_INSTALL "Compile and install for standalone use (SystemML folder)" ON)
 
 if(STANDALONE_INSTALL)
+  message(STATUS "Standalone install - choose unix style install with `cmake -DSTANDALONE_INSTALL=OFF`"
   set(STANDALONE 1)
   # Set some locally defined installation paths:
   set(LIB_INSTALL_PATH SystemML/BRAHMS/bin)
@@ -58,6 +59,7 @@ if(STANDALONE_INSTALL)
   message(STATUS "Install location: ${CMAKE_INSTALL_PREFIX}/SystemML")
   message(STATUS "  (This can be changed with `cmake -DCMAKE_INSTALL_PREFIX=/some/place`")
 else()
+  message(STATUS "Unix style install - choose standalone install with `cmake -DSTANDALONE_INSTALL=ON`"
   set(STANDALONE 0)
 
   set(LIB_INSTALL_PATH lib)
