@@ -60,7 +60,7 @@ namespace brahms
 	{
 		//	The bindings are accessed via the INSTALL_PREFIX.
 #if STANDALONE_INSTALL
-                installPrefix = brahms::os::getenv("SYSTEMML_INSTALL_PATH");
+                installPrefix = brahms::os::getenv("SYSTEMML_INSTALL_PATH", false);
                 if (installPrefix.empty()) {
                     installPrefix = INSTALL_PREFIX;
                     installPrefix += brahms::os::PATH_SEPARATOR;

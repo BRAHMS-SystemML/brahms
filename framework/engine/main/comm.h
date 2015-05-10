@@ -67,7 +67,7 @@ namespace brahms
 
 			//	map compress module
 #if STANDALONE_INSTALL
-			string path = brahms::os::getenv("SYSTEMML_INSTALL_PATH");
+			string path = brahms::os::getenv("SYSTEMML_INSTALL_PATH", false);
                         if (path.empty()) {
                             path = INSTALL_PREFIX;
                             path += brahms::os::PATH_SEPARATOR;
@@ -102,7 +102,7 @@ namespace brahms
 
 			//	map channel module
 #if STANDALONE_INSTALL
-			path = brahms::os::getenv("SYSTEMML_INSTALL_PATH");
+			path = brahms::os::getenv("SYSTEMML_INSTALL_PATH", false);
                         if (path.empty()) {
                             path = INSTALL_PREFIX;
                             path += brahms::os::PATH_SEPARATOR;

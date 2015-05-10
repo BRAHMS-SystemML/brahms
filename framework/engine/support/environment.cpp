@@ -333,7 +333,7 @@ namespace brahms
 
         //	construct the "installed" namespace
 #if STANDALONE_INSTALL
-        string NamespaceRoots = brahms::os::getenv("SYSTEMML_INSTALL_PATH");
+        string NamespaceRoots = brahms::os::getenv("SYSTEMML_INSTALL_PATH", false);
         if (NamespaceRoots.empty()) {
             NamespaceRoots = INSTALL_PREFIX;
             NamespaceRoots += brahms::os::PATH_SEPARATOR;

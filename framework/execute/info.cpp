@@ -180,7 +180,7 @@ brahms::info::license()
 
     //	just pass through license file
 #if STANDALONE_INSTALL
-    string systemml_install_path = os::getenv("SYSTEMML_INSTALL_PATH");
+    string systemml_install_path = os::getenv("SYSTEMML_INSTALL_PATH", false);
     if (systemml_install_path.empty()) {
         systemml_install_path = INSTALL_PREFIX;
         systemml_install_path += brahms::os::PATH_SEPARATOR;

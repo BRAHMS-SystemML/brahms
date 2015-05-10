@@ -151,7 +151,7 @@ namespace brahms
                     //	load install/machine/user-level environment
                 { FOUT_SECTION("Install-Level")
 #if STANDALONE_INSTALL
-                    string brahms_xml = brahms::os::getenv("SYSTEMML_INSTALL_PATH");
+                    string brahms_xml = brahms::os::getenv("SYSTEMML_INSTALL_PATH", false);
                     if (brahms_xml.empty()) {
                         brahms_xml = INSTALL_PREFIX;
                         brahms_xml += brahms::os::PATH_SEPARATOR;
