@@ -131,7 +131,7 @@ namespace brahms
 			//	in any case.
 			//
 			//	RTLD_GLOBAL: The symbols defined by this library will be made
-			//		available for symbol resolution of subsequently loaded libraries. 
+			//		available for symbol resolution of subsequently loaded libraries.
 			//
 			//	oh. ok, i had to put it back in a few Rs later, because python
 			//	bindings don't work without it. presumably there is some implicit
@@ -139,7 +139,7 @@ namespace brahms
 			//	it doesn't complain until run-time). i don't like this solution
 			//	much - in fact, i'll turn it on only for python, and see how that
 			//	works.
-			
+
 			if (flags & F_USE_RTLD_GLOBAL)
 			{
 				hModule = dlopen(path.c_str(), RTLD_NOW | RTLD_GLOBAL);
@@ -156,15 +156,13 @@ namespace brahms
 
 		#endif
 
-            /*
 			//	store last error
 			if (!hModule)
 			{
 				char* le = dlerror();
-				if (le) fout << "dlopen() failed with message \"" << le << "\"" << brahms::output::D_WARN;
+				if (le) cout << "dlopen() failed with message \"" << le << "\"\n";
 			}
-			*/
-			
+
 		#endif
 
 			//	if failed load, give up now
@@ -371,5 +369,3 @@ namespace brahms
 
 	}
 }
-
-
