@@ -54,6 +54,9 @@ if(STANDALONE_INSTALL)
   # Statically link libbrahmsengine etc for a standalone build (could
   # probably statically link for non-standalone build too, to be
   # honest).
+  #
+  # There's a problem with static install - some components need some
+  # of the API and won't load unless libbrahms-engine.so is available.
   set(BRAHMS_ENGINE_LINK_TYPE STATIC)
   # Inform the user of the install prefix and how to change it:
   message(STATUS "Install location: ${CMAKE_INSTALL_PREFIX}/SystemML")
