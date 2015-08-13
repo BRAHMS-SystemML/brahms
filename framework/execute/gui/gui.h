@@ -30,7 +30,120 @@ ________________________________________________________________
 
 */
 
+#ifndef _GUI_H_
+#define _GUI_H_
+
+#include "brahms-client.h"
+using namespace brahms;
+
+#include <iostream>
+#include <sstream>
+#include <cmath>
+using namespace std;
+
+
+#ifdef __WIN__
+// includes
+#define _WIN32_IE 0x0500
+#define _WIN32_WINNT 0x0500
+#define WIN32_LEAN_AND_MEAN
+#include "windows.h"
+#include "commctrl.h"
+
+// data types
+typedef HANDLE OS_HTHREAD;
+typedef FARPROC OS_FUNCTION;
+typedef UINT32 OS_TIME;
+
+// re-direction defines
+#define os_sleep Sleep
+#define os_now clock
+#define os_difftimesecs(a, b) (((DOUBLE)b - a) / 1000.0)
+
+const UINT32 BTN_CANCEL = 0x8001;
+const char* WND_CLS_NAME = "BRAHMS_GUIMainWnd";
+#endif
+
+
+#ifdef __NIX__
+#include <X11/Intrinsic.h>
+#include <unistd.h>
+#endif
+
+// GUI CLASS DECLARATION
+
+class ExecuteGUI
+{
+
+public:
+
+    ExecuteGUI();
+    ~ExecuteGUI();
+
+    Symbol MonitorEventHandlerFunc(const MonitorEvent* progress);
+    void os_update_progress(DOUBLE fmin, DOUBLE fmax);
+    void os_update_operation(const string& msg);
+    void os_update_phase(const string& msg);
+
+    void do_events();
+
+    void cancel() { cancelled = true; }
+
+    bool* getPointerToCancelled() { return &cancelled; }
+
+private:
+
+#ifdef __WIN__
+    struct
+    {
+        HINSTANCE   instance;
+        ATOM    windowClass;
+        HWND    window;
+        HDC     deviceContext;
+
+        HFONT    fontPhase;
+        HFONT    fontOperation;
+
+        RECT    phase;
+        RECT    operation;
+
+        RECT    progbar;
+        HBRUSH    progbar_brush_a;
+        HBRUSH    progbar_brush_b;
+    } gui;
+#endif
+
+#ifdef __NIX__
+    struct
+    {
+        Display*   display;
+        Screen*    screen;
+        Window    window;
+        GC     context;
+
+        int sx, sy;
+
+        Widget    application;
+        Widget    form;
+
+        Widget    progBarUpper;
+        Widget    progBarLower;
+        Widget    progressBar;
+
+        Widget    phase;     // label widget for text
+        Widget    operation;    // label widget for text
+        Widget    cancelButton;
+    } gui;
+
+    XtAppContext* app;
+#endif
+
+    // common
+    bool displayed;
+    bool cancelled;
+    DOUBLE t_startRunPhase;
+};
 
 Symbol MonitorEventHandlerFunc(const MonitorEvent* event);
 
-
+#endif // _GUI_H_

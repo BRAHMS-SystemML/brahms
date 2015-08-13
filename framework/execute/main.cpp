@@ -101,6 +101,8 @@ struct Instance
 
 	string logFilename;
 	string exitFilename;
+
+        bool nogui;
 }
 instance;
 
@@ -129,6 +131,9 @@ void grep(string& str, const string what, const string with)
 
 void interpretArgs(int argc, char *argv[])
 {
+        // By default, we ask for a gui progress window:
+        instance.nogui = false;
+
 	//	interpret each argument in turn
 	for (int a=1; a<argc; a++)
 	{
@@ -323,6 +328,12 @@ void interpretArgs(int argc, char *argv[])
 			continue;
 		}
 
+                if (arg == "--nogui")
+                {
+                    instance.nogui = true;
+                    continue;
+                }
+
 		//	no go
 		client_err << "E_INVOCATION: unrecognised option \"" << arg << "\"";
 	}
@@ -333,11 +344,9 @@ void interpretArgs(int argc, char *argv[])
 ////////////////	EXECUTE
 
 /*
-
 	This function instantiates the engine and hands control on to the next
 	layer. Any error is formatted using the engine (i.e. no further information
 	is added).
-
 */
 
 struct EngineResult
@@ -402,6 +411,9 @@ void inline freopen_local(const char* path, const char* mode, FILE* stream)
 }
 #endif
 
+// Global pointer to the ExecuteGUI object.
+ExecuteGUI* executeGUI;
+
 EngineResult execute(int argc, char *argv[])
 {
 	EngineResult engineResult;
@@ -416,6 +428,12 @@ EngineResult execute(int argc, char *argv[])
 
 		//	parse args (engine must exist)
 		interpretArgs(argc, argv);
+
+                // Now the args have been interpreted, we can create
+                // the gui object if we need it.
+                if (instance.nogui == false) {
+                    executeGUI = new ExecuteGUI();
+                } // else don't instanciate executeGUI
 
 		//	generate a segfault (for checking how it is handled by the executable and by the scripts)
 		if (instance.segfault)
@@ -471,15 +489,6 @@ EngineResult execute(int argc, char *argv[])
 			grep(instance.logFilename, "((VOICE))", ss.str());
 			grep(instance.exitFilename, "((VOICE))", ss.str());
 		}
-
-		/*
-		LOG NOW REDIRECTED EXPLICITLY (this way it doesn't get corrupted by random cout/cerr emissions and threading issues)
-		//	redirect stdout if requested
-		if (instance.logFilename.length())
-		{
-			freopen(instance.logFilename.c_str(), "w", stdout);
-		}
-*/
 
 		//	default error now true
 		engineResult.error = true;
@@ -555,15 +564,9 @@ EngineResult execute(int argc, char *argv[])
 	}
 }
 
-
-
-////////////////	MAIN
-
 /*
-
-	This function calls execute(), and makes sure to write an
-	exit file if requested in the argument list.
-
+  main() calls execute(), and makes sure to write an
+  exit file if requested in the argument list.
 */
 
 //	result codes must be in 0-255 to be bash-compatible
@@ -573,6 +576,9 @@ const int RESULT_ERROR_INIITAL_PARSE = RESULT_ERROR + 1;
 
 int main(int argc, char *argv[])
 {
+        // Init executeGUI:
+        executeGUI = (ExecuteGUI*)0;
+
 	string exitFileText =
 			"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>"
 			"<Exit Version=\"1.0\">"
@@ -580,30 +586,6 @@ int main(int argc, char *argv[])
 			"<MessageCount>((MSGCOUNT))</MessageCount>"
 			"<LocalError>((LOCALERROR))</LocalError>"
 			"</Exit>";
-
-/*
-	//	if --logfmtxml, don't generate any spurious text output...
-	bool logfmtxml = false;
-
-	//	better try and do something sensible if this code fails, too
-	try
-	{
-		for (int a=1; a<argc; a++)
-		{
-			string arg = argv[a];
-			if (arg == "--logfmt-xml")
-				logfmtxml = true;
-		}
-	}
-	catch(...)
-	{
-		//	report
-		____FAIL("exception during initial parse of arguments");
-
-		//	best we can do is return an error code, since we've not got an exit filename yet
-		return RESULT_ERROR_INIITAL_PARSE;
-	}
-*/
 
 	//	exit file will carry error code and message count (engine result)
 	EngineResult engineResult;
@@ -651,6 +633,10 @@ int main(int argc, char *argv[])
 		if (engineResult.localError.length())
 			cout << engineResult.localError << endl;
 	}
+
+        if (executeGUI != (ExecuteGUI*)0) {
+            delete executeGUI;
+        }
 
 	//	return error/no-error code
 	return errorcode;
