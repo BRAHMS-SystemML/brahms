@@ -124,6 +124,7 @@ brahms::info::usage()
         "    --voice-mpi      get voice index from MPI layer (mpi only)\n"
         "    --pause          pause before exiting worker threads\n"
         "    --par-X=Y        set Execution Parameter X to value Y\n"
+        "    --nogui          Avoid displaying the execution progress window\n"
         "\n"
 
         "  reporting options:\n"
