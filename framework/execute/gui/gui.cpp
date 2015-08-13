@@ -226,7 +226,6 @@ ExecuteGUI::ExecuteGUI()
 #ifdef __NIX__
     app = (XtAppContext*)0;
 #endif
-    cout << "arg-less ExecuteGUI constructor..." << endl;
 }
 
 ExecuteGUI::ExecuteGUI(bool without_gui)
@@ -242,7 +241,6 @@ ExecuteGUI::ExecuteGUI(bool without_gui)
 #ifdef __NIX__
     app = (XtAppContext*)0;
 #endif
-    cout << "nogui: " << this->nogui << endl;
 }
 
 ExecuteGUI::~ExecuteGUI()
@@ -276,8 +274,6 @@ ExecuteGUI::~ExecuteGUI()
 
 Symbol ExecuteGUI::MonitorEventHandlerFunc(const MonitorEvent* event)
 {
-    cout << "ExecuteGUI::MonitorEventHandlerFunc, nogui:" << this->nogui << endl;
-
     // switch on event type
     switch (event->type)
     {
@@ -435,10 +431,7 @@ Symbol ExecuteGUI::MonitorEventHandlerFunc(const MonitorEvent* event)
 #ifdef __NIX__
     case EVENT_MONITOR_SHOW:
     {
-        cout << "EVENT_MONITOR_SHOW; nogui:" << this->nogui << endl;
-
         if (this->nogui == true) {
-            cout << "nogui true; break." << endl;
             break;
         }
 
@@ -575,7 +568,6 @@ Symbol ExecuteGUI::MonitorEventHandlerFunc(const MonitorEvent* event)
 
     case EVENT_MONITOR_CLOSE:
     {
-        cout << "EVENT_MONITOR_CLOSE; nogui:" << this->nogui << endl;
         if (!displayed) break;
 #ifdef __WIN__
         if (gui.window)
@@ -586,7 +578,6 @@ Symbol ExecuteGUI::MonitorEventHandlerFunc(const MonitorEvent* event)
 
     case EVENT_MONITOR_SERVICE:
     {
-        cout << "EVENT_MONITOR_SERVICE; nogui:" << this->nogui << endl;
         if (!displayed) break;
 
         // get progress as a fraction and update progress bars
@@ -625,7 +616,6 @@ Symbol ExecuteGUI::MonitorEventHandlerFunc(const MonitorEvent* event)
     case EVENT_MONITOR_OPERATION:
     {
         if (!displayed) break;
-        cout << "EVENT_MONITOR_OPERATION; nogui:" << this->nogui << endl;
 
         // call os-specific sub-function
         os_update_operation(event->message);
@@ -636,7 +626,6 @@ Symbol ExecuteGUI::MonitorEventHandlerFunc(const MonitorEvent* event)
     case EVENT_MONITOR_PHASE:
     {
         if (!displayed) break;
-        cout << "EVENT_MONITOR_PHASE; nogui:" << this->nogui << endl;
 
         // just update message
         os_update_phase(event->message);
@@ -651,7 +640,6 @@ Symbol ExecuteGUI::MonitorEventHandlerFunc(const MonitorEvent* event)
     case EVENT_MONITOR_PROGRESS:
     {
         if (!displayed) break;
-        cout << "EVENT_MONITOR_PROGRESS; nogui:" << this->nogui << endl;
 
         // just update message
         os_update_progress(event->progressMin, event->progressMax);
@@ -661,7 +649,6 @@ Symbol ExecuteGUI::MonitorEventHandlerFunc(const MonitorEvent* event)
     }
 
     if (cancelled) return C_CANCEL;
-    cout << "return C_OK. nogui:" << this->nogui << endl;
     return C_OK;
 }
 

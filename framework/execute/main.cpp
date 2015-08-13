@@ -431,7 +431,6 @@ EngineResult execute(int argc, char *argv[])
 
                 // Now the args have been interpreted, we can create
                 // the gui object and either hide it or show it.
-                cout << "About to instanciate executeGUI with instance.nogui: " << instance.nogui <<endl;
                 executeGUI = new ExecuteGUI(instance.nogui);
 
 		//	generate a segfault (for checking how it is handled by the executable and by the scripts)
