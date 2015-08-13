@@ -430,8 +430,10 @@ EngineResult execute(int argc, char *argv[])
 		interpretArgs(argc, argv);
 
                 // Now the args have been interpreted, we can create
-                // the gui object and either hide it or show it.
-                executeGUI = new ExecuteGUI(instance.nogui);
+                // the gui object if we need it.
+                if (instance.nogui == false) {
+                    executeGUI = new ExecuteGUI();
+                } // else don't instanciate executeGUI
 
 		//	generate a segfault (for checking how it is handled by the executable and by the scripts)
 		if (instance.segfault)

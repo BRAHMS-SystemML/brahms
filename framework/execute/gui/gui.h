@@ -78,7 +78,6 @@ class ExecuteGUI
 public:
 
     ExecuteGUI();
-    ExecuteGUI(bool without_gui);
     ~ExecuteGUI();
 
     Symbol MonitorEventHandlerFunc(const MonitorEvent* progress);
@@ -88,23 +87,13 @@ public:
 
     void do_events();
 
-    // Call this to avoid showing the gui progress window.
-    void hide_gui();
+    void cancel() { cancelled = true; }
 
-    void cancel()
-        {
-            cancelled = true;
-        }
-
-    bool* getPointerToCancelled()
-        {
-            return &cancelled;
-        }
+    bool* getPointerToCancelled() { return &cancelled; }
 
 private:
 
 #ifdef __WIN__
-
     struct
     {
         HINSTANCE   instance;
@@ -121,13 +110,10 @@ private:
         RECT    progbar;
         HBRUSH    progbar_brush_a;
         HBRUSH    progbar_brush_b;
-    }
-        gui;
-
+    } gui;
 #endif
 
 #ifdef __NIX__
-
     struct
     {
         Display*   display;
@@ -147,17 +133,15 @@ private:
         Widget    phase;     // label widget for text
         Widget    operation;    // label widget for text
         Widget    cancelButton;
-    }
-        gui;
+    } gui;
 
+    XtAppContext* app;
 #endif
 
     // common
-    bool nogui; // if true, user doesn't want to show the GUI
     bool displayed;
     bool cancelled;
     DOUBLE t_startRunPhase;
-
 };
 
 Symbol MonitorEventHandlerFunc(const MonitorEvent* event);

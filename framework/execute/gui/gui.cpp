@@ -166,8 +166,6 @@ const INT32 metric_ButtonHeight = 24;
 #include <X11/Xaw/Command.h>
 #include "Gauge.h"
 
-XtAppContext* app;
-
 // callback function
 static void CancelCB(Widget w, XtPointer client_data, XtPointer call_data)
 {
@@ -175,8 +173,6 @@ static void CancelCB(Widget w, XtPointer client_data, XtPointer call_data)
 }
 
 #endif // __NIX__
-
-extern ExecuteGUI* executeGUI;
 
 // GUI CLASS IMPLEMENTATION
 
@@ -215,31 +211,15 @@ int MainWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 ExecuteGUI::ExecuteGUI()
     : t_startRunPhase(0.0)
-    , nogui(false)
     , displayed(false)
     , cancelled(false)
+#ifdef __NIX__
+    , app((XtAppContext*)0)
+#endif
 {
 #ifdef __WIN__
     // zero gui data on windows
     memset(&gui, 0, sizeof(gui));
-#endif
-#ifdef __NIX__
-    app = (XtAppContext*)0;
-#endif
-}
-
-ExecuteGUI::ExecuteGUI(bool without_gui)
-    : t_startRunPhase(0.0)
-    , nogui(without_gui)
-    , displayed(false)
-    , cancelled(false)
-{
-#ifdef __WIN__
-    // zero gui data on windows
-    memset(&gui, 0, sizeof(gui));
-#endif
-#ifdef __NIX__
-    app = (XtAppContext*)0;
 #endif
 }
 
@@ -266,8 +246,8 @@ ExecuteGUI::~ExecuteGUI()
 #endif // __WIN__
 
 #ifdef __NIX__
-    if (displayed && app != (XtAppContext*)0) XtDestroyApplicationContext(*app);
-    if (app != (XtAppContext*)0) { delete app; }
+    if (displayed && this->app != (XtAppContext*)0) XtDestroyApplicationContext(*this->app);
+    if (this->app != (XtAppContext*)0) { delete this->app; }
     if (gui.display) XCloseDisplay(gui.display);
 #endif
 }
@@ -431,10 +411,6 @@ Symbol ExecuteGUI::MonitorEventHandlerFunc(const MonitorEvent* event)
 #ifdef __NIX__
     case EVENT_MONITOR_SHOW:
     {
-        if (this->nogui == true) {
-            break;
-        }
-
         // fallback resources
         const char* fallback_resources[] = {
             "brahms*font: -*-arial-medium-r-normal-*-12-*-*-*-*-*-*-*",
@@ -696,21 +672,16 @@ void ExecuteGUI::os_update_operation(const string& msg)
 void ExecuteGUI::do_events()
 {
     // do events
-    if (app != (XtAppContext*)0) {
+    if (this->app != (XtAppContext*)0) {
         XEvent event;
-        while (XtAppPending(*app))
+        while (XtAppPending(*this->app))
         {
-            XtAppNextEvent(*app, &event);
+            XtAppNextEvent(*this->app, &event);
             XtDispatchEvent(&event);
         }
     }
 }
 #endif // __NIX__
-
-void ExecuteGUI::hide_gui()
-{
-    this->nogui = true;
-}
 
 #ifdef __WIN__
 
@@ -786,7 +757,13 @@ void ExecuteGUI::do_events()
 #endif // __WIN__
 
 // STATIC EXPORTED FUNCTION
+extern ExecuteGUI* executeGUI;
 Symbol MonitorEventHandlerFunc(const MonitorEvent* progress)
 {
-    return executeGUI->MonitorEventHandlerFunc(progress);
+    // Only call monitor event handler if we actually have an execution GUI
+    if (executeGUI != (ExecuteGUI*)0) {
+        return executeGUI->MonitorEventHandlerFunc(progress);
+    } else {
+        return C_OK;
+    }
 }
