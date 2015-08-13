@@ -10,12 +10,9 @@ its use, I have created this fork of the software on github.
 
 This fork of the Brahms simulator starts from brahms version 0.7.3. The 
 key improvement is a standard build system to replace the custom 
-makefiles in the original, because at present we are using "set in 
+makefiles in the original, because recently we have been using "set in 
 aspic" binary builds of BRAHMS and we would like to be able to easily 
-modify and add features as our requirements of the software change. All 
-of the old, custom-written makefiles are present with an "__" prefix. 
-These will be removed at some point, but I'm keeping them for reference 
-at present.
+modify and add features as our requirements of the software change.
 
 You can read all about the original at:
 
@@ -31,6 +28,10 @@ the software is compiled, a directory for the "installed SystemML Namespace"
 is set - that might be `/usr/local/var/SystemML/Namespace`. That becomes
 the default BRAHMS Namespace. It's in a `var` directory as you may decide
 to install your own components in there.
+
+You can also run BRAHMS without the progress window with the --nogui option.
+This can be useful if you need to run hundreds of concurrent BRAHMS instances
+on an HPC system and you forgot to log in with a non-X windows connection.
 
 ## What may change in future?
 
@@ -103,46 +104,6 @@ Compiling with a specific installation prefix:
 ~~~ {.bash}
 cmake -DCMAKE_INSTALL_PREFIX=/usr/local ..
 ~~~
-
-OLD Build Notes for reference
------------------------------
-
-To build each part, enter each project directory and
-run "make". On Windows, you will have to have GnuWin32
-installed. To build all parts, run "make" in this folder,
-and review the options.
-
-The only pre-requisite (other than compiler, libraries,
-and all required INCLUDE and LIB paths set) is that you
-should have set the env var "SYSTEMML_INSTALL_PATH" to
-the folder you want to install to, or to the folder
-where your SystemML/BRAHMS installation currently is. If you
-installed BRAHMS using an installer, this may have been
-done for you. If you are building from scratch without a
-current install, this probably needs doing manually.
-
-As well as the base development libraries on Linux the
-dev versions of libXv and libXaw are required.
-
-You will need subversion installed, because the makefiles
-use it to get the revision number, even if you're building
-from an exported branch. We'll fix this one day.
-
-On Linux, you will need the env var SYSTEMML_MATLAB_PATH
-set to your Matlab root directory. On our system, it's
-"/usr/local/encap/matlab-R2007B". On Windows, you will
-need to make sure the Matlab include and bin folders are
-in your INCLUDE and LIB env vars, respectively.
-
-
-
-Compilers
----------
-
-We use G++ 4.2 on linux, or cl v14 on windows. Other
-compilers should work fine, but your binaries will be
-incompatible with ours. That won't usually matter, since
-you'll build all the binaries yourself.
 
 --
 Seb James, Feb 2015.

@@ -1,1 +1,0 @@
-SYSTEMML_INSTALL_PATH=/tmp/systemml SYSTEMML_TEMP_PATH=/tmp/systemml_temp NOWX=1 NOMATLAB=1 BUILD=DEBUG make all
