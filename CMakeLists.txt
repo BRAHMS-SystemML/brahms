@@ -51,13 +51,6 @@ if(STANDALONE_INSTALL)
   set(BIN_INSTALL_PATH SystemML/BRAHMS/bin)
   set(INCLUDE_INSTALL_PATH SystemML/BRAHMS/include)
   set(SHARE_BRAHMS_INSTALL_PATH SystemML/BRAHMS)
-  # Statically link libbrahmsengine etc for a standalone build (could
-  # probably statically link for non-standalone build too, to be
-  # honest).
-  #
-  # There's a problem with static install - some components need some
-  # of the API and won't load unless libbrahms-engine.so is available.
-  set(BRAHMS_ENGINE_LINK_TYPE STATIC)
   # Inform the user of the install prefix and how to change it:
   message(STATUS "Install location: ${CMAKE_INSTALL_PREFIX}/SystemML")
   message(STATUS "  (This can be changed with `cmake -DCMAKE_INSTALL_PREFIX=/some/place`")
@@ -70,11 +63,17 @@ else()
   set(INCLUDE_INSTALL_PATH include)
   set(SHARE_BRAHMS_INSTALL_PATH share/brahms)
 
-  set(BRAHMS_ENGINE_LINK_TYPE SHARED)
-
   message(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
   message(STATUS "  (This can be changed with `cmake -DCMAKE_INSTALL_PREFIX=/some/place`")
 endif()
+
+# There's no reason to build a separate libbrahms-engine.so; but we
+# have to be sure to link ALL of the code into the executable using
+# -Wl,--whole-archive, even those functions not called within the
+# brahms executable itself.
+set(BRAHMS_ENGINE_LINK_TYPE STATIC)
+set(BRAHMS_LINK_WHOLE_ARCHIVE "-Wl,--whole-archive")
+set(BRAHMS_NOT_LINK_WHOLE_ARCHIVE "-Wl,--no-whole-archive")
 
 # A section to ensure library linking works on Apple.
 if(APPLE)
