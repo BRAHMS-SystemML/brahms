@@ -1,0 +1,3 @@
+gdbcmd is a file referenced by brahms-gdb. Put gdbcmd in your home 
+directory and then add lines for the directories in which your code 
+lives.
