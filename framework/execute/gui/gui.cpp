@@ -221,6 +221,9 @@ ExecuteGUI::ExecuteGUI()
     // zero gui data on windows
     memset(&gui, 0, sizeof(gui));
 #endif
+#ifdef __NIX__
+    gui.display = (Display*)0;
+#endif
 }
 
 ExecuteGUI::~ExecuteGUI()
