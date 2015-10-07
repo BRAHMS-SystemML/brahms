@@ -222,7 +222,7 @@ namespace brahms
 			{
 				setFlag(F_THREAD_HUNG);
 				brahms::error::Error e(E_THREAD_HUNG, "thread W" + n2s(unitIndex(getThreadIndex())));
-				e.trace("time since active " + n2s(tSinceLastActive) + "mS (limit " + n2s(TimeoutThreadHang) + "mS)");
+				e.trace("time since active " + n2s(tSinceLastActive) + "ms (limit " + n2s(TimeoutThreadHang) + "ms)");
 				e.trace("at baseSamples = " + n2s(time_now));
 
 				//	use system source (see notes on CONTEXT)
@@ -276,7 +276,7 @@ namespace brahms
 
 			//	but also set signal so that thread comes out of wait state asap
 			signalRelease.set();
-			
+
 			//	then call the base class terminate routine
 			Thread::terminate(fout);
 		}
@@ -286,8 +286,8 @@ namespace brahms
 
 
 
-	
-	
+
+
 	////////////////
 	////////////////
 	////////////////	WORKER THREAD: SELF CONTEXT
