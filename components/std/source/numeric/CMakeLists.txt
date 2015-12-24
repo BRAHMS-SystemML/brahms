@@ -4,11 +4,7 @@ if(APPLE)
 target_link_libraries(source_numeric brahms-engine brahms-engine-base)
 endif(APPLE)
 
-if(STANDALONE_INSTALL)
-  set(COMP_PATH SystemML/Namespace/std/2009/source/numeric)
-else()
-  set(COMP_PATH var/SystemML/Namespace/std/2009/source/numeric)
-endif()
+set(COMP_PATH ${VAR_SYSTEMML_PATH}/Namespace/std/2009/source/numeric)
 
 install(TARGETS source_numeric DESTINATION ${COMP_PATH}/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/1199/release.xml DESTINATION ${COMP_PATH}/brahms/0)

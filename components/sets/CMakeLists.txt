@@ -4,11 +4,7 @@ if(APPLE)
 target_link_libraries(test_sets brahms-engine brahms-engine-base)
 endif(APPLE)
 
-if(STANDALONE_INSTALL)
-  set(COMP_PATH SystemML/Namespace/client/brahms/test/sets)
-else()
-  set(COMP_PATH var/SystemML/Namespace/client/brahms/test/sets)
-endif()
+set(COMP_PATH ${VAR_SYSTEMML_PATH}/Namespace/client/brahms/test/sets)
 
 install(TARGETS test_sets DESTINATION ${COMP_PATH}/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/1199/release.xml DESTINATION ${COMP_PATH}/brahms/0)

@@ -1,8 +1,4 @@
-if(STANDALONE_INSTALL)
-  set(BENCH_COMP_PATH SystemML/Namespace/client/brahms/bench)
-else()
-  set(BENCH_COMP_PATH var/SystemML/Namespace/client/brahms/bench)
-endif()
+set(BENCH_COMP_PATH ${VAR_SYSTEMML_PATH}/Namespace/client/brahms/bench)
 
 add_subdirectory(elements)
 add_subdirectory(operation)

@@ -4,11 +4,7 @@ if(APPLE)
 target_link_libraries(source_spikes brahms-engine brahms-engine-base)
 endif(APPLE)
 
-if(STANDALONE_INSTALL)
-  set(COMP_PATH SystemML/Namespace/std/2009/source/spikes)
-else()
-  set(COMP_PATH var/SystemML/Namespace/std/2009/source/spikes)
-endif()
+set(COMP_PATH ${VAR_SYSTEMML_PATH}/Namespace/std/2009/source/spikes)
 
 install(TARGETS source_spikes DESTINATION ${COMP_PATH}/brahms/0)
 install(FILES ${CMAKE_SOURCE_DIR}/shared/1199/release.xml DESTINATION ${COMP_PATH}/brahms/0)

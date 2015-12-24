@@ -1,8 +1,4 @@
-if(STANDALONE_INSTALL)
-  set(EXAMPLE_COMP_PATH SystemML/Namespace/client/brahms/example)
-else()
-  set(EXAMPLE_COMP_PATH var/SystemML/Namespace/client/brahms/example)
-endif()
+set(EXAMPLE_COMP_PATH ${VAR_SYSTEMML_PATH}/Namespace/client/brahms/example)
 
 # Python examples go in Namespace/client/brahms/example/1262
 install(FILES head.py DESTINATION ${EXAMPLE_COMP_PATH}/1262/head/brahms/0)
