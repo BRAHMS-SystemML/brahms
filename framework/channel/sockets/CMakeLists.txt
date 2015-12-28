@@ -7,4 +7,5 @@ add_library(brahms-channel-sockets SHARED
 if(APPLE)
   target_link_libraries(brahms-channel-sockets brahms-engine-base)
 endif(APPLE)
+set_target_properties(brahms-channel-sockets PROPERTIES SOVERSION 1.0.0)
 install(TARGETS brahms-channel-sockets DESTINATION ${LIB_INSTALL_PATH})

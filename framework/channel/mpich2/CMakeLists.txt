@@ -9,5 +9,6 @@ if(COMPILE_WITH_MPICH2)
     ../channel.cpp ../deliverer.cpp
     mpi.cpp mpi-receiver.cpp mpi-sender.cpp
     )
+  set_target_properties(brahms-channel-mpich2 PROPERTIES SOVERSION 1.0.0)
   install(TARGETS brahms-channel-mpich2 DESTINATION ${LIB_INSTALL_PATH})
 endif(COMPILE_WITH_MPICH2)
