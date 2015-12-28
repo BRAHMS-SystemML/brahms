@@ -27,14 +27,41 @@ endif()
 set(CMAKE_CXX_FLAGS ${BRAHMS_HOST_DEFINITION})
 set(CMAKE_C_FLAGS ${BRAHMS_HOST_DEFINITION})
 
-# This needs work - it's too simplistic and I've no idea if it would
-# work on Mac or Windows.
-if(CMAKE_SYSTEM_PROCESSOR MATCHES .*64.*)
-  set(ARCH_BITS 64)
-else()
+# Try to set ARCH_BITS from the library architecture; fall back to the system processor. I
+# do it this way because one may be chrooted in an i386 environment with a 64 bit host
+# processor. This will need more cases to cover Mac and Windows.
+option(FORCE_ARCH_BITS_32 "Force the #define ARCH_BITS to 32 (usually auto-determined)" OFF)
+option(FORCE_ARCH_BITS_64 "Force the #define ARCH_BITS to 64 (overrides FORCE_ARCH_BITS_32; usually auto-determined)" OFF)
+if(FORCE_ARCH_BITS_32)
   set(ARCH_BITS 32)
 endif()
-message(STATUS "Processor: " ${CMAKE_SYSTEM_PROCESSOR} " Arch bits: " ${ARCH_BITS})
+if(FORCE_ARCH_BITS_64)
+  set(ARCH_BITS 64)
+endif()
+
+if(ARCH_BITS)
+  message(STATUS "ARCH_BITS forced with manual option")
+else()
+
+  if(CMAKE_LIBRARY_ARCHITECTURE MATCHES .*i386.*)
+    set(ARCH_BITS 32)
+  elseif(CMAKE_LIBRARY_ARCHITECTURE MATCHES .*x86_64.*)
+    set(ARCH_BITS 64)
+  endif()
+
+  if(ARCH_BITS)
+    message(STATUS "Arch bits determined from CMAKE_LIBRARY_ARCHITECTURE (" ${CMAKE_LIBRARY_ARCHITECTURE} ").")
+  else()
+    # If we can't get Arch bits from the CMAKE_LIBRARY_ARCHITECTURE, fall back to using the processor.
+    if(CMAKE_SYSTEM_PROCESSOR MATCHES .*64.*)
+      set(ARCH_BITS 64)
+    else()
+      set(ARCH_BITS 32)
+    endif()
+  endif()
+endif()
+
+message(STATUS "Processor: " ${CMAKE_SYSTEM_PROCESSOR} " Library arch: " ${CMAKE_LIBRARY_ARCHITECTURE} " Arch bits: " ${ARCH_BITS})
 
 # Optional features. All default to OFF.
 option(COMPILE_MATLAB_BINDING "Compile the matlab binding" OFF)
