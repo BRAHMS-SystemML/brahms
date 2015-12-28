@@ -8,12 +8,19 @@ if(HAVE_CLOCK_GETTIME_IN_RT)
   set(LIB_RT rt)
 endif(HAVE_CLOCK_GETTIME_IN_RT)
 
-target_link_libraries(brahms-execute
-  ${BRAHMS_LINK_WHOLE_ARCHIVE} # adds -Wl,--whole-archive for static linking
-  brahms-engine brahms-engine-base brahms-gui
-  ${BRAHMS_NOT_LINK_WHOLE_ARCHIVE} # resets with -Wl,--no-whole-archive
-  ${CMAKE_THREAD_LIBS_INIT} ${LIB_RT} ${XAW_LDFLAGS} ${XMU_LDFLAG} ${CMAKE_DL_LIBS}
-  )
+if(APPLE)
+  target_link_libraries(brahms-execute
+    brahms-engine brahms-engine-base brahms-gui
+    ${CMAKE_THREAD_LIBS_INIT} ${LIB_RT} ${XAW_LDFLAGS} ${XMU_LDFLAG} ${CMAKE_DL_LIBS}
+    )
+else()
+  target_link_libraries(brahms-execute
+    ${BRAHMS_LINK_WHOLE_ARCHIVE} # adds -Wl,--whole-archive for static linking
+    brahms-engine brahms-engine-base brahms-gui
+    ${BRAHMS_NOT_LINK_WHOLE_ARCHIVE} # resets with -Wl,--no-whole-archive
+    ${CMAKE_THREAD_LIBS_INIT} ${LIB_RT} ${XAW_LDFLAGS} ${XMU_LDFLAG} ${CMAKE_DL_LIBS}
+    )
+endif(APPLE)
 
 install(TARGETS brahms-execute DESTINATION ${BIN_INSTALL_PATH})
 install(PROGRAMS brahms DESTINATION ${BIN_INSTALL_PATH})
