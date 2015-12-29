@@ -22,8 +22,32 @@ else()
     )
 endif(APPLE)
 
+# Build man pages
+#find_program(GROFF_EXE NAMES groff)
+#set(GROFF_OPTS -Tascii)
+
+#set(MAN_NAMES brahms brahms-execute)
+#set(MAN_FILES)
+#foreach(m IN LISTS MAN_NAMES)
+#  set(mf ${m}.man)
+#  set(ms ${m}.1)
+#  add_custom_command(OUTPUT ${mf}
+#    COMMAND ${GROFF_EXE} ${GROFF_OPTS} -man ${ms} > ${mf} 
+#    DEPENDS ${ms}
+#    COMMENT "Building manpage ${mf}"
+#    VERBATIM)
+#  list(APPEND MAN_FILES ${mf})
+#  message(STATUS "Added ${mf} to MAN_FILES")
+#  install(FILES ${mf} DESTINATION ${MAN_INSTALL_PATH}/man1)
+#endforeach()
+
+install(FILES brahms-execute.1 DESTINATION ${MAN_INSTALL_PATH}/man1)
+install(FILES brahms.1 DESTINATION ${MAN_INSTALL_PATH}/man1)
+
 install(TARGETS brahms-execute DESTINATION ${BIN_INSTALL_PATH})
 install(PROGRAMS brahms DESTINATION ${BIN_INSTALL_PATH})
+
+
 
 # The brahms-gui library lives in a subdirectory:
 add_subdirectory(gui)

@@ -1,0 +1,105 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" (C) Copyright 2014 Sebastian Scott James <seb.james@sheffield.ac.uk>,
+.\"
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+.TH BRAHMS 1 "February 24, 2014"
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH NAME
+brahms \- A framework for neuroscientific computation
+.SH SYNOPSIS
+.B brahms
+" exefile "
+.RI [ options ]
+.br
+.B brahms
+" operation "
+.RI [ options ]
+.SH DESCRIPTION
+.B brahms
+Executes code modules described by SystemML.
+.PP
+.SH OPTIONS
+Brahms options are denoted as long options starting with two dashes (`-').
+A summary of options is included below.
+For a complete description, see the online documentation at http://brahms.sourceforge.net
+Operations
+.TP
+.B \-\-licence
+Show release license.
+.TP
+.B \-\-credits
+Show credits.
+.TP
+.B \-\-version
+Show detailed version information.
+.TP
+.B \-\-walk
+walk the namespace for cached components.
+.TP
+.B \-\-Walk
+walk the namespace for cached components and load each one for more info.
+.TP
+.B \-\-WALK
+walk the namespace for cached components, load each one for more info including non-native components.
+General options:
+.TP
+.B \-\-voice\-i
+Set this to be the ith voice (sockets only).
+.TP
+.B \-\-voice\-mpi
+Get voice index from MPI layer (mpi only).
+.TP
+.B \-\-pause
+Pause before exiting worker threads.
+.TP
+.B \-\-par\-X=Y
+Set execution parameter X to value Y.
+Reporting options:
+.TP
+.B \-\-logfile\-F
+Send log to file F instead of console.
+.TP
+.B \-\-logfmt\-xml
+Set log format to XML (default is text).
+.TP
+.B \-\-loglvl\-L\-T\-S
+Set log level for threads T, section S to L (L can be n, w, i, v, l, f, 0-5; default is i).
+.TP
+.B \-\-loglvl\-L
+Set starting log level for all threads.
+.TP
+.B \-\-loglvl\-L\-T
+Set starting log level for threads T.
+.TP
+.B \-\-loglvl\-L\-\-S
+Set log level for one section for all threads.
+.TP
+.B \-\-maxerr
+Return maximum error information (some is hidden by default for brevity).
+Shortcuts:
+.TP
+.B \-\-nothreads
+Equilvalent to \-\-par\-MaxThreadCount\-1
+.TP
+.B \-\-d
+Equilvalent to \-\-loglvl\-f \-\-loglvl\-l\-\-Main_Loop \-\-maxerr
+.TP
+.B \-\-dd
+Equilvalent to \-\-loglvl\-f \-\-maxerr
+.SH SEE ALSO
+.BR brahms-execute (1),
+.BR elements_monolithic (1),
+.br
