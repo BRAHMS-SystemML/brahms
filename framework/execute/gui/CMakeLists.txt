@@ -8,7 +8,3 @@ if(APPLE)
     brahms-gui ${CMAKE_THREAD_LIBS_INIT} ${LIB_RT} ${XAW_LDFLAGS} ${XMU_LDFLAG}
     )
 endif(APPLE)
-
-if(NOT STANDALONE_INSTALL)
-  install(TARGETS brahms-gui DESTINATION ${LIB_INSTALL_PATH})
-endif()
