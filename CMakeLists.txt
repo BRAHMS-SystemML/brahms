@@ -106,6 +106,8 @@ else()
   endif()
 endif()
 
+set(FULL_LIB_INSTALL_PATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_PATH}")
+
 # There's no reason to build a separate libbrahms-engine.so; but we
 # have to be sure to link ALL of the code into the executable using
 # -Wl,--whole-archive, even those functions not called within the

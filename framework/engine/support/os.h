@@ -44,6 +44,8 @@ using std::string;
 #endif
 #include "brahms-client.h" // for UINT32
 
+#include "BrahmsConfig.h"
+
 ////////////////	NAMESPACE
 
 namespace brahms
@@ -61,23 +63,23 @@ namespace brahms
 		const char ENV_SEPARATOR[] = ";";
 		const char COMPONENT_DLL_EXT[] = "dll";
 		const char COMPONENT_MODULE_FORM_OLD[] = "libbrahms-((CLASS_US)).0.dll";
-		const char M_BINDING_MODULE_FORM[] = "/lib/brahms/bindings/component/1258/libbrahms-1258.0.dll";
-		const char PY_BINDING_MODULE_FORM[] = "/lib/brahms/bindings/component/1262/libbrahms-1262.0.dll";
-		const char CHANNEL_MODULE_FORM[] = "/lib/brahms/bin/libbrahms-channel-((PROTOCOL)).dll";
-		const char COMPRESS_MODULE_FORM[] = "/lib/brahms/bin/libbrahms-compress.dll";
+		const char M_BINDING_MODULE_FORM[] = FULL_LIB_INSTALL_PATH"/brahms/bindings/component/1258/libbrahms-1258.0.dll";
+		const char PY_BINDING_MODULE_FORM[] = FULL_LIB_INSTALL_PATH"/brahms/bindings/component/1262/libbrahms-1262.0.dll";
+		const char CHANNEL_MODULE_FORM[] = FULL_LIB_INSTALL_PATH"/brahms/bin/libbrahms-channel-((PROTOCOL)).dll";
+		const char COMPRESS_MODULE_FORM[] = FULL_LIB_INSTALL_PATH"/brahms/bin/libbrahms-compress.dll";
 
 	#endif
 
 	#ifdef __GLN__
-
+                // FIXME: These need to be filled in from build-time information.
 		const char PATH_SEPARATOR[] = "/";
 		const char ENV_SEPARATOR[] = ":";
 		const char COMPONENT_DLL_EXT[] = "so";
 		const char COMPONENT_MODULE_FORM_OLD[] = "libbrahms-((CLASS_US)).so.0";
-		const char M_BINDING_MODULE_FORM[] = "/lib/brahms/bindings/component/1258/libbrahms-1258.so.0";
-		const char PY_BINDING_MODULE_FORM[] = "/lib/brahms/bindings/component/1262/libbrahms-1262.so.0";
-		const char CHANNEL_MODULE_FORM[] = "/lib/brahms/bin/libbrahms-channel-((PROTOCOL)).so";
-		const char COMPRESS_MODULE_FORM[] = "/lib/brahms/bin/libbrahms-compress.so";
+		const char M_BINDING_MODULE_FORM[] = FULL_LIB_INSTALL_PATH"/brahms/bindings/component/1258/libbrahms-1258.so.0";
+		const char PY_BINDING_MODULE_FORM[] = FULL_LIB_INSTALL_PATH"/brahms/bindings/component/1262/libbrahms-1262.so.0";
+		const char CHANNEL_MODULE_FORM[] = FULL_LIB_INSTALL_PATH"/brahms/libbrahms-channel-((PROTOCOL)).so";
+		const char COMPRESS_MODULE_FORM[] = FULL_LIB_INSTALL_PATH"/brahms/bin/libbrahms-compress.so";
 
 	#endif
 
@@ -87,10 +89,10 @@ namespace brahms
 		const char ENV_SEPARATOR[] = ":";
 		const char COMPONENT_DLL_EXT[] = "dylib";
 		const char COMPONENT_MODULE_FORM_OLD[] = "libbrahms-((CLASS_US)).0.dylib";
-		const char M_BINDING_MODULE_FORM[] = "/lib/brahms/bindings/component/1258/libbrahms-1258.0.dylib";
-		const char PY_BINDING_MODULE_FORM[] = "/lib/brahms/bindings/component/1262/libbrahms-1262.0.dylib";
-		const char CHANNEL_MODULE_FORM[] = "/lib/brahms/bin/libbrahms-channel-((PROTOCOL)).0.dylib";
-		const char COMPRESS_MODULE_FORM[] = "/lib/brahms/bin/libbrahms-compress.so";
+		const char M_BINDING_MODULE_FORM[] = FULL_LIB_INSTALL_PATH"/brahms/bindings/component/1258/libbrahms-1258.0.dylib";
+		const char PY_BINDING_MODULE_FORM[] = FULL_LIB_INSTALL_PATH"/brahms/bindings/component/1262/libbrahms-1262.0.dylib";
+		const char CHANNEL_MODULE_FORM[] = FULL_LIB_INSTALL_PATH"/brahms/bin/libbrahms-channel-((PROTOCOL)).0.dylib";
+		const char COMPRESS_MODULE_FORM[] = FULL_LIB_INSTALL_PATH"/brahms/bin/libbrahms-compress.so";
 
 	#endif
 
