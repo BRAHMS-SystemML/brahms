@@ -9,4 +9,4 @@ endif(ZLIB_FOUND)
 
 set_target_properties(brahms-compress PROPERTIES SOVERSION 1.0.0)
 
-install(TARGETS brahms-compress DESTINATION ${LIB_INSTALL_PATH})
+install(TARGETS brahms-compress DESTINATION ${LIB_INSTALL_PATH}/brahms)
