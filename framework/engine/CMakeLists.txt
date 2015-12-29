@@ -25,7 +25,3 @@ if(APPLE)
     ${CMAKE_THREAD_LIBS_INIT} ${LIB_RT} ${XAW_LDFLAGS}
     )
 endif(APPLE)
-
-if(NOT STANDALONE_INSTALL)
-  install(TARGETS brahms-engine brahms-engine-base DESTINATION ${LIB_INSTALL_PATH})
-endif()
