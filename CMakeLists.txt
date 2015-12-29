@@ -69,6 +69,7 @@ option(COMPILE_PYTHON_BINDING "Compile the Python binding" OFF)
 option(COMPILE_WITH_MPICH2 "Compile the mpich2 channel communications layer" OFF)
 option(COMPILE_WX_COMPONENT "Compile the image numeric component which requires WX" OFF)
 option(STANDALONE_INSTALL "Compile and install for standalone use (SystemML folder)" ON)
+option(LICENSE_INSTALL "Install the license file" ON)
 
 if(STANDALONE_INSTALL)
   message(STATUS "Standalone install - choose unix style install with `cmake -DSTANDALONE_INSTALL=OFF`")
