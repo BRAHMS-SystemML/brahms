@@ -71,10 +71,10 @@ namespace brahms
                         if (path.empty()) {
                             path = INSTALL_PREFIX;
                             path += brahms::os::PATH_SEPARATOR;
-                            path += "SystemML";
                         }
 #else
 			string path(INSTALL_PREFIX);
+                        path += brahms::os::PATH_SEPARATOR;
 #endif
 			path += brahms::os::COMPRESS_MODULE_FORM;
 
@@ -106,10 +106,10 @@ namespace brahms
                         if (path.empty()) {
                             path = INSTALL_PREFIX;
                             path += brahms::os::PATH_SEPARATOR;
-                            path += "SystemML";
                         }
 #else
 			path = INSTALL_PREFIX;
+                        path += brahms::os::PATH_SEPARATOR;
 #endif
 			path += brahms::os::CHANNEL_MODULE_FORM;
 			switch (protocol)

@@ -64,10 +64,10 @@ namespace brahms
                 if (installPrefix.empty()) {
                     installPrefix = INSTALL_PREFIX;
                     installPrefix += brahms::os::PATH_SEPARATOR;
-                    installPrefix += "SystemML";
                 }
 #else
                 installPrefix = INSTALL_PREFIX;
+                installPrefix += brahms::os::PATH_SEPARATOR;
 #endif
 		//	get path from Execution Parameters
 		string sNamespaceRoots = environment.gets("NamespaceRoots");
