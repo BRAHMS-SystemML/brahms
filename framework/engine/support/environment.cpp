@@ -342,11 +342,7 @@ namespace brahms
         NamespaceRoots += brahms::os::PATH_SEPARATOR;
         NamespaceRoots += "Namespace";
 #else
-        string NamespaceRoots = INSTALL_PREFIX;
-        NamespaceRoots += brahms::os::PATH_SEPARATOR;
-        NamespaceRoots += "var";
-        NamespaceRoots += brahms::os::PATH_SEPARATOR;
-        NamespaceRoots += "SystemML";
+        string NamespaceRoots = VAR_SYSTEMML_PATH_FULL;
         NamespaceRoots += brahms::os::PATH_SEPARATOR;
         NamespaceRoots += "Namespace";
 #endif
