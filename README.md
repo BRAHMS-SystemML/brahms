@@ -54,7 +54,7 @@ compiler, libXv, libXaw and WX windows. For example, on (current 2015)
 Ubuntu or Debian systems you'll want to do:
 
 ~~~ {.bash}
-sudo apt-get install build-essential libxaw7-dev libxv-dev
+sudo apt-get install build-essential libxaw7-dev libxv-dev zlib1g-dev
 ~~~
 
 These libraries are used to draw the progress box which shows while
