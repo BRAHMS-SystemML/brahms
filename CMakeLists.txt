@@ -124,6 +124,7 @@ endif()
 set(BRAHMS_ENGINE_LINK_TYPE STATIC)
 set(BRAHMS_LINK_WHOLE_ARCHIVE "-Wl,--whole-archive")
 set(BRAHMS_NOT_LINK_WHOLE_ARCHIVE "-Wl,--no-whole-archive")
+set(BRAHMS_LINK_WHOLE_ARCHIVE_MAC "-all_load")
 
 # A section to ensure library linking works on Apple.
 if(APPLE)

@@ -16,12 +16,14 @@ if(APPLE)
   if(NO_X11)
    target_link_libraries(
     brahms-execute
+    ${BRAHMS_LINK_WHOLE_ARCHIVE_MAC}
     brahms-engine brahms-engine-base
     ${CMAKE_THREAD_LIBS_INIT} ${LIB_RT} ${CMAKE_DL_LIBS}
     )
   else()
     target_link_libraries(
     brahms-execute
+    ${BRAHMS_LINK_WHOLE_ARCHIVE_MAC}
     brahms-engine brahms-engine-base brahms-gui
     ${CMAKE_THREAD_LIBS_INIT} ${LIB_RT} ${XAW_LDFLAGS} ${XMU_LDFLAG} ${CMAKE_DL_LIBS}
     )
