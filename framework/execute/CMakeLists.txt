@@ -32,7 +32,7 @@ endif(APPLE)
 #  set(mf ${m}.man)
 #  set(ms ${m}.1)
 #  add_custom_command(OUTPUT ${mf}
-#    COMMAND ${GROFF_EXE} ${GROFF_OPTS} -man ${ms} > ${mf} 
+#    COMMAND ${GROFF_EXE} ${GROFF_OPTS} -man ${ms} > ${mf}
 #    DEPENDS ${ms}
 #    COMMENT "Building manpage ${mf}"
 #    VERBATIM)
@@ -46,6 +46,8 @@ install(FILES brahms.1 DESTINATION ${MAN_INSTALL_PATH}/man1)
 
 install(TARGETS brahms-execute DESTINATION ${BIN_INSTALL_PATH})
 install(PROGRAMS brahms DESTINATION ${BIN_INSTALL_PATH})
+install(PROGRAMS brahms-vg DESTINATION ${BIN_INSTALL_PATH})
+install(PROGRAMS brahms-gdb DESTINATION ${BIN_INSTALL_PATH})
 
 
 
