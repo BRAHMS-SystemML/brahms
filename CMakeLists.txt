@@ -63,7 +63,7 @@ endif()
 
 message(STATUS "Processor: " ${CMAKE_SYSTEM_PROCESSOR} " Library arch: " ${CMAKE_LIBRARY_ARCHITECTURE} " Arch bits: " ${ARCH_BITS})
 
-option(COMPILE_NO_X11 "Compile without linking to X11 (i.e. no GUI on UNIX)" ON)
+option(COMPILE_WITH_X11 "Compile against X11 (which enables the progress GUI)" ON)
 # Optional features. All default to OFF.
 option(COMPILE_MATLAB_BINDING "Compile the matlab binding" OFF)
 option(COMPILE_PYTHON_BINDING "Compile the Python binding" OFF)
@@ -72,7 +72,8 @@ option(COMPILE_WX_COMPONENT "Compile the image numeric component which requires 
 option(STANDALONE_INSTALL "Compile and install for standalone use (SystemML folder)" ON)
 option(LICENSE_INSTALL "Install the license file" ON)
 
-if(COMPILE_NO_X11)
+if(COMPILE_WITH_X11)
+else()
   set(NO_X11 1)
   message(STATUS "Compiling without X11 dependencies")
   set(BRAHMS_NOX11 "-D__NOX11__")
