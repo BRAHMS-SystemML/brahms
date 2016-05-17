@@ -85,55 +85,58 @@ if(COMPILE_WITH_MPICH2)
   endif(MPICXX_NOT_FOUND)
 endif(COMPILE_WITH_MPICH2)
 
-# Could use X11_Xt_FOUND X11_Xmu_FOUND etc from find_package(X11). It
-# may be that find_package(X11) will much up on Windows.
-find_package(X11)
-
-# If we have pkg-config then we can use it:
-find_package(PkgConfig)
-
-if(COMPILE_WX_COMPONENT)
-  # Use find_package as first attempt, then pkg-config as fallback on this system.
-  # Try sudo apt-get install libwxgtk2.8-dev
-  find_package(wxWindows)
-  string(COMPARE EQUAL "${WX_CONFIG_LIBS}" "" WX_NOT_FOUND)
-  if (WX_NOT_FOUND)
-    # There's no way to find WX (pkg-config won't find this on my Ubuntu system)
-    message(FATAL_ERROR "You need WX windows. On Debian/Ubuntu try `sudo apt-get install libwxgtk2.8-dev`")
-  else()
-    if (WX_CONFIG_LIBS MATCHES .*gtk.*)
-      # all is well, seems to be a graphical wxwindows FIXME: May be different on Windows.
-    else()
-      message(FATAL_ERROR "You need graphical WX windows. On Debian/Ubuntu try `sudo apt-get install libwxgtk2.8-dev`")
-    endif()
-
-    # We know we have WX, so we should be able to exec wx-config to get
-    # the compiler flags: FIXME: Windows invocation will be different here.
-    execute_process(COMMAND wx-config --cxxflags
-      OUTPUT_VARIABLE BRAHMS_WX_CXXFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
-    execute_process(COMMAND wx-config --cflags
-      OUTPUT_VARIABLE BRAHMS_WX_CFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
-  endif(WX_NOT_FOUND)
-endif(COMPILE_WX_COMPONENT)
-
-if(PKG_CONFIG_FOUND)
-  # There's no FindXaw script on my Ubuntu system. Can use pkg-config to check it's present:
-  pkg_check_modules(XAW REQUIRED xaw7)
-  if (XAW_FOUND)
-    # We have XAW_LDFLAGS XAW_INCLUDEDIR
-    find_path(BRAHMS_XAW_INCLUDE_DIR Xaw/XawInit.h HINTS ${XAW_INCLUDEDIR} ${XAW_INCLUDE_DIRS})
-    set(BRAHMS_XAW_LDFLAGS ${XAW_LDFLAGS})
-  else()
-    message(FATAL_ERROR "You need libXaw7. On Debian/Ubuntu try `sudo apt-get install libxaw7-dev`")
-  endif(XAW_FOUND)
-endif()
-
-# Apple/Unix require -lXmu, Windows won't. With the Xaw/X11 ldflags
-# above, can do this very simple additional flag:
-if(UNIX)
-  set(XMU_LDFLAG -lXmu)
+if(NO_X11)
 else()
-  set(XMU_LDFLAG "")
+  # Could use X11_Xt_FOUND X11_Xmu_FOUND etc from find_package(X11). It
+  # may be that find_package(X11) will much up on Windows.
+  find_package(X11)
+
+  # If we have pkg-config then we can use it:
+  find_package(PkgConfig)
+
+  if(COMPILE_WX_COMPONENT)
+    # Use find_package as first attempt, then pkg-config as fallback on this system.
+    # Try sudo apt-get install libwxgtk2.8-dev
+    find_package(wxWindows)
+    string(COMPARE EQUAL "${WX_CONFIG_LIBS}" "" WX_NOT_FOUND)
+    if (WX_NOT_FOUND)
+      # There's no way to find WX (pkg-config won't find this on my Ubuntu system)
+      message(FATAL_ERROR "You need WX windows. On Debian/Ubuntu try `sudo apt-get install libwxgtk2.8-dev`")
+    else()
+      if (WX_CONFIG_LIBS MATCHES .*gtk.*)
+        # all is well, seems to be a graphical wxwindows FIXME: May be different on Windows.
+      else()
+        message(FATAL_ERROR "You need graphical WX windows. On Debian/Ubuntu try `sudo apt-get install libwxgtk2.8-dev`")
+      endif()
+  
+      # We know we have WX, so we should be able to exec wx-config to get
+      # the compiler flags: FIXME: Windows invocation will be different here.
+      execute_process(COMMAND wx-config --cxxflags
+        OUTPUT_VARIABLE BRAHMS_WX_CXXFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
+      execute_process(COMMAND wx-config --cflags
+        OUTPUT_VARIABLE BRAHMS_WX_CFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
+    endif(WX_NOT_FOUND)
+  endif(COMPILE_WX_COMPONENT)
+  
+  if(PKG_CONFIG_FOUND)
+    # There's no FindXaw script on my Ubuntu system. Can use pkg-config to check it's present:
+    pkg_check_modules(XAW REQUIRED xaw7)
+    if (XAW_FOUND)
+      # We have XAW_LDFLAGS XAW_INCLUDEDIR
+      find_path(BRAHMS_XAW_INCLUDE_DIR Xaw/XawInit.h HINTS ${XAW_INCLUDEDIR} ${XAW_INCLUDE_DIRS})
+      set(BRAHMS_XAW_LDFLAGS ${XAW_LDFLAGS})
+    else()
+      message(FATAL_ERROR "You need libXaw7. On Debian/Ubuntu try `sudo apt-get install libxaw7-dev`")
+    endif(XAW_FOUND)
+  endif()
+
+  # Apple/Unix require -lXmu, Windows won't. With the Xaw/X11 ldflags
+  # above, can do this very simple additional flag:
+  if(UNIX)
+    set(XMU_LDFLAG -lXmu)
+  else()
+    set(XMU_LDFLAG "")
+  endif()
 endif()
 
 # end of lib finding.

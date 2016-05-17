@@ -58,7 +58,9 @@ using namespace brahms;
 #include "os.h"
 #include "tfs.h"
 #include "info.h"
-#include "gui/gui.h"
+#ifndef __NOX11__
+	#include "gui/gui.h"
+#endif
 
 #ifdef __NIX__
 #include <string.h>
@@ -411,8 +413,10 @@ void inline freopen_local(const char* path, const char* mode, FILE* stream)
 }
 #endif
 
+#ifndef __NOX11__
 // Global pointer to the ExecuteGUI object.
 ExecuteGUI* executeGUI;
+#endif
 
 EngineResult execute(int argc, char *argv[])
 {
@@ -423,7 +427,9 @@ EngineResult execute(int argc, char *argv[])
 	{
 		//	default args
 		createEngine.voiceIndex = VOICE_UNDEFINED;
+#ifndef __NOX11__
 		createEngine.handler = MonitorEventHandlerFunc;
+#endif
 		createEngine.logFormat = FMT_TEXT;
 
 		//	parse args (engine must exist)
@@ -431,9 +437,11 @@ EngineResult execute(int argc, char *argv[])
 
                 // Now the args have been interpreted, we can create
                 // the gui object if we need it.
+#ifndef __NOX11__
                 if (instance.nogui == false) {
                     executeGUI = new ExecuteGUI();
                 } // else don't instanciate executeGUI
+#endif
 
 		//	generate a segfault (for checking how it is handled by the executable and by the scripts)
 		if (instance.segfault)
@@ -576,8 +584,10 @@ const int RESULT_ERROR_INIITAL_PARSE = RESULT_ERROR + 1;
 
 int main(int argc, char *argv[])
 {
+#ifndef __NOX11__
         // Init executeGUI:
         executeGUI = (ExecuteGUI*)0;
+#endif
 
 	string exitFileText =
 			"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>"
@@ -633,10 +643,12 @@ int main(int argc, char *argv[])
 		if (engineResult.localError.length())
 			cout << engineResult.localError << endl;
 	}
+#ifndef __NOX11__
 
         if (executeGUI != (ExecuteGUI*)0) {
             delete executeGUI;
         }
+#endif
 
 	//	return error/no-error code
 	return errorcode;
