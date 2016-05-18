@@ -6,7 +6,7 @@ project(BRAHMS)
 set(VERSION_BRAHMS_MAJ 0)
 set(VERSION_BRAHMS_MIN 8)
 set(VERSION_BRAHMS_REL 0)
-set(VERSION_BRAHMS_REV 0)
+set(VERSION_BRAHMS_REV 1)
 
 # From CMAKE_SYSTEM work out which of __OSX__, __GLN__, __NIX__ or
 # __WIN__ are required
