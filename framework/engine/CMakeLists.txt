@@ -15,20 +15,20 @@ add_library(brahms-engine ${BRAHMS_ENGINE_LINK_TYPE}
   support/xml.cpp
   main/api.cpp main/api-engine.cpp main/engine.cpp
   main/engine-open.cpp  main/engine-execute.cpp  main/engine-close.cpp
-  main/engine-walk.cpp main/engine-monitor.cpp 
+  main/engine-walk.cpp main/engine-monitor.cpp
   )
 
 # Mac wants to be able to see libbrahms-channel-common in the above.
 if(APPLE)
   if(NO_X11)
     target_link_libraries(
-  	  brahms-engine brahms-engine-base
+      brahms-engine brahms-engine-base
       ${CMAKE_THREAD_LIBS_INIT} ${LIB_RT}
-    )
-	else()
-	  target_link_libraries(
+      )
+  else()
+    target_link_libraries(
       brahms-engine brahms-engine-base brahms-gui
       ${CMAKE_THREAD_LIBS_INIT} ${LIB_RT} ${XAW_LDFLAGS}
-    )
+      )
   endif()
 endif(APPLE)
