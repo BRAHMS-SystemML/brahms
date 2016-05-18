@@ -62,11 +62,11 @@ void brahms::info::version(bool simple)
     INFO_OUT << "http://brahms.sourceforge.net\n\n";
     if (simple) { return; }
 
-    INFO_OUT << "    built at " __TIME__ " on " __DATE__ "\n";
-    INFO_OUT << "    built on " << BUILD_PLATFORM << "\n";
+    INFO_OUT << "    Built at: " __TIME__ " on " __DATE__ "\n";
+    INFO_OUT << "    Built on " << BUILD_PLATFORM << "\n";
 
     //	defines
-    INFO_OUT << "    defined: ";
+    INFO_OUT << "\n    Defined: ";
 #ifdef __WIN__
     INFO_OUT << "__WIN__ ";
 #endif
@@ -83,8 +83,16 @@ void brahms::info::version(bool simple)
 #ifdef _MSC_VER
     INFO_OUT << "_MSC_VER ";
 #endif
-    INFO_OUT << "\n";
-    INFO_OUT << "    ARCH_BITS=" << ARCH_BITS << " sizeof(UINTA)=" << sizeof(UINTA) << " sizeof(UINT32)=" << sizeof(UINT32) << " sizeof(Symbol)=" << sizeof(Symbol);
+    INFO_OUT << "\n\n";
+
+    INFO_OUT << "    BRAHMS include dir: ";
+    brahms::info::brahmsIncludePath();
+    INFO_OUT << "    BRAHMS lib dir: ";
+    brahms::info::brahmsLibPath();
+    INFO_OUT << "    Primary BRAHMS Namespace: ";
+    brahms::info::brahmsPrimaryNamespace();
+
+    INFO_OUT << "\n    ARCH_BITS=" << ARCH_BITS << " sizeof(UINTA)=" << sizeof(UINTA) << " sizeof(UINT32)=" << sizeof(UINT32) << " sizeof(Symbol)=" << sizeof(Symbol);
     INFO_OUT << "\n\n";
 }
 
