@@ -47,6 +47,7 @@ namespace brahms
 	namespace info
 	{
             void version(bool simple = false);
+            void versionshort();
             void usage();
             void license();
             void credits();

@@ -74,6 +74,7 @@ enum Operation
 	OP_LICENSE,
 	OP_CREDITS,
 	OP_VERSION,
+	OP_VERSIONSHORT, // Show just the version number
 	OP_WALK,
 	OP_AUDIT,
         OP_SHOWINCLUDE,  // Show the API include directory
@@ -273,6 +274,12 @@ void interpretArgs(int argc, char *argv[])
 		if (arg == "--version")
 		{
 			instance.setOperation(OP_VERSION, arg);
+			continue;
+		}
+
+		if (arg == "--ver")
+		{
+			instance.setOperation(OP_VERSIONSHORT, arg);
 			continue;
 		}
 
@@ -502,6 +509,10 @@ EngineResult execute(int argc, char *argv[])
 
 			case OP_VERSION:
 				brahms::info::version();
+				return engineResult;
+
+			case OP_VERSIONSHORT:
+				brahms::info::versionshort();
 				return engineResult;
 
 			case OP_AUDIT:

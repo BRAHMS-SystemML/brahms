@@ -88,6 +88,12 @@ void brahms::info::version(bool simple)
     INFO_OUT << "\n\n";
 }
 
+void brahms::info::versionshort()
+{
+    // Just the version number
+    INFO_OUT << toString(VERSION_ENGINE) << "\n";
+}
+
 void
 brahms::info::usage()
 {
@@ -114,6 +120,7 @@ brahms::info::usage()
         "    --license        show release license\n"
         "    --credits        show credits\n"
         "    --version        show detailed version information\n"
+        "    --ver            show just the version number\n"
         "    --showinclude    show the path to the BRAHMS API headers\n"
         "    --showlib        show the path to the BRAHMS library directory\n"
         "    --shownamespace  show the path to the primary BRAHMS Namespace\n"
