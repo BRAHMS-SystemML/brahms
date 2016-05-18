@@ -53,6 +53,7 @@ namespace brahms
             void audit();
             void brahmsIncludePath();
             void brahmsLibPath();
+            void brahmsPrimaryNamespace();
 	}
 }
 

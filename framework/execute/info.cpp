@@ -114,8 +114,9 @@ brahms::info::usage()
         "    --license        show release license\n"
         "    --credits        show credits\n"
         "    --version        show detailed version information\n"
-        "    --showinclude    show the path to the brahms API headers\n"
-        "    --showlib        show the path to the brahms library directory\n"
+        "    --showinclude    show the path to the BRAHMS API headers\n"
+        "    --showlib        show the path to the BRAHMS library directory\n"
+        "    --shownamespace  show the path to the primary BRAHMS Namespace\n"
         "    --walk           walk the namespace for cached components...\n"
         "    --Walk           ...and load each one for more info...\n"
         "    --WALK           ...including non-native components.\n"
@@ -266,4 +267,11 @@ brahms::info::brahmsLibPath()
     //	Show the lib directory that we're going to install the
     //	brahms libs into.
     INFO_OUT << BRAHMS_LIB_PATH << endl;
+}
+
+void
+brahms::info::brahmsPrimaryNamespace()
+{
+    //	Show the primary, set-at-compile-time BRAHMS Namespace.
+    INFO_OUT << PRIMARY_NAMESPACE << endl;
 }

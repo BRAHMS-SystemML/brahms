@@ -76,8 +76,9 @@ enum Operation
 	OP_VERSION,
 	OP_WALK,
 	OP_AUDIT,
-        OP_SHOWINCLUDE, // Show the API include directory
-        OP_SHOWLIB      // Show the lib directory for any dynamically linked libraries
+        OP_SHOWINCLUDE,  // Show the API include directory
+        OP_SHOWLIB,      // Show the lib directory for any dynamically linked libraries
+        OP_SHOWNAMESPACE // Show the set-at-compile-time primary namespace
 };
 
 struct Instance
@@ -300,6 +301,12 @@ void interpretArgs(int argc, char *argv[])
 			continue;
 		}
 
+		if (arg == "--shownamespace")
+		{
+			instance.setOperation(OP_SHOWNAMESPACE, arg);
+			continue;
+		}
+
 		if (arg == "--walk")
 		{
 			instance.setOperation(OP_WALK, arg);
@@ -483,6 +490,10 @@ EngineResult execute(int argc, char *argv[])
 
 			case OP_SHOWLIB:
 				brahms::info::brahmsLibPath();
+				return engineResult;
+
+			case OP_SHOWNAMESPACE:
+				brahms::info::brahmsPrimaryNamespace();
 				return engineResult;
 
 			case OP_CREDITS:
