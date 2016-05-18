@@ -114,6 +114,8 @@ brahms::info::usage()
         "    --license        show release license\n"
         "    --credits        show credits\n"
         "    --version        show detailed version information\n"
+        "    --showinclude    show the path to the brahms API headers\n"
+        "    --showlib        show the path to the brahms library directory\n"
         "    --walk           walk the namespace for cached components...\n"
         "    --Walk           ...and load each one for more info...\n"
         "    --WALK           ...including non-native components.\n"
@@ -248,4 +250,20 @@ brahms::info::audit()
     //	this hidden option just dumps data to console, and is used by bindings
     INFO_OUT << "VERSION_ENGINE=" << toString(VERSION_ENGINE) << endl;
     INFO_OUT << "ARCH_BITS=" << ARCH_BITS << endl;
+}
+
+void
+brahms::info::brahmsIncludePath()
+{
+    //	Show the include directory that we're going to install the
+    //	brahms-1199.h file (and friends) into.
+    INFO_OUT << BRAHMS_INCLUDE_PATH << endl;
+}
+
+void
+brahms::info::brahmsLibPath()
+{
+    //	Show the lib directory that we're going to install the
+    //	brahms libs into.
+    INFO_OUT << BRAHMS_LIB_PATH << endl;
 }

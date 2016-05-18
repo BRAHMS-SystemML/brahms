@@ -51,6 +51,8 @@ namespace brahms
             void license();
             void credits();
             void audit();
+            void brahmsIncludePath();
+            void brahmsLibPath();
 	}
 }
 

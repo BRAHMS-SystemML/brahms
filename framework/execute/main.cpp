@@ -75,7 +75,9 @@ enum Operation
 	OP_CREDITS,
 	OP_VERSION,
 	OP_WALK,
-	OP_AUDIT
+	OP_AUDIT,
+        OP_SHOWINCLUDE, // Show the API include directory
+        OP_SHOWLIB      // Show the lib directory for any dynamically linked libraries
 };
 
 struct Instance
@@ -285,6 +287,19 @@ void interpretArgs(int argc, char *argv[])
 			continue;
 		}
 
+                // Show the include directory for compiling against the C/C++ APIs
+		if (arg == "--showinclude")
+		{
+			instance.setOperation(OP_SHOWINCLUDE, arg);
+			continue;
+		}
+
+		if (arg == "--showlib")
+		{
+			instance.setOperation(OP_SHOWLIB, arg);
+			continue;
+		}
+
 		if (arg == "--walk")
 		{
 			instance.setOperation(OP_WALK, arg);
@@ -460,6 +475,14 @@ EngineResult execute(int argc, char *argv[])
 
 			case OP_LICENSE:
 				brahms::info::license();
+				return engineResult;
+
+			case OP_SHOWINCLUDE:
+				brahms::info::brahmsIncludePath();
+				return engineResult;
+
+			case OP_SHOWLIB:
+				brahms::info::brahmsLibPath();
 				return engineResult;
 
 			case OP_CREDITS:
