@@ -1,20 +1,11 @@
 # BRAHMS
 
 BRAHMS is a simulation execution engine which was written by Ben
-Michinson.  It's often used alongside SpineML/SpineML_2_BRAHMS to
-provide a simulation back-end for SpineML/SpineCreator. The original
-author is not currently developing BRAHMS, although it is still in
-use within the Adaptive Behaviour Research Group at the Department of
-Psychology of the University of Sheffield. As we expect to continue
-its use, I have created this fork of the software on github.
+Michinson.  Amoungst other things, it's often used in SpineML_2_BRAHMS to
+provide a simulation back-end for SpineML models.
 
-This fork of the Brahms simulator starts from brahms version 0.7.3. The
-original BRAHMS build system is based on custom makefiles, which results
-in the software being somewhat difficult to compile. Until recently we
-had been using "set in aspic" binary builds of BRAHMS and we wanted 
-to be able to easily modify and add features as our requirements of
-BRAHMS change. This was the motivation behind forking the code; to
-implement a _cmake_-based build system.
+This, now official, version of BRAHMS was branched at version 0.7.3 of the
+code from brahms.sourceforge.net.
 
 You can read all about the original at:
 
