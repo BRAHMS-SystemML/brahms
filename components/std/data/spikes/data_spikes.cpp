@@ -187,11 +187,19 @@ void COMPONENT_CLASS_CPP::setDimensions(Dimensions cdims)
 	//	set dims and capacity
 	state.dims = cdims;
 	state.cdims = state.dims.cdims();
-	state.capacity = state.dims.getNumberOfElements();
+
+        // state.capacity was set to the number of elements allocated
+        // by default in a Dim struct and therefore in a VINT64, which
+        // is just vector<INT64>. Now, as far as I understand, a
+        // vector should resize itself as required, but this capacity
+        // matters as it's used in resizeBuffer to resize some other,
+        // associated memory storage structures.
+        state.capacity = state.dims.getNumberOfElements() * 8;
+        state.dims.reserve (state.capacity);
+        printf ("state.capacity initially set to %d\n", state.capacity);
 
 	//	resize storage vector
 	resizeBuffer();
-
 
 
 ////////////////	PRE-CALCULATE (CACHE) DATA FOR RETURN TO FRAMEWORK REQUESTS
@@ -577,7 +585,10 @@ Symbol COMPONENT_CLASS_CPP::event(Event* event)
 		{
 			spikes::Spikes* spikes = (spikes::Spikes*) event->data;
 
-			if (spikes->count > state.capacity) berr << "too many spikes supplied (more than previously set capacity)";
+			if (spikes->count > state.capacity) {
+                            berr << "too many spikes supplied (" << spikes->count
+                                 << " is more than previously set capacity of " << state.capacity << ")";
+                        }
 			state.spikes.count = spikes->count;
 			if (spikes->count)
 				memcpy((BYTE*)state.spikes.spikes, spikes->spikes, spikes->count * sizeof(INT32));
