@@ -128,15 +128,8 @@ else()
     else()
       message(FATAL_ERROR "You need libXaw7. On Debian/Ubuntu try `sudo apt-get install libxaw7-dev`")
     endif(XAW_FOUND)
-
-    pkg_check_modules(XT REQUIRED)
-    if (XT_FOUND)
-      # We have XT_LDFLAGS XT_INCLUDEDIR
-      find_path(BRAHMS_XT_INCLUDE_DIR Intrinsic.h HINTS ${XT_INCLUDEDIR} ${XT_INCLUDE_DIRS})
-      set(BRAHMS_XT_LDFLAGS ${XT_LDFLAGS})
-    else()
-      message(FATAL_ERROR "You need libXt. On Debian/Ubuntu try `sudo apt-get install libxt-dev`")
-    endif(XT_FOUND)
+  else()
+    message(WARNING "There's no pkg-config on this system to check for libXaw7. You may need to try `sudo apt-get install pkg-config`")
   endif()
 
   # Apple/Unix require -lXmu, Windows won't. With the Xaw/X11 ldflags
