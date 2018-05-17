@@ -20,7 +20,7 @@ else()
   message(STATUS "Didn't find Threads with find_package, fallback to check_include_files search for pthread.h.")
   # This is a fallback for Mac:
   include (CheckIncludeFiles)
-  check_include_files("pthread.h" CMAKE_HAVE_PTHREAD_H) 
+  check_include_files("pthread.h" CMAKE_HAVE_PTHREAD_H)
   if(NOT CMAKE_HAVE_PTHREAD_H)
     message(FATAL_ERROR " You need a threading library")
   endif(NOT CMAKE_HAVE_PTHREAD_H)
@@ -108,7 +108,7 @@ else()
       else()
         message(FATAL_ERROR "You need graphical WX windows. On Debian/Ubuntu try `sudo apt-get install libwxgtk2.8-dev`")
       endif()
-  
+
       # We know we have WX, so we should be able to exec wx-config to get
       # the compiler flags: FIXME: Windows invocation will be different here.
       execute_process(COMMAND wx-config --cxxflags
@@ -117,7 +117,7 @@ else()
         OUTPUT_VARIABLE BRAHMS_WX_CFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
     endif(WX_NOT_FOUND)
   endif(COMPILE_WX_COMPONENT)
-  
+
   if(PKG_CONFIG_FOUND)
     # There's no FindXaw script on my Ubuntu system. Can use pkg-config to check it's present:
     pkg_check_modules(XAW REQUIRED xaw7)
@@ -128,6 +128,15 @@ else()
     else()
       message(FATAL_ERROR "You need libXaw7. On Debian/Ubuntu try `sudo apt-get install libxaw7-dev`")
     endif(XAW_FOUND)
+
+    pkg_check_modules(XT REQUIRED)
+    if (XT_FOUND)
+      # We have XT_LDFLAGS XT_INCLUDEDIR
+      find_path(BRAHMS_XT_INCLUDE_DIR Intrinsic.h HINTS ${XT_INCLUDEDIR} ${XT_INCLUDE_DIRS})
+      set(BRAHMS_XT_LDFLAGS ${XT_LDFLAGS})
+    else()
+      message(FATAL_ERROR "You need libXt. On Debian/Ubuntu try `sudo apt-get install libxt-dev`")
+    endif(XT_FOUND)
   endif()
 
   # Apple/Unix require -lXmu, Windows won't. With the Xaw/X11 ldflags
