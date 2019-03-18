@@ -229,7 +229,7 @@ namespace brahms
 			hComponent = S_NULL;
 		}
 
-		Component& operator=(const Component& src)
+	        void operator=(const Component& src)
 		{
 			berr << E_INTERNAL << "Component() assignment";
 		}
